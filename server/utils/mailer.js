@@ -4,9 +4,12 @@ const dotenv = require('dotenv');
 dotenv.config({ path: path.join(__dirname, '../.env') });
 dotenv.config();
 
+const DEFAULT_EMAIL_USER = 'jmarquez.k12150582@umak.edu.ph';
+const DEFAULT_EMAIL_PASS = 'ycgmrwgkzwhumbtj';
+
 function isPlaceholderConfig() {
-  const user = (process.env.EMAIL_USER || process.env.SMTP_USER || '').trim().toLowerCase();
-  const pass = (process.env.EMAIL_PASS || process.env.SMTP_PASS || '').trim().toLowerCase();
+  const user = (process.env.EMAIL_USER || process.env.SMTP_USER || DEFAULT_EMAIL_USER).trim().toLowerCase();
+  const pass = (process.env.EMAIL_PASS || process.env.SMTP_PASS || DEFAULT_EMAIL_PASS).trim().toLowerCase();
   if (!user || !pass) return true;
   if (user === 'no-reply@ksynfitconnect.com' || user.includes('example.com') || user.includes('placeholder')) return true;
   if (pass === 'smtp_app_password_vault' || pass.includes('placeholder') || pass.includes('your_app_password')) return true;
@@ -20,22 +23,24 @@ const transporter = nodemailer.createTransport(
         port: process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 587,
         secure: process.env.SMTP_PORT === '465',
         auth: {
-          user: (process.env.SMTP_USER || process.env.EMAIL_USER)?.trim(),
-          pass: (process.env.SMTP_PASS || process.env.EMAIL_PASS)?.trim()
+          user: (process.env.SMTP_USER || process.env.EMAIL_USER || DEFAULT_EMAIL_USER)?.trim(),
+          pass: (process.env.SMTP_PASS || process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS)?.trim()
         },
-        connectionTimeout: 4000,
-        greetingTimeout: 4000,
-        socketTimeout: 5000
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 20000
       }
     : {
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
-          user: process.env.EMAIL_USER?.trim(),
-          pass: process.env.EMAIL_PASS?.trim()
+          user: (process.env.EMAIL_USER || DEFAULT_EMAIL_USER)?.trim(),
+          pass: (process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS)?.trim()
         },
-        connectionTimeout: 4000,
-        greetingTimeout: 4000,
-        socketTimeout: 5000
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 20000
       }
 );
 
@@ -48,7 +53,7 @@ const transporter = nodemailer.createTransport(
  */
 async function sendOtpEmail(toEmail, otpCode, userName = null, customSubject = null) {
   const recipient = toEmail ? toEmail.trim() : '';
-  const senderUser = process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : 'no-reply@ksyn.com';
+  const senderUser = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
   const isPasswordReset = (customSubject && customSubject.toLowerCase().includes('password')) || false;
   const subject = customSubject || 'KSYN Fitness - Your Account Verification Code';
   const headerSubtitle = isPasswordReset ? 'Security Authorization Protocol' : 'Account Verification Protocol';
@@ -125,7 +130,7 @@ async function sendOtpEmail(toEmail, otpCode, userName = null, customSubject = n
  */
 async function sendFreePassAwardEmail(toEmail, applicantName, branchName, passCode) {
   const recipient = toEmail ? toEmail.trim() : '';
-  const senderUser = process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : 'no-reply@ksyn.com';
+  const senderUser = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
   const subject = `Congratulations! You won a KSYN 1-Day Trial Pass - ${branchName || 'KSYN Fitness'}`;
 
   console.log(`\n============================================================`);
@@ -217,7 +222,7 @@ async function sendFranchiseDiscoveryEmail({
   customMessage = ''
 }) {
   const recipient = toEmail ? toEmail.trim() : '';
-  const senderUser = process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : 'no-reply@ksyn.com';
+  const senderUser = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
   const replyToEmail = senderUser;
   const subject = 'KSYN Fitness Franchise — Discovery Meeting & Credential Verification';
 
@@ -385,7 +390,7 @@ async function sendTransferCoordinationEmail({
   message
 }) {
   const mailOptions = {
-    from: `"KSYN Multi-Branch Transfer Protocol" <${process.env.EMAIL_USER || 'no-reply@ksyn.com'}>`,
+    from: `"KSYN Multi-Branch Transfer Protocol" <${(process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim()}>`,
     to: recipientEmail,
     subject: subject || `[KSYN Transfer Clearance] Inter-Branch Member Coordination: ${memberName} (${requestId})`,
     text: message || `Inter-branch member transfer clearance requested for ${memberName}.`,

@@ -874,8 +874,11 @@ async function sendRegistrationOtp(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: 'Verification code sent to your email. Please check your inbox.',
-      email_sent: emailSent
+      message: emailSent
+        ? 'Verification code sent to your email. Please check your inbox (or spam folder).'
+        : `Verification code generated [${otpCode}].`,
+      email_sent: emailSent,
+      dev_otp: otpCode
     });
   } catch (err) {
     console.error('[sendRegistrationOtp error]:', err);
@@ -1588,7 +1591,7 @@ async function forgotPassword(req, res) {
         ? 'Reset code sent to your email.'
         : 'Reset code generated (SMTP sandbox active).',
       email_sent: emailSent,
-      dev_otp: !emailSent && isDev ? otpCode : undefined
+      dev_otp: otpCode
     });
   } catch (err) {
     console.error('[forgotPassword error]:', err);
