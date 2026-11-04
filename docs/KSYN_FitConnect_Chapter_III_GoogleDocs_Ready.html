@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter III: Research Methodology - KSYN FitConnect</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.5in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 8.5in;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+  h1.chapter-title {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h2.chapter-subtitle {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 24pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h3.section-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 20pt;
+    margin-bottom: 8pt;
+    text-indent: 0;
+  }
+  h4.subsection-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  table.academic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14pt;
+    margin-bottom: 16pt;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+  table.academic-table th, table.academic-table td {
+    border: 1px solid #000000;
+    padding: 6pt 8pt;
+    vertical-align: top;
+    text-align: left;
+    text-indent: 0;
+  }
+  table.academic-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center;
+  }
+  .caption {
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  .diagram-box {
+    text-align: center;
+    margin: 18pt 0;
+    padding: 12pt;
+    border: 1px solid #cccccc;
+    background-color: #fafafa;
+  }
+  .equation-box {
+    text-align: center;
+    font-style: italic;
+    margin: 12pt 0;
+    text-indent: 0;
+  }
+  .reference-entry {
+    padding-left: 0.5in;
+    text-indent: -0.5in;
+    margin-bottom: 10pt;
+    text-align: justify;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="chapter-title">CHAPTER III</h1>
+<h2 class="chapter-subtitle">RESEARCH METHODOLOGY</h2>
+
+<p>This chapter presents the comprehensive methods for designing, developing, testing, and evaluating KSYN FitConnect, an enterprise multi-tenant franchise and multi-branch gym management software platform. It details the research design, requirements elicitation and gathering, system architecture and project design, development iterations, system testing and verification procedures, ISO/IEC 27001:2022 information security evaluation framework, sampling allocations, and quantitative statistical treatment of data. The methodology strictly operationalizes the Design–Develop–Test–Evaluate (DDTE) cycle established in Chapter II.</p>
+
+<p>This chapter is organized as a developmental research methodology. Stakeholder consultations, participant recruitment, technical implementation, and evaluation are structured to connect theoretical franchise governance and cybersecurity principles directly to measurable software test cases and empirical evaluator trials. Actual testing execution results, performance metrics, and evaluator ratings will be reported in Chapter IV.</p>
+
+<h3 class="section-title">3.1 Research Design</h3>
+
+<p>The study employs a developmental research design (Richey & Klein, 2014) combined with an iterative, test-driven software engineering methodology. An iterative development approach organizes the work into sequential Design, Develop, Test, and Evaluate cycles. Descriptive statistical methods summarize requirements coverage, task completion rates, security audit checklist compliance, and technical performance measurements.</p>
+
+<p>In adherence to software evaluation integrity, the study maintains a strict anti-conflation principle: subjective user satisfaction ratings are never used to establish cryptographic security, database tenant isolation, or hardware reliability. Technical security guarantees and tenant boundary enforcement are verified exclusively through automated integration tests, negative authorization injection cases, and database state assertions.</p>
+
+<div class="caption">Figure 3.1. Iterative development and evaluation process</div>
+<div class="diagram-box">
+  <svg width="680" height="260" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="20" width="130" height="70" rx="8" fill="#1e3a8a" stroke="#000" stroke-width="1.5"/>
+    <text x="85" y="48" fill="#fff" font-family="Times New Roman" font-size="12pt" font-weight="bold" text-anchor="middle">1. DESIGN</text>
+    <text x="85" y="68" fill="#e0e7ff" font-family="Times New Roman" font-size="9pt" text-anchor="middle">Specs, RLS, Tax Rules</text>
+
+    <line x1="150" y1="55" x2="190" y2="55" stroke="#000" stroke-width="2"/>
+
+    <rect x="190" y="20" width="130" height="70" rx="8" fill="#065f46" stroke="#000" stroke-width="1.5"/>
+    <text x="255" y="48" fill="#fff" font-family="Times New Roman" font-size="12pt" font-weight="bold" text-anchor="middle">2. DEVELOP</text>
+    <text x="255" y="68" fill="#d1fae5" font-family="Times New Roman" font-size="9pt" text-anchor="middle">React, Node, Relay Drivers</text>
+
+    <line x1="320" y1="55" x2="360" y2="55" stroke="#000" stroke-width="2"/>
+
+    <rect x="360" y="20" width="130" height="70" rx="8" fill="#b45309" stroke="#000" stroke-width="1.5"/>
+    <text x="425" y="48" fill="#fff" font-family="Times New Roman" font-size="12pt" font-weight="bold" text-anchor="middle">3. TEST</text>
+    <text x="425" y="68" fill="#fef3c7" font-family="Times New Roman" font-size="9pt" text-anchor="middle">RLS, k6 Concurrency</text>
+
+    <line x1="490" y1="55" x2="530" y2="55" stroke="#000" stroke-width="2"/>
+
+    <rect x="530" y="20" width="130" height="70" rx="8" fill="#581c87" stroke="#000" stroke-width="1.5"/>
+    <text x="595" y="48" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">4. EVALUATE</text>
+    <text x="595" y="68" fill="#f3e8ff" font-family="Times New Roman" font-size="8pt" text-anchor="middle">ISO 27001 Annex A</text>
+
+    <path d="M 595 90 L 595 140 L 85 140 L 85 90" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="340" y="160" fill="#dc2626" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">Iterative Feedback Loop: Security Defect Resolution & Refinement</text>
+  </svg>
+</div>
+
+<p>The study setting encompasses the franchise workflow of KSYN Fitness Inc. Each physical branch operates as an isolated tenant. Corporate reporting and financial consolidation utilize explicit multi-tenant query scoping rather than unrestricted database access. At least three logically separated test branches are configured in the evaluation testbed—KSYN Makati (Branch Alpha), KSYN Katipunan (Branch Beta), and KSYN Fairview (Branch Gamma)—to ensure unauthorized cross-branch data access is rigorously observable and detectable.</p>
+
+<h3 class="section-title">3.2 Requirements Gathering</h3>
+
+<h4 class="subsection-title">3.2.1 Stakeholder Consultation</h4>
+
+<p>The researchers consulted seven key stakeholder cohorts representing the complete franchise operational spectrum:
+corporate administration, corporate financial auditors, branch owners (franchisees/investors), branch administrators, front-desk POS staff, fitness coaches, and registered gym members. Corporate participants clarified global governance, consolidated reporting, and franchise royalty rules. Branch owners defined requirements for branch EBITDA monitoring, CapEx asset depreciation ledgers, and branch staff oversight. Branch administrators detailed membership plans, coach assignments, inventory procurement, and inter-branch member transfer clearances. Front-desk staff specified turnstile monitor workflows, locker reservations with refundable deposits, POS merchandise sales, and shift cash drawer audits. Coaches and members outlined 1-on-1 personal training tracking, biometric progression logs, class reservations, and rotating optical QR access credentials.</p>
+
+<h4 class="subsection-title">3.2.2 Data Collection Methods</h4>
+
+<div class="caption">Table 3.1. Requirements collection plan</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 28%;">Method</th>
+      <th>Procedure and Expected Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Document Review</strong></td>
+      <td>Inspect blank membership application forms, attendance logs, subscription rules, POS cash tally sheets, staff schedules, BIR Form 2307 withholding certificates, and franchise royalty contracts. Produce a comprehensive data dictionary and statutory business-rule register.</td>
+    </tr>
+    <tr>
+      <td><strong>Workflow Observation</strong></td>
+      <td>Observe front-desk member check-in flows, barcode scanner reads, turnstile barrier passages, POS retail sales, coach session logging, and cash drawer reconciliations. Produce process sequence maps and failure-handling protocols.</td>
+    </tr>
+    <tr>
+      <td><strong>Stakeholder Interviews</strong></td>
+      <td>Conduct semi-structured interviews with corporate officers, branch franchisees, general managers, cashiers, trainers, and athletes regarding access boundaries, reporting needs, and system pain points. Produce a stakeholder-confirmed requirements register.</td>
+    </tr>
+    <tr>
+      <td><strong>Hardware & Technical Feasibility</strong></td>
+      <td>Inspect network bandwidth, turnstile solenoid relay drivers, optical USB barcode scanners, 13.56MHz RFID keycard readers, client workstation browsers, and mobile devices. Produce hardware bridge specifications and peripheral interface drivers.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.2.3 Functional Requirements</h4>
+
+<div class="caption">Table 3.2. Proposed functional requirements</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 15%;">Code</th>
+      <th>Required System Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>FR-01</strong></td>
+      <td>Authenticate users across seven authorized roles, enforce adaptive salt hashing (bcrypt work factor 10), throttle repeated failed login attempts, provide secure password recovery, and terminate sessions upon logout.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-02</strong></td>
+      <td>Create and administer branches, user roles, system permissions, and branch staff assignments through authorized corporate administration.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-03</strong></td>
+      <td>Enforce role permissions, multi-tenant branch boundaries, record ownership, and coach-client assignment scopes on every protected HTTP request and database transaction.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-04</strong></td>
+      <td>Register and manage branch-owned member profiles, subscription validity dates, and tier privileges, restricting member self-service strictly to approved profile fields.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-05</strong></td>
+      <td>Process digital payment transactions and subscription renewals via Xendit payment gateways (Credit/Debit, GCash, Maya, QR Ph) with cryptographic webhook signature settlement.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-06</strong></td>
+      <td>Operationalize automated franchise royalty calculations (7.5% on gross revenue) and compute statutory 10% Creditable Withholding Tax (CWT) under Philippine BIR Form 2307 guidelines on coach personal training commissions.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-07</strong></td>
+      <td>Issue short-lived, attendance-only optical QR credentials (dynamic HMAC-SHA256 tokens expiring strictly in 60 seconds) to authenticated, eligible gym members.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-08</strong></td>
+      <td>Validate optical QR credentials and physical 13.56MHz RFID keycards atomically; enforce 5-minute hardware anti-passback cooldowns; dispatch unlock pulse triggers to physical turnstile solenoid relays via WebSocket drivers.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-09</strong></td>
+      <td>Provide front-desk POS cashiers with turnstile access monitors, locker rental issuance with refundable cash deposit tracking (PHP 200 held cash), retail sales checkout, and shift cash drawer variance accountability audits.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-10</strong></td>
+      <td>Maintain branch trainer schedules; authorize coaches to design workout split routines, log 1-on-1 personal training sessions, record biometric progression, and review net earnings after BIR 2307 tax deductions.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-11</strong></td>
+      <td>Provide Branch Owners (Franchisees/Investors) with a dedicated console displaying real-time branch revenues, EBITDA margins, franchise royalty debits, CapEx asset straight-line depreciation ledgers, and branch staff rosters.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-12</strong></td>
+      <td>Manage inter-branch athlete transfer requests requiring destination branch admin dispatch, home branch financial clearance, and administrative confirmation before updating primary home branch designations.</td>
+    </tr>
+    <tr>
+      <td><strong>FR-13</strong></td>
+      <td>Record immutable security audit events, hardware relay overrides, cashier shift discrepancies, and financial adjustments in protected, exportable audit ledgers.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.2.4 Non-Functional Requirements</h4>
+
+<div class="caption">Table 3.3. Proposed quality requirements and acceptance criteria</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Code / Attribute</th>
+      <th>Proposed Measure and Acceptance Condition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>NFR-01 Security (ISO 27001)</strong></td>
+      <td>All predefined negative authorization, cross-tenant injection, session invalidation, and QR replay attacks must be strictly denied without data disclosure or state change. Zero unresolved critical or high-severity vulnerabilities under OWASP ASVS standards.</td>
+    </tr>
+    <tr>
+      <td><strong>NFR-02 Functional Correctness</strong></td>
+      <td>All essential business-rule test fixtures must pass (100%); 7.5% corporate royalties, 10% BIR 2307 withholding taxes, locker deposits, and POS cashier shift variance calculations must match deterministic accounting benchmarks.</td>
+    </tr>
+    <tr>
+      <td><strong>NFR-03 Performance Efficiency</strong></td>
+      <td>Under 20 concurrent simulated users on staging infrastructure: standard REST API requests must demonstrate a 95th-percentile response time p95 ≤ 2.0s with errors < 1.0%; turnstile verification p95 ≤ 1.0s; report exports p95 ≤ 4.0s.</td>
+    </tr>
+    <tr>
+      <td><strong>NFR-04 Reliability & Atomicity</strong></td>
+      <td>Injected transaction failures must not leave partial attendance, sales, or stock updates. Hardware solenoid triggers and attendance commits must execute atomically. Documented backup restoration must achieve 100% table row and checksum parity.</td>
+    </tr>
+    <tr>
+      <td><strong>NFR-05 Access Control Operability</strong></td>
+      <td>At least 90% of assigned security and operational tasks across all seven stakeholder roles must be completed without facilitator assistance; each evaluated ISO/IEC 27001 control domain must achieve a mean rating of at least 3.41 / 5.00.</td>
+    </tr>
+    <tr>
+      <td><strong>NFR-06 Responsive Scalability</strong></td>
+      <td>Fluid layout responsiveness across mobile viewports (320px–480px), tablet screens (768px), and PC split-screen workstation viewports (960px half-screen snapped), with zero horizontal layout breaking or obscured interactive controls.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.2.5 Tools, Technologies, and Environment</h4>
+
+<div class="caption">Table 3.4. Proposed tools and purposes</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Category</th>
+      <th style="width: 30%;">Tool / Platform</th>
+      <th>Purpose and Architecture</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Frontend</strong></td>
+      <td>React.js (v18.x) & Vite</td>
+      <td>Role-specific Single Page Application (SPA), responsive CSS Grid/Flexbox layouts, and client-side view routing.</td>
+    </tr>
+    <tr>
+      <td><strong>Backend</strong></td>
+      <td>Node.js & Express.js</td>
+      <td>RESTful API endpoints, request validation, JWT authentication, role guards, and transaction management.</td>
+    </tr>
+    <tr>
+      <td><strong>Database</strong></td>
+      <td>PostgreSQL (v15+)</td>
+      <td>ACID-compliant relational storage, primary/foreign key referential integrity, and Row-Level Security (RLS).</td>
+    </tr>
+    <tr>
+      <td><strong>Credential Security</strong></td>
+      <td><code>bcryptjs</code> & Node.js <code>crypto</code></td>
+      <td>Blowfish-based salted password hashing (work factor 10, RFC 2898) and HMAC-SHA256 dynamic 60s rotating optical QR tokens.</td>
+    </tr>
+    <tr>
+      <td><strong>Hardware Bridge</strong></td>
+      <td>WebSocket TCP & Node.js Relay Bridge</td>
+      <td>Real-time peripheral bridge driver triggering physical turnstile solenoid barrier relays and reading 13.56MHz RFID keycard UIDs.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment Gateway</strong></td>
+      <td>Xendit API & Webhooks</td>
+      <td>Digital checkout gateway supporting Credit/Debit cards, GCash, Maya, and QR Ph with cryptographic callback verification.</td>
+    </tr>
+    <tr>
+      <td><strong>Security Audit Tools</strong></td>
+      <td>OWASP ZAP, Supertest, k6</td>
+      <td>Automated API testing, ISO/IEC 27001 control verification, and concurrent load/stress benchmarking.</td>
+    </tr>
+    <tr>
+      <td><strong>Development & VCS</strong></td>
+      <td>VS Code, Git & GitHub</td>
+      <td>Source code management, version control, peer review workflows, and issue tracking.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.2.6 Constraints, Dependencies, and Phase Outputs</h4>
+
+<p>The prototype depends on organizational cooperation from KSYN Fitness Inc., verified branch operational policies, stable test connectivity, and access to representative evaluators. Biometric facial recognition, offline-first distributed databases, and general ledger ERP integrations are outside the immediate prototype scope. However, physical turnstile hardware control is integrated via local WebSocket solenoid relay drivers, and contactless access is supported through high-frequency RFID keycard UID validation alongside dynamic HMAC-SHA256 optical passes.</p>
+
+<h3 class="section-title">3.3 Project Design</h3>
+
+<h4 class="subsection-title">3.3.1 System Overview and Architecture</h4>
+
+<p>KSYN FitConnect utilizes a multi-tier architecture separating presentation, business logic, hardware integration, and relational data persistence. The React.js frontend presents role-authenticated views. The Express.js backend authenticates requests, resolves verified user and branch contexts, applies permissions, and executes parameterized database operations.</p>
+
+<div class="caption">Figure 3.2. Proposed system architecture</div>
+<div class="diagram-box">
+  <svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="15" width="600" height="45" rx="6" fill="#1e293b" stroke="#000" stroke-width="1.5"/>
+    <text x="340" y="42" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">CLIENT PRESENTATION TIER (React.js SPA / Responsive Workstations & Mobile Web)</text>
+
+    <line x1="340" y1="60" x2="340" y2="85" stroke="#000" stroke-width="2"/>
+
+    <rect x="40" y="85" width="600" height="55" rx="6" fill="#0f766e" stroke="#000" stroke-width="1.5"/>
+    <text x="340" y="110" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">API GATEWAY & ACCESS CONTROL (Node.js / Express.js / JWT / Rate Limiting)</text>
+    <text x="340" y="128" fill="#ccfbf1" font-family="Times New Roman" font-size="9pt" text-anchor="middle">Role-Based Access Control (RBAC) & Tenant Scoping Middleware</text>
+
+    <line x1="200" y1="140" x2="200" y2="165" stroke="#000" stroke-width="2"/>
+    <line x1="480" y1="140" x2="480" y2="165" stroke="#000" stroke-width="2"/>
+
+    <rect x="40" y="165" width="280" height="55" rx="6" fill="#b45309" stroke="#000" stroke-width="1.5"/>
+    <text x="180" y="190" fill="#fff" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">HARDWARE & PAYMENT BRIDGES</text>
+    <text x="180" y="208" fill="#fef3c7" font-family="Times New Roman" font-size="8.5pt" text-anchor="middle">WebSocket Turnstile Relay Bridge & Xendit Gateway</text>
+
+    <rect x="360" y="165" width="280" height="55" rx="6" fill="#1e3a8a" stroke="#000" stroke-width="1.5"/>
+    <text x="500" y="190" fill="#fff" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">TRANSACTION & AUDIT MANAGER</text>
+    <text x="500" y="208" fill="#dbeafe" font-family="Times New Roman" font-size="8.5pt" text-anchor="middle">SET LOCAL app.current_tenant_id & Immutable Logs</text>
+
+    <line x1="340" y1="220" x2="340" y2="245" stroke="#000" stroke-width="2"/>
+
+    <rect x="40" y="245" width="600" height="55" rx="6" fill="#312e81" stroke="#000" stroke-width="1.5"/>
+    <text x="340" y="270" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">DATABASE TIER (PostgreSQL 15+ / Row-Level Security RLS)</text>
+    <text x="340" y="288" fill="#e0e7ff" font-family="Times New Roman" font-size="9pt" text-anchor="middle">Tenant-Owned Isolated Tables: Members, Subs, Lockers, PT Sessions, POS, CapEx, Tax</text>
+  </svg>
+</div>
+
+<p>The client browser is treated as untrusted. The backend extracts verified branch context from the authenticated JWT session. At the database layer, multi-tenancy is enforced through PostgreSQL Row-Level Security (RLS) policies executing <code>SET LOCAL app.current_tenant_id = :branch_id</code> within each transactional connection. Missing or invalid context fails closed automatically.</p>
+
+<h4 class="subsection-title">3.3.2 Roles and Authorized Scope</h4>
+
+<div class="caption">Table 3.5. Proposed role and scope matrix</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Role</th>
+      <th>Allowed Scope and Restrictions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Super Admin</strong></td>
+      <td>Global enterprise administration: provision branches, configure roles, set global royalty parameters, and audit all system-wide ledgers. Operational branch data access requires explicit branch context and audit logging.</td>
+    </tr>
+    <tr>
+      <td><strong>Corporate Auditor</strong></td>
+      <td>Read-only inspection of consolidated franchise financial statements, royalty reconciliation ledgers, and BIR 2307 tax deduction reports across all branches; strictly denied operational write permissions.</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Owner (Franchisee/Investor)</strong></td>
+      <td>Branch financial governance: monitor gross revenue, EBITDA margins, franchise royalty debits, CapEx asset straight-line depreciation ledgers, and branch staff roster profiles (<code>InvestorDashboard.jsx</code>). Restricted strictly to owned branch franchises.</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Administrator</strong></td>
+      <td>Daily facility management: administer member profiles, subscription plans, trainer schedules, retail inventory procurement, and inter-branch transfer clearances strictly within the assigned branch.</td>
+    </tr>
+    <tr>
+      <td><strong>Front-Desk Staff</strong></td>
+      <td>Reception & POS operations: turnstile check-in verification, locker key issuance with refundable cash deposit (PHP 200), retail POS checkout, and shift cash drawer variance reconciliation audits; denied financial reporting access.</td>
+    </tr>
+    <tr>
+      <td><strong>Coach / Trainer</strong></td>
+      <td>Personal training execution: author workout routine splits, log 1-on-1 athlete sessions, record body metric progression, and view personal commission summaries after 10% BIR 2307 tax deductions; restricted strictly to assigned clients.</td>
+    </tr>
+    <tr>
+      <td><strong>Member</strong></td>
+      <td>Self-service portal: view personal profile, membership status, payment receipts, class schedules, and generate dynamic 60-second rotating optical QR access credentials; update permitted profile fields only.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.3.3 System Modules and Features</h4>
+
+<div class="caption">Table 3.6. Module inputs, processing, and outputs</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 22%;">Module</th>
+      <th style="width: 40%;">Inputs and Processing</th>
+      <th>Outputs and State Changes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Identity & Access (ISO 27001 8.5)</strong></td>
+      <td>User credentials, bcrypt hash verification, JWT generation, rate limiting.</td>
+      <td>Signed HTTP-only session tokens, role routing, failed login audit entries.</td>
+    </tr>
+    <tr>
+      <td><strong>Access Control & Relay (ISO 27001 7.2)</strong></td>
+      <td>60-second HMAC QR token or 13.56MHz RFID UID; authenticated branch scanner context.</td>
+      <td>Atomic attendance validation, anti-passback cooldown update, WebSocket solenoid barrier pulse trigger (<code>SOLENOID_RELAY_OPEN</code>).</td>
+    </tr>
+    <tr>
+      <td><strong>Digital Payments & POS</strong></td>
+      <td>Subscription selections, retail cart items, Xendit payment webhooks, cash drawer tender.</td>
+      <td>Cryptographic payment receipts, stock inventory decrementation, cashier shift variance audit logs.</td>
+    </tr>
+    <tr>
+      <td><strong>Franchise Fiscal Engine</strong></td>
+      <td>Monthly gross sales, trainer session logs, franchise agreement parameters.</td>
+      <td>Automated 7.5% corporate royalty ledgers, 10% BIR Form 2307 coach withholding tax statements, branch net EBITDA balances.</td>
+    </tr>
+    <tr>
+      <td><strong>Locker Management</strong></td>
+      <td>Member ID, locker number selection, PHP 200 cash deposit collected.</td>
+      <td>Locker status transition (<code>available</code> to <code>rented</code>), cash held tracking, deposit refund settlement upon release.</td>
+    </tr>
+    <tr>
+      <td><strong>Personal Training & Coaching</strong></td>
+      <td>1-on-1 package purchases, coach assignments, workout routine splits, biometric logs.</td>
+      <td>Session quota decrementation, verified session audit logs, trainer commission credit with tax deduction.</td>
+    </tr>
+    <tr>
+      <td><strong>Inter-Branch Transfer</strong></td>
+      <td>Member transfer request, destination branch admin dispatch, home branch financial clearance.</td>
+      <td>Transfer state transition (<code>pending_clearance</code> to <code>approved</code>), home branch reassignment, access policy migration.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.3.4 Database Design</h4>
+
+<div class="caption">Table 3.7. Proposed principal entities</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Entity</th>
+      <th>Key Fields and Relationships</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>branches</strong></td>
+      <td><code>branch_id</code> primary key; branch code, name, address, status, royalty rate percentage (7.5%).</td>
+    </tr>
+    <tr>
+      <td><strong>users / roles</strong></td>
+      <td><code>user_id</code> primary key; email, password hash (bcrypt), role, account status, contact number.</td>
+    </tr>
+    <tr>
+      <td><strong>members</strong></td>
+      <td><code>member_id</code> primary key; <code>user_id</code>, <code>branch_id</code>, membership number, RFID keycard UID, profile data.</td>
+    </tr>
+    <tr>
+      <td><strong>subscriptions</strong></td>
+      <td><code>subscription_id</code> primary key; <code>branch_id</code>, <code>member_id</code>, tier name, start/end dates, eligibility status.</td>
+    </tr>
+    <tr>
+      <td><strong>attendance_logs</strong></td>
+      <td><code>attendance_id</code> primary key; <code>branch_id</code>, <code>member_id</code>, credential type (QR/RFID), check-in timestamp.</td>
+    </tr>
+    <tr>
+      <td><strong>lockers / locker_rentals</strong></td>
+      <td><code>rental_id</code> primary key; <code>locker_id</code>, <code>member_id</code>, <code>branch_id</code>, deposit held (PHP 200), rental start/end timestamps, status.</td>
+    </tr>
+    <tr>
+      <td><strong>pt_enrollments / pt_session_logs</strong></td>
+      <td><code>enrollment_id</code>, <code>session_id</code>; <code>coach_id</code>, <code>member_id</code>, package quota, session rate, 10% BIR 2307 tax deducted, net commission.</td>
+    </tr>
+    <tr>
+      <td><strong>pos_products / sales</strong></td>
+      <td><code>product_id</code>, <code>sale_id</code>; <code>branch_id</code>, SKU, item name, unit price, stock quantity, transaction totals.</td>
+    </tr>
+    <tr>
+      <td><strong>cashier_shifts / shift_audits</strong></td>
+      <td><code>shift_id</code> primary key; <code>branch_id</code>, <code>cashier_id</code>, start/end time, opening cash float, expected cash, actual counted, cash variance.</td>
+    </tr>
+    <tr>
+      <td><strong>branch_transfers</strong></td>
+      <td><code>transfer_id</code> primary key; <code>member_id</code>, source branch, destination branch, clearance status, dispatch timestamp.</td>
+    </tr>
+    <tr>
+      <td><strong>capex_assets</strong></td>
+      <td><code>asset_id</code> primary key; <code>branch_id</code>, equipment item name, purchase cost, useful life months, salvage value, monthly depreciation.</td>
+    </tr>
+    <tr>
+      <td><strong>audit_events</strong></td>
+      <td><code>event_id</code> primary key; actor user ID, branch ID, event type, target resource, timestamp, IP address, outcome.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="caption">Figure 3.3. Simplified entity relationship structure</div>
+<div class="diagram-box">
+  <svg width="680" height="240" viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg">
+    <rect x="240" y="10" width="200" height="40" rx="5" fill="#1e3a8a" stroke="#000"/>
+    <text x="340" y="35" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">branches (1:N Tenant Root)</text>
+
+    <line x1="340" y1="50" x2="340" y2="80" stroke="#000" stroke-width="1.5"/>
+
+    <rect x="50" y="80" width="160" height="40" rx="5" fill="#0f766e" stroke="#000"/>
+    <text x="130" y="105" fill="#fff" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">users & staff_roles</text>
+
+    <rect x="260" y="80" width="160" height="40" rx="5" fill="#0f766e" stroke="#000"/>
+    <text x="340" y="105" fill="#fff" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">members & subscriptions</text>
+
+    <rect x="470" y="80" width="160" height="40" rx="5" fill="#0f766e" stroke="#000"/>
+    <text x="550" y="105" fill="#fff" font-family="Times New Roman" font-size="10pt" font-weight="bold" text-anchor="middle">lockers & capex_assets</text>
+
+    <line x1="130" y1="120" x2="130" y2="150" stroke="#000" stroke-width="1.5"/>
+    <line x1="340" y1="120" x2="340" y2="150" stroke="#000" stroke-width="1.5"/>
+    <line x1="550" y1="120" x2="550" y2="150" stroke="#000" stroke-width="1.5"/>
+
+    <rect x="50" y="150" width="160" height="45" rx="5" fill="#312e81" stroke="#000"/>
+    <text x="130" y="172" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">cashier_shifts & POS</text>
+    <text x="130" y="187" fill="#e0e7ff" font-family="Times New Roman" font-size="8pt" text-anchor="middle">shift_variance_audits</text>
+
+    <rect x="260" y="150" width="160" height="45" rx="5" fill="#312e81" stroke="#000"/>
+    <text x="340" y="172" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">attendance_logs & PT</text>
+    <text x="340" y="187" fill="#e0e7ff" font-family="Times New Roman" font-size="8pt" text-anchor="middle">10% BIR 2307 Tax Logs</text>
+
+    <rect x="470" y="150" width="160" height="45" rx="5" fill="#312e81" stroke="#000"/>
+    <text x="550" y="172" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">branch_transfers</text>
+    <text x="550" y="187" fill="#e0e7ff" font-family="Times New Roman" font-size="8pt" text-anchor="middle">Inter-Branch Clearances</text>
+  </svg>
+</div>
+
+<h4 class="subsection-title">3.3.5 User Interface and Interaction Design</h4>
+
+<p>The user interface provides dedicated views across all seven authenticated roles. Wireframes and interface components emphasize real-time feedback, distinct visual notifications, unambiguous form validation, and responsive scalability across mobile phones (320px–480px), tablet screens (768px), and PC workstation split-screenSnapped viewports (960px half-screen).</p>
+
+<div class="caption">Figure 3.4. General protected-request workflow</div>
+<div class="diagram-box">
+  <svg width="680" height="150" viewBox="0 0 680 150" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="20" width="140" height="45" rx="5" fill="#1e293b" stroke="#000"/>
+    <text x="90" y="47" fill="#fff" font-family="Times New Roman" font-size="9.5pt" font-weight="bold" text-anchor="middle">1. User Submits Request</text>
+
+    <line x1="160" y1="42" x2="190" y2="42" stroke="#000" stroke-width="2"/>
+
+    <rect x="190" y="20" width="140" height="45" rx="5" fill="#0f766e" stroke="#000"/>
+    <text x="260" y="47" fill="#fff" font-family="Times New Roman" font-size="9.5pt" font-weight="bold" text-anchor="middle">2. JWT & Scope Guard</text>
+
+    <line x1="330" y1="42" x2="360" y2="42" stroke="#000" stroke-width="2"/>
+
+    <rect x="360" y="20" width="140" height="45" rx="5" fill="#1e3a8a" stroke="#000"/>
+    <text x="430" y="47" fill="#fff" font-family="Times New Roman" font-size="9.5pt" font-weight="bold" text-anchor="middle">3. Inject SET LOCAL RLS</text>
+
+    <line x1="500" y1="42" x2="530" y2="42" stroke="#000" stroke-width="2"/>
+
+    <rect x="530" y="20" width="130" height="45" rx="5" fill="#065f46" stroke="#000"/>
+    <text x="595" y="47" fill="#fff" font-family="Times New Roman" font-size="9.5pt" font-weight="bold" text-anchor="middle">4. Commit & Audit</text>
+
+    <text x="340" y="110" fill="#dc2626" font-family="Times New Roman" font-size="9pt" font-style="italic" text-anchor="middle">Negative Authorization Interception: Missing or mismatched branch context fails closed (HTTP 403 / 0 rows returned).</text>
+  </svg>
+</div>
+
+<div class="caption">Figure 3.5. Attendance and turnstile solenoid actuation workflow</div>
+<div class="diagram-box">
+  <svg width="680" height="180" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="30" y="20" width="130" height="50" rx="5" fill="#1e293b" stroke="#000"/>
+    <text x="95" y="45" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">Member Web App</text>
+    <text x="95" y="60" fill="#cbd5e1" font-family="Times New Roman" font-size="8pt" text-anchor="middle">HMAC QR (60s Life)</text>
+
+    <line x1="160" y1="45" x2="200" y2="45" stroke="#000" stroke-width="2"/>
+
+    <rect x="200" y="20" width="130" height="50" rx="5" fill="#b45309" stroke="#000"/>
+    <text x="265" y="45" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">Turnstile Scanner</text>
+    <text x="265" y="60" fill="#fef3c7" font-family="Times New Roman" font-size="8pt" text-anchor="middle">Optical Barcode / RFID</text>
+
+    <line x1="330" y1="45" x2="370" y2="45" stroke="#000" stroke-width="2"/>
+
+    <rect x="370" y="20" width="130" height="50" rx="5" fill="#0f766e" stroke="#000"/>
+    <text x="435" y="45" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">Express Backend</text>
+    <text x="435" y="60" fill="#ccfbf1" font-family="Times New Roman" font-size="8pt" text-anchor="middle">Token Atomic Check</text>
+
+    <line x1="500" y1="45" x2="540" y2="45" stroke="#000" stroke-width="2"/>
+
+    <rect x="540" y="20" width="120" height="50" rx="5" fill="#065f46" stroke="#000"/>
+    <text x="600" y="45" fill="#fff" font-family="Times New Roman" font-size="9pt" font-weight="bold" text-anchor="middle">WebSocket Relay</text>
+    <text x="600" y="60" fill="#d1fae5" font-family="Times New Roman" font-size="8pt" text-anchor="middle">Solenoid Pulse Open</text>
+
+    <text x="340" y="115" fill="#000" font-family="Times New Roman" font-size="9.5pt" text-anchor="middle">Hardware Anti-Passback: 5-minute cooldown timer strictly blocks immediate pass-back reuse.</text>
+  </svg>
+</div>
+
+<h4 class="subsection-title">3.3.6 Security and Privacy Design</h4>
+
+<p>Passwords are hashed using <code>bcryptjs</code> with an adaptive work factor of 10 and unique salts. Optical QR passes utilize dynamic HMAC-SHA256 signatures with 60-second validity windows, preventing credential forwarding. Sessions utilize HTTP-only, Secure cookies with <code>SameSite=Strict</code> attributes. In accordance with the Data Privacy Act of 2012 (Republic Act No. 10173), all testing utilizes synthetic records, and audit logs exclude confidential member data.</p>
+
+<p>Pursuant to the Intellectual Property Code of the Philippines (Republic Act No. 8293), all software architectures, algorithms, turnstile relay bridge logic, and multi-tenant RLS schemas remain the exclusive intellectual property of the student development group, licensed to the client organization for gym operational deployment and academic evaluation.</p>
+
+<h3 class="section-title">3.4 Project Development</h3>
+
+<div class="caption">Table 3.8. Proposed development sequence and deliverables</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Iteration</th>
+      <th>Activities and Outputs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1: Planning & Analysis</strong></td>
+      <td>Confirm franchise operational scope, document statutory tax rules (BIR 2307), establish permission matrices, and configure Git repository.</td>
+    </tr>
+    <tr>
+      <td><strong>2: Architecture & Foundation</strong></td>
+      <td>Deploy PostgreSQL relational schema, configure Row-Level Security (RLS) policies, build synthetic seeders, and construct JWT authentication middleware.</td>
+    </tr>
+    <tr>
+      <td><strong>3: Roles & Consoles</strong></td>
+      <td>Implement role-specific consoles: Super Admin, Corporate Auditor, Branch Owner (<code>InvestorDashboard.jsx</code>), Branch Admin, Front Desk, Coach, and Member.</td>
+    </tr>
+    <tr>
+      <td><strong>4: Hardware & Attendance</strong></td>
+      <td>Develop WebSocket turnstile hardware relay driver (<code>turnstileBridge.js</code>), integrate 13.56MHz RFID readers, and build dynamic HMAC-SHA256 rotating QR passes.</td>
+    </tr>
+    <tr>
+      <td><strong>5: Payments & Fiscal Engine</strong></td>
+      <td>Integrate Xendit digital payment webhooks (GCash, Maya, QR Ph), automate 7.5% corporate royalties, and implement 10% BIR Form 2307 coach tax deductions.</td>
+    </tr>
+    <tr>
+      <td><strong>6: Front Desk & Locker Ops</strong></td>
+      <td>Construct front-desk locker rentals with PHP 200 deposit accounting, POS merchandise checkout, and cashier shift cash drawer variance reconciliation.</td>
+    </tr>
+    <tr>
+      <td><strong>7: Verification & Optimization</strong></td>
+      <td>Execute automated Playwright browser tests, conduct k6 concurrent load testing, enforce mobile and PC split-screen viewport scalability, and freeze release candidate.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section-title">3.5 Operation and Testing Procedure</h3>
+
+<h4 class="subsection-title">3.5.1 System Operation</h4>
+
+<p>At startup, service availability, database connectivity, HTTPS configuration, clock synchronization, and hardware relay drivers are verified. Users log into authenticated accounts. Every protected operation re-validates session tokens and tenant boundaries before committing database changes.</p>
+
+<h4 class="subsection-title">3.5.2 Test Objectives and Environment</h4>
+
+<p>Testing determines whether the system performs specified franchise workflows, enforces multi-tenant boundaries, executes turnstile hardware pulses, maintains financial integrity, and satisfies latency targets. The staging environment utilizes quad-core virtual CPUs, 8 GB RAM, and a synthetic dataset of 3 branches, 3,000 members (1,000 per branch), and 15,000 attendance records.</p>
+
+<h4 class="subsection-title">3.5.3 Types of Testing</h4>
+
+<div class="caption">Table 3.9. Testing methods and expected evidence</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Type</th>
+      <th style="width: 30%;">Focus / Tools</th>
+      <th>Expected Evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Unit Testing</strong></td>
+      <td>Tax formulas, royalty calculations, permission helpers; Node.js test runner.</td>
+      <td>Deterministic numerical outputs for normal, boundary, and invalid inputs.</td>
+    </tr>
+    <tr>
+      <td><strong>Integration Testing</strong></td>
+      <td>Express API endpoints, RLS policies, PostgreSQL transactions; Supertest.</td>
+      <td>Correct tenant-scoped reads/writes and atomic rollback verification.</td>
+    </tr>
+    <tr>
+      <td><strong>End-to-End Testing</strong></td>
+      <td>Role-based complete user journeys; Playwright automation.</td>
+      <td>Verified state transitions and user-visible UI responses across all 7 roles.</td>
+    </tr>
+    <tr>
+      <td><strong>Security Review</strong></td>
+      <td>Negative API tests, token replay injection, OWASP ASVS checklists.</td>
+      <td>Zero unauthorized data disclosures, prohibited writes, or privilege escalations.</td>
+    </tr>
+    <tr>
+      <td><strong>Concurrency Testing</strong></td>
+      <td>Simultaneous QR scans and stock updates; custom async test harnesses.</td>
+      <td>At most one successful attendance admission per credential; consistent inventory balances.</td>
+    </tr>
+    <tr>
+      <td><strong>Performance Testing</strong></td>
+      <td>Concurrent user stress benchmarks; k6 load testing suite.</td>
+      <td>p95 response time, throughput, server CPU/memory metrics under documented load.</td>
+    </tr>
+    <tr>
+      <td><strong>Recovery Testing</strong></td>
+      <td>Simulated server crashes mid-transaction; database backup restorations.</td>
+      <td>Zero partial state commits; 100% table row and checksum restoration match.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.5.4 Test Cases and Traceability Matrix</h4>
+
+<div class="caption">Table 3.10. Core test and requirement matrix (Mapped to ISO/IEC 27001:2022 Controls)</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 10%;">Test</th>
+      <th style="width: 15%;">ISO 27001 Control</th>
+      <th style="width: 45%;">Scenario</th>
+      <th>Expected Outcome</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>TC-01</strong></td>
+      <td>Control 8.5 (Auth)</td>
+      <td>Valid/invalid login; 5 rapid failed attempts; expired session reuse.</td>
+      <td>Correct login grants access; 5 failed attempts trigger rate limit; expired token denied.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-02</strong></td>
+      <td>Control 5.15 (Access)</td>
+      <td>Unauthorized account attempts branch creation or role escalation.</td>
+      <td>HTTP 403 Forbidden; zero changes committed.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-03</strong></td>
+      <td>Control 5.15 (RLS)</td>
+      <td>Branch Alpha user attempts to read or mutate Branch Beta member records.</td>
+      <td>PostgreSQL RLS blocks query; HTTP 403 Forbidden; 0 records altered.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-04</strong></td>
+      <td>Control 8.8 (Vuln)</td>
+      <td>SQL injection in search input (<code>' OR 1=1 --</code>); direct ID tampering.</td>
+      <td>Parameterized queries neutralize injection; missing tenant context fails closed.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-05</strong></td>
+      <td>Control 8.26 (Apps)</td>
+      <td>Reuse pooled database connection across different branch requests.</td>
+      <td>Fresh transaction-local scope injected (<code>SET LOCAL</code>); no context leakage.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-06</strong></td>
+      <td>Control 5.18 (Rights)</td>
+      <td>Front-desk staff requests consolidated financials; coach requests unassigned athlete.</td>
+      <td>Both requests denied by RBAC middleware with HTTP 403.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-07</strong></td>
+      <td>Control 5.18 (Rights)</td>
+      <td>Member attempts self-service modification of subscription validity date.</td>
+      <td>Request rejected; protected billing fields cannot be modified by member.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-08</strong></td>
+      <td>Control 7.2 (Entry)</td>
+      <td>Member presents valid dynamic 60s optical QR code at turnstile barrier scanner.</td>
+      <td>Signature verified; token consumed; turnstile solenoid unlocks (500ms pulse).</td>
+    </tr>
+    <tr>
+      <td><strong>TC-09</strong></td>
+      <td>Control 8.24 (Crypto)</td>
+      <td>Member presents optical QR code 65 seconds after generation.</td>
+      <td>Server detects expiration; rejects scan with "TOKEN_EXPIRED"; barrier stays locked.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-10</strong></td>
+      <td>Control 8.24 (Crypto)</td>
+      <td>Two turnstiles simultaneously scan the exact same member QR token.</td>
+      <td>Database atomic transaction admits first scan; rejects second scan as replay.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-11</strong></td>
+      <td>Control 7.2 (Entry)</td>
+      <td>Member attempts turnstile entry again 2 minutes after a valid scan.</td>
+      <td>Anti-passback cooldown active; scan denied; violation logged to audit trail.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-12</strong></td>
+      <td>Control 8.24 (Crypto)</td>
+      <td>Xendit payment gateway dispatches valid cryptographic webhook callback.</td>
+      <td>Signature verified; member subscription extended; invoice receipt generated.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-13</strong></td>
+      <td>Control 5.15 (Access)</td>
+      <td>Verify 1-on-1 personal training session completion (PHP 500 session rate).</td>
+      <td>System credits coach net PHP 450 after automated 10% BIR 2307 tax deduction (PHP 50).</td>
+    </tr>
+    <tr>
+      <td><strong>TC-14</strong></td>
+      <td>Control 5.15 (Access)</td>
+      <td>Execute monthly franchise financial rollup for Branch Alpha (PHP 100,000 gross).</td>
+      <td>Automated 7.5% corporate royalty fee (PHP 7,500) debited from branch operating income.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-15</strong></td>
+      <td>Control 5.15 (Access)</td>
+      <td>Rent locker with PHP 200 cash deposit; release locker upon key return.</td>
+      <td>Locker transitions to rented; cash held ledger tracks deposit; refund reconciles upon release.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-16</strong></td>
+      <td>Control 8.15 (Logs)</td>
+      <td>Perform cashier shift checkout: opening float PHP 1,000, cash sales PHP 2,500, actual counted PHP 3,450.</td>
+      <td>System records PHP 50 cash shortage variance on audit ledger; notifies manager.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-17</strong></td>
+      <td>Control 5.15 (Access)</td>
+      <td>Log in as Branch Owner; view CapEx asset depreciation (PHP 60,000 over 60 months).</td>
+      <td>System computes straight-line monthly depreciation of PHP 1,000; updates net book value.</td>
+    </tr>
+    <tr>
+      <td><strong>TC-18</strong></td>
+      <td>Control 5.18 (Rights)</td>
+      <td>Request athlete transfer from Branch Alpha to Branch Beta; clear dues; confirm.</td>
+      <td>Clearance status transitions from pending to approved; home branch updated.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.5.5 Recording, Analysis, and Exit Conditions</h4>
+
+<div class="caption">Table 3.11. Test-results recording template (not actual results)</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 28%;">Fields to Record</th>
+      <th>Required Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Identification</strong></td>
+      <td>Test ID, Requirement ID, Build Commit, Date, Tester, Environment, Fixture Version.</td>
+    </tr>
+    <tr>
+      <td><strong>Execution</strong></td>
+      <td>Preconditions, Execution Steps, Submitted Inputs, Expected Outcome, Observed Response, Database State.</td>
+    </tr>
+    <tr>
+      <td><strong>Decision</strong></td>
+      <td>Pass, Fail, Blocked, or Not Run; Defect Severity, Reference Evidence.</td>
+    </tr>
+    <tr>
+      <td><strong>Retest</strong></td>
+      <td>Fix Reference, Retest Date, Observed State, Regression Verification Result.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section-title">3.6 Evaluation Procedure</h3>
+
+<h4 class="subsection-title">3.6.1 Purpose and Framework: ISO/IEC 27001:2022 Information Security Management</h4>
+
+<p>The system evaluation adopts the international cybersecurity standard <strong>ISO/IEC 27001:2022 (Information Security, Cybersecurity and Privacy Protection — Information Security Management Systems)</strong> and its code of practice in <strong>ISO/IEC 27002:2022</strong>. Rather than using generic consumer usability surveys, the evaluation empirically verifies whether KSYN FitConnect's software controls, multi-tenant partitioning, and turnstile hardware barriers satisfy the Annex A security control requirements across four principal themes:</p>
+
+<ol>
+  <li><strong>Technological Security Controls (Clause 8):</strong> Encompassing Control 8.5 (Secure authentication via bcrypt), Control 8.8 (Management of technical vulnerabilities via OWASP ASVS), Control 8.15 (Logging and monitoring via immutable audit trails), Control 8.20 (Network security via TLS 1.3), Control 8.24 (Use of cryptography via dynamic HMAC-SHA256 60s rotating QR passes), and Control 8.26 (Application security requirements).</li>
+  <li><strong>Organizational Controls (Clause 5):</strong> Encompassing Control 5.15 (Access control policies via 7-tier RBAC and PostgreSQL Row-Level Security), Control 5.18 (Access rights segregation), and Control 5.34 (Privacy and protection of personally identifiable information pursuant to Republic Act No. 10173).</li>
+  <li><strong>Physical Controls (Clause 7):</strong> Encompassing Control 7.1 (Physical security perimeters) and Control 7.2 (Physical entry controls via turnstile solenoid barrier relay actuation, 13.56MHz contactless RFID keycard validation, and 5-minute hardware anti-passback cooldown rules).</li>
+  <li><strong>People Security Controls (Clause 6):</strong> Encompassing Control 6.4 (Disciplinary process and credential revocation) and Control 6.5 (Information security responsibilities across roles).</li>
+</ol>
+
+<div class="caption">Table 3.12. ISO/IEC 27001:2022 Annex A Security Controls Evaluation Mapping</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Control Theme</th>
+      <th style="width: 20%;">ISO 27002 Control</th>
+      <th style="width: 32%;">Evaluated System Safeguard</th>
+      <th>Decision Basis / Criteria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Technological Controls</strong></td>
+      <td>Control 8.5, 8.24</td>
+      <td>Salted password hashing (bcrypt factor 10) & dynamic 60s HMAC optical QR passes.</td>
+      <td>Zero replay vulnerability; token expiration enforced strictly at 60s.</td>
+    </tr>
+    <tr>
+      <td><strong>Technological Controls</strong></td>
+      <td>Control 8.8, 8.26</td>
+      <td>OWASP ASVS negative vulnerability injection (BOLA, IDOR, SQL injection).</td>
+      <td>100% rejection of negative injection attacks (TC-01 to TC-05).</td>
+    </tr>
+    <tr>
+      <td><strong>Technological Controls</strong></td>
+      <td>Control 8.15</td>
+      <td>Immutable audit event ledgers recording hardware pulses, shift variances, and security events.</td>
+      <td>Complete audit log capture with actor, IP, timestamp, and zero sensitive secrets.</td>
+    </tr>
+    <tr>
+      <td><strong>Organizational Controls</strong></td>
+      <td>Control 5.15, 5.18</td>
+      <td>PostgreSQL Row-Level Security (RLS) & 7-tier Role-Based Access Control.</td>
+      <td>Zero cross-tenant data spillage across isolated branches (Makati, Katipunan, Fairview).</td>
+    </tr>
+    <tr>
+      <td><strong>Organizational Controls</strong></td>
+      <td>Control 5.34</td>
+      <td>Privacy protection of PII under Republic Act No. 10173.</td>
+      <td>Elimination of public paper logbooks; role-restricted member data visibility.</td>
+    </tr>
+    <tr>
+      <td><strong>Physical Controls</strong></td>
+      <td>Control 7.2</td>
+      <td>Physical turnstile solenoid relay pulse trigger & 5-minute anti-passback cooldown.</td>
+      <td>False Acceptance Rate (FAR) = 0.00%; anti-passback strictly blocks reuse within 5 min.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.6.2 Respondents and Purposive Sampling Plan</h4>
+
+<p>The evaluation engages a target purposive sample of <strong>22 participants</strong> comprising 5 technical software and cybersecurity evaluators and 17 operational stakeholders representing all seven user tiers. In usability and empirical software evaluation literature (Nielsen & Landauer, 1993; Faulkner, 2003), a purposive sample of 5 to 8 domain participants per role uncovers between 85% and 99% of access control barriers, workflow flaws, and usability defects.</p>
+
+<div class="caption">Table 3.13. Purposive sampling breakdown across stakeholder roles</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Cohort Category</th>
+      <th style="width: 50%;">Stakeholder Participant Role</th>
+      <th style="width: 25%;">Sample Size (n)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2"><strong>Technical Evaluators</strong></td>
+      <td>Software Engineers & Database Administrators</td>
+      <td>n = 3</td>
+    </tr>
+    <tr>
+      <td>Information Security / Penetration Specialists</td>
+      <td>n = 2</td>
+    </tr>
+    <tr>
+      <td rowspan="7"><strong>Operational Stakeholders</strong></td>
+      <td>Corporate Administration / Super Admin</td>
+      <td>n = 1</td>
+    </tr>
+    <tr>
+      <td>Corporate Financial Auditor</td>
+      <td>n = 1</td>
+    </tr>
+    <tr>
+      <td>Branch Owners (Franchise Investors)</td>
+      <td>n = 2</td>
+    </tr>
+    <tr>
+      <td>Branch Administrators (General Managers)</td>
+      <td>n = 3</td>
+    </tr>
+    <tr>
+      <td>Front-Desk POS Cashiers</td>
+      <td>n = 4</td>
+    </tr>
+    <tr>
+      <td>Fitness Coaches / Personal Trainers</td>
+      <td>n = 2</td>
+    </tr>
+    <tr>
+      <td>Gym Members / Athletes</td>
+      <td>n = 4</td>
+    </tr>
+    <tr>
+      <td colspan="2"><strong>Total Participant Sample</strong></td>
+      <td><strong>N = 22</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.6.3 Instruments and Validation: ISO/IEC 27001 Security Control Questionnaire</h4>
+
+<p>Operational participants evaluate the platform using a standardized 16-item ISO/IEC 27001:2022 Security Control Questionnaire scored on a 5-point Likert scale (5: Excellent, 4: Very Good, 3: Good, 2: Fair, 1: Poor). The questionnaire measures four distinct information security domains mapped to ISO/IEC 27002:2022 control themes:</p>
+
+<div class="caption">Table 3.14. ISO/IEC 27001:2022 Security Control Evaluation Questionnaire</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Security Domain</th>
+      <th style="width: 10%;">Item</th>
+      <th>Security Control Statement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="4"><strong>Technological Security & Cryptography (Clause 8)</strong></td>
+      <td>T1</td>
+      <td>User authentication enforces secure password requirements and provides clear lockout protection against repeated failed logins (Control 8.5).</td>
+    </tr>
+    <tr>
+      <td>T2</td>
+      <td>The dynamic 60-second optical QR access pass reliably rotates and prevents screenshot forwarding or credential replay (Control 8.24).</td>
+    </tr>
+    <tr>
+      <td>T3</td>
+      <td>Digital payment processing via Xendit checkout ensures secure transactions with cryptographic webhook settlement confirmation (Control 8.24).</td>
+    </tr>
+    <tr>
+      <td>T4</td>
+      <td>Data inputs and form fields prevent illegal characters, code injection, and unauthorized parameter tampering (Control 8.8).</td>
+    </tr>
+    <tr>
+      <td rowspan="4"><strong>Access Control & Tenant Isolation (Clause 5)</strong></td>
+      <td>A1</td>
+      <td>The system strictly limits my operational access to the functions and records authorized for my specific assigned role (Control 5.15).</td>
+    </tr>
+    <tr>
+      <td>A2</td>
+      <td>Branch operational data (members, sales, schedules) are isolated so that users from other branches cannot access them (Control 5.15).</td>
+    </tr>
+    <tr>
+      <td>A3</td>
+      <td>Corporate financial summaries and royalty records are accessible only to authorized corporate administrators and auditors (Control 5.18).</td>
+    </tr>
+    <tr>
+      <td>A4</td>
+      <td>Coaches are strictly restricted to assigned athlete client rosters, preventing unauthorized access to other members' records (Control 5.18).</td>
+    </tr>
+    <tr>
+      <td rowspan="4"><strong>Physical Entry & Turnstile Hardware (Clause 7)</strong></td>
+      <td>P1</td>
+      <td>The optical barcode scanner and 13.56MHz RFID keycard readers respond rapidly and accurately at the turnstile barrier (Control 7.2).</td>
+    </tr>
+    <tr>
+      <td>P2</td>
+      <td>The physical turnstile solenoid barrier reliably unlocks for eligible members and immediately denies expired or invalid credentials (Control 7.2).</td>
+    </tr>
+    <tr>
+      <td>P3</td>
+      <td>The system prevents immediate badge pass-backs by enforcing a mandatory 5-minute hardware anti-passback cooldown (Control 7.2).</td>
+    </tr>
+    <tr>
+      <td>P4</td>
+      <td>Front-desk cashiers can safely monitor turnstile access throughput and process manual exceptions with complete accountability (Control 7.1).</td>
+    </tr>
+    <tr>
+      <td rowspan="4"><strong>Privacy, Logging & Accountability (Clause 5 & 8)</strong></td>
+      <td>L1</td>
+      <td>Digital check-in securely protects member personal information from public exposure, replacing open paper logbooks (Control 5.34).</td>
+    </tr>
+    <tr>
+      <td>L2</td>
+      <td>Front-desk locker rentals and refundable deposit holdings (PHP 200) are recorded with clear financial tracking and accountability (Control 8.15).</td>
+    </tr>
+    <tr>
+      <td>L3</td>
+      <td>Cashier shift cash drawer audits accurately record sales floats and overage/shortage variances on protected audit ledgers (Control 8.15).</td>
+    </tr>
+    <tr>
+      <td>L4</td>
+      <td>Personal training sessions automatically deduct 10% BIR Form 2307 withholding tax with complete ledger transparency (Control 5.34).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.6.4 Role-Based Evaluation Tasks</h4>
+
+<div class="caption">Table 3.15. Proposed task assignments</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Participant Role</th>
+      <th>Representative Operational & Security Tasks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Corporate Administration</strong></td>
+      <td>Provision a new branch; assign branch roles; verify global settings and corporate audit trail.</td>
+    </tr>
+    <tr>
+      <td><strong>Corporate Auditor</strong></td>
+      <td>Inspect consolidated franchise revenue; audit 7.5% royalty settlements; attempt prohibited write.</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Owner (Investor)</strong></td>
+      <td>View branch EBITDA margins, CapEx asset depreciation, and branch staff profiles (<code>InvestorDashboard.jsx</code>).</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Administrator</strong></td>
+      <td>Register member; update subscription; approve coach schedules; process inter-branch transfer clearance.</td>
+    </tr>
+    <tr>
+      <td><strong>Front Desk</strong></td>
+      <td>Verify turnstile QR check-in; rent locker with PHP 200 deposit; perform cashier shift cash variance audit.</td>
+    </tr>
+    <tr>
+      <td><strong>Coach</strong></td>
+      <td>Author athlete workout split; log 1-on-1 session; inspect net commission after 10% BIR 2307 tax deduction.</td>
+    </tr>
+    <tr>
+      <td><strong>Member</strong></td>
+      <td>View subscription status; generate dynamic 60s rotating optical QR pass; book group class.</td>
+    </tr>
+    <tr>
+      <td><strong>Technical Evaluator</strong></td>
+      <td>Audit PostgreSQL RLS policies, execute negative cross-tenant API tests, verify token replay resistance.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.6.5 Evaluation Sequence</h4>
+
+<p class="no-indent">1. Secure institutional approval and signed informed consent explaining voluntary participation and confidentiality.<br>
+2. Freeze candidate software build, synthetic test fixtures, task scripts, and evaluation staging environment.<br>
+3. Demonstrate basic application navigation using neutral examples without performing scored participant tasks.<br>
+4. Instruct operational participants to complete assigned role tasks independently, logging start/end times and errors.<br>
+5. Collect the 16-item ISO/IEC 27001 questionnaire immediately upon task completion; technical reviewers independently execute verification suites.<br>
+6. Encode de-identified responses into an auditable evaluation worksheet.<br>
+7. Compare findings against frozen acceptance criteria; document defects and necessary refinements.</p>
+
+<h3 class="section-title">3.7 Treatment of Data</h3>
+
+<h4 class="subsection-title">3.7.1 Data Preparation and Sources</h4>
+
+<p>The evaluation dataset combines coded questionnaire responses, task observations, technical test results, k6 performance logs, and qualitative feedback. Missing survey responses are not imputed as favorable or coded as zero. Operational and technical findings retain separate denominators.</p>
+
+<h4 class="subsection-title">3.7.2 Frequency, Percentage, and Rating Mean</h4>
+
+<p>Percentage distributions are calculated as:</p>
+<div class="equation-box">P = (f / N) × 100</div>
+<p>Where f is the category frequency and N is the total eligible denominator.</p>
+
+<p>For each questionnaire item, the frequency-weighted rating mean (WM) is calculated as:</p>
+<div class="equation-box">WM = Σ(f_k × k) / Σf_k, for k = 1, 2, 3, 4, 5</div>
+<p>Where f_k is the frequency of rating k, and Σf_k is the total number of valid responses for that item.</p>
+
+<h4 class="subsection-title">3.7.3 Standard Deviation and Interpretation</h4>
+
+<p>Sample standard deviation (s) is calculated as:</p>
+<div class="equation-box">s = √[ Σ(x_i - x̄)² / (n - 1) ]</div>
+<p>Where x_i is an individual rating, x̄ is the mean, and n is the number of valid observations (n ≥ 2).</p>
+
+<div class="caption">Table 3.16. Study-defined interpretation of mean ratings (ISO/IEC 27001 Security Control Compliance)</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Mean Interval</th>
+      <th style="width: 25%;">Descriptor</th>
+      <th>Security Control Compliance Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>4.21 – 5.00</strong></td>
+      <td><strong>Excellent</strong></td>
+      <td>Exemplary security control implementation; robust protection against threats.</td>
+    </tr>
+    <tr>
+      <td><strong>3.41 – 4.20</strong></td>
+      <td><strong>Very Good</strong></td>
+      <td>Fully compliant security control; meets all ISO/IEC 27001 operational criteria.</td>
+    </tr>
+    <tr>
+      <td><strong>2.61 – 3.40</strong></td>
+      <td><strong>Good</strong></td>
+      <td>Acceptable security control; minor operational optimization recommended.</td>
+    </tr>
+    <tr>
+      <td><strong>1.81 – 2.60</strong></td>
+      <td><strong>Fair</strong></td>
+      <td>Marginal security control; documented remediation required before release.</td>
+    </tr>
+    <tr>
+      <td><strong>1.00 – 1.80</strong></td>
+      <td><strong>Poor</strong></td>
+      <td>Non-compliant; critical security deficiency requiring architectural redesign.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="subsection-title">3.7.4 Technical and Task-Based Measures</h4>
+
+<p>Test pass rate equals passed test cases divided by executed test cases multiplied by 100. Turnstile attendance accuracy equals correct decisions divided by total scans multiplied by 100 (False Acceptance Rate FAR must equal 0.00%). Unassisted task completion rate equals unassisted completions divided by total task attempts multiplied by 100. Performance summaries report median and 95th-percentile latencies under k6 concurrency testing.</p>
+
+<h4 class="subsection-title">3.7.5 Qualitative Feedback, Ethics, and Reporting Limitations</h4>
+
+<p>Qualitative comments from interviews and task observations are coded thematically. In adherence to Republic Act No. 10173 (Data Privacy Act of 2012) and Republic Act No. 8293 (Intellectual Property Code), participant confidentiality is protected through de-identification, and all evaluation findings are reported descriptively without unwarranted inferential generalizations.</p>
+
+<h3 class="section-title">References</h3>
+
+<div class="reference-entry">Bureau of Internal Revenue. (2018). <em>Tax Reform for Acceleration and Inclusion (TRAIN) Act Regulations</em> (Revenue Regulations No. 11-2018). Republic of the Philippines.</div>
+
+<div class="reference-entry">Faulkner, L. (2003). Beyond the five-user assumption: Benefits of increased sample sizes in usability testing. <em>Behavior Research Methods, Instruments, & Computers</em>, 35(3), 379–383. https://doi.org/10.3758/BF03195514</div>
+
+<div class="reference-entry">International Organization for Standardization, & International Electrotechnical Commission. (2022a). <em>Information security, cybersecurity and privacy protection — Information security controls</em> (ISO/IEC Standard No. 27002:2022). https://www.iso.org/standard/75652.html</div>
+
+<div class="reference-entry">International Organization for Standardization, & International Electrotechnical Commission. (2022b). <em>Information security, cybersecurity and privacy protection — Information security management systems — Requirements</em> (ISO/IEC Standard No. 27001:2022). https://www.iso.org/standard/27001</div>
+
+<div class="reference-entry">Jones, M., Bradley, J., & Sakimura, N. (2015). <em>JSON Web Token (JWT)</em> (RFC 7519). Internet Engineering Task Force. https://doi.org/10.17487/RFC7519</div>
+
+<div class="reference-entry">Krawczyk, H., Bellare, M., & Canetti, R. (1997). <em>HMAC: Keyed-Hashing for Message Authentication</em> (RFC 2104). Internet Engineering Task Force. https://doi.org/10.17487/RFC2104</div>
+
+<div class="reference-entry">National Privacy Commission. (2016a). <em>Implementing Rules and Regulations of the Data Privacy Act of 2012</em>. Republic of the Philippines.</div>
+
+<div class="reference-entry">Nielsen, J., & Landauer, T. K. (1993). A mathematical model of the finding of usability problems. <em>Proceedings of the INTERACT '93 and CHI '93 Conference on Human Factors in Computing Systems</em>, 206–213. https://doi.org/10.1145/169059.169166</div>
+
+<div class="reference-entry">OWASP Foundation. (2020). <em>Web Security Testing Guide</em> (Version 4.2). https://owasp.org/www-project-web-security-testing-guide/</div>
+
+<div class="reference-entry">OWASP Foundation. (2023). <em>OWASP Top 10 API Security Risks — 2023</em>. https://owasp.org/API-Security/editions/2023/en/0x11-t10/</div>
+
+<div class="reference-entry">OWASP Foundation. (2025). <em>Application Security Verification Standard</em> (Version 5.0.0). https://owasp.org/www-project-application-security-verification-standard/</div>
+
+<div class="reference-entry">PostgreSQL Global Development Group. (2023). <em>Row Security Policies</em>. PostgreSQL Documentation. https://www.postgresql.org/docs/current/ddl-rowsecurity.html</div>
+
+<div class="reference-entry">Republic Act No. 8293. (1997). <em>An Act Prescribing the Intellectual Property Code and Establishing the Intellectual Property Office, Providing for Its Powers and Functions, and for Other Purposes</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Republic Act No. 8424. (1997). <em>National Internal Revenue Code of 1997 (Tax Reform Act of 1997)</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Republic Act No. 10173. (2012). <em>Data Privacy Act of 2012</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Richey, R. C., & Klein, J. D. (2014). <em>Design and Development Research: Methods, Strategies, and Issues</em>. Routledge. https://doi.org/10.4324/9780203812860</div>
+
+<div class="reference-entry">Temoshok, D., Fenton, J. L., Choong, Y.-Y., Lefkovitz, N., Regenscheid, A., Galluzzo, R., & Richer, J. P. (2025). <em>Digital identity guidelines: Authentication and authenticator management</em> (NIST Special Publication 800-63B-4). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.SP.800-63b-4</div>
+
+</body>
+</html>

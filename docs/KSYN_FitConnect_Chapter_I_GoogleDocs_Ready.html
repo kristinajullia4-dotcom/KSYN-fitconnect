@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter I: The Problem and Its Background - KSYN FitConnect</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.5in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 8.5in;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+  h1.chapter-title {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h2.chapter-subtitle {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 24pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h3.section-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 20pt;
+    margin-bottom: 8pt;
+    text-indent: 0;
+  }
+  h4.subsection-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  .title-block {
+    text-align: center;
+    margin-bottom: 30pt;
+    text-indent: 0;
+  }
+  .title-block h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 18pt;
+  }
+  .title-block p {
+    text-align: center;
+    text-indent: 0;
+    margin-bottom: 6pt;
+  }
+  .def-term {
+    font-weight: bold;
+  }
+  ol, ul {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    padding-left: 0.5in;
+  }
+  li {
+    text-align: justify;
+    margin-bottom: 6pt;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="chapter-title">CHAPTER I</h1>
+<h2 class="chapter-subtitle">THE PROBLEM AND ITS BACKGROUND</h2>
+
+<div class="title-block">
+  <h3>DEVELOPMENT OF KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation</h3>
+  <p>A Research Study Presented to the Faculty of the<br>
+  College of Computing and Information Sciences<br>
+  University of Makati</p>
+  <br>
+  <p><strong>Researchers:</strong><br>
+  Bautista, Luis Gabriel<br>
+  Bozar, Merynelle B.<br>
+  Marquez, Jullia Krisitina C.</p>
+</div>
+
+<h3 class="section-title">Introduction</h3>
+
+<p>The expansion of KSYN Fitness Gym through a multi-branch commercial franchise structure requires corporate leadership to coordinate enterprise policies, brand standards, and consolidated financial oversight while independent branch operators manage localized facilities, employees, members, and daily transactions. In this setting, centralized information management is necessary to support operational consistency across the franchise network; however, it must strictly preserve branch-level operational boundaries and ensure the confidentiality of commercially sensitive, branch-specific records. KSYN FitConnect is developed to address this operational and technical balance through a secure multi-tenant franchise management platform designed specifically for KSYN Fitness Gym.</p>
+
+<p>Based on preliminary stakeholder consultations, needs-assessment interviews with branch personnel, direct observations of front-desk activities, and detailed reviews of existing physical logbooks and spreadsheet sheets, current KSYN workflows rely heavily on standalone spreadsheets, handwritten visitor logbooks, paper receipts, and unencrypted instant messaging channels. These fragmented, manual practices introduce chronic delays in recording turnstile check-ins, monitoring membership subscription statuses, coordinating personal training schedules, tracking retail inventory balances, and reconciling front-desk cash collections. Furthermore, they impose an administrative burden on branch administrators and cashiers, who must manually extract, summarize, and transmit operational data to corporate headquarters for royalty computation and network-wide auditing.</p>
+
+<p>The transition from fragmented manual records to a centralized cloud architecture introduces severe information-security challenges. In a shared database environment lacking rigorous isolation boundaries, an authenticated user belonging to one franchise branch could view, alter, or delete records belonging to another branch. Such vulnerabilities lead directly to horizontal privilege escalation, Broken Object-Level Authorization (BOLA), and Insecure Direct Object References (IDOR). Concurrently, public paper logbooks at front desks expose member names, contact numbers, emergency contacts, and attendance histories, violating statutory data privacy mandates under Republic Act No. 10173 (Data Privacy Act of 2012). Accordingly, the central security objective of this study is the engineering and empirical verification of fine-grained Role-Based Access Control (RBAC), database-level Row-Level Security (RLS) tenant isolation, dynamic cryptographic optical turnstile credentials, and hardware barrier actuation within a unified franchise management system.</p>
+
+<p>This study develops <strong>KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation</strong>. The platform centralizes core franchise operations—including membership lifecycle management, automated 7.5% franchise royalty accounting, Philippine Bureau of Internal Revenue (BIR) Form 2307 withholding tax deductions, Xendit digital payment checkout, front-desk locker rentals, cashier shift variance accountability audits, and coach-led 1-on-1 personal training tracking—while strictly maintaining multi-tenant data boundaries. Access control is fortified through dynamic HMAC-SHA256 60-second rotating optical QR passes and 13.56MHz contactless RFID keycards interfaced directly to physical turnstile solenoid relays via WebSocket drivers. This chapter presents the Introduction, Background of the Study, Statement of the Objectives, Significance of the Study, Scope and Limitations, and Operational Definition of Terms.</p>
+
+<h3 class="section-title">Background of the Study</h3>
+
+<p>Multi-branch franchise organizations depend on dependable information systems to enforce Standard Operating Procedures (SOPs), monitor branch performance, and maintain financial transparency across geographically dispersed nodes. Simultaneously, each franchised branch maintains proprietary operational data encompassing member rosters, staff compensation, localized retail sales, operating expenditures, and equipment valuations. A multi-tenant franchise architecture must therefore provide corporate governance and franchise royalty aggregation while strictly prohibiting unauthorized cross-tenant data spillage.</p>
+
+<p>KSYN Fitness Gym is an expanding commercial fitness franchise network in the Philippines. For the purposes of this investigation, the enterprise model comprises corporate headquarters (HQ-00) and seven modeled branch franchise facilities: BGC Flagship (BGC-01), Alphaland Makati (MKT-02), Fairview Pontiac (FRV-03), Kapitolyo Pasig (KAP-04), Del Monte Quezon City (DLM-05), Alabang (ALB-06), and Katipunan Regis Center (KTP-07). Corporate executives establish membership packages, operational guidelines, and financial oversight policies, including the collection of a fixed 7.5% corporate royalty on gross branch revenues. Individual branch operators—comprising Branch Owners (franchisees/investors), Branch Administrators (general managers), and front-desk staff—manage local facility operations, cashier shifts, trainer assignments, locker custody, and walk-in sales.</p>
+
+<p>Prior to system development, baseline consultations revealed significant operational friction across the franchise network. Front-desk personnel registered arrivals using handwritten paper logbooks, leading to reception bottlenecks during peak workout hours and enabling visual pass-sharing. Branch managers compiled membership renewals and equipment logs across disconnected desktop spreadsheets. Personal trainers coordinated appointments through messaging apps without systematic commission tracking or automated tax deduction, while end-of-day sales reconciliation between physical cash drawers and paper receipts resulted in untracked cash variances.</p>
+
+<p>The core problem confronting KSYN Fitness Gym is the absence of a secure, unified multi-tenant software system capable of consolidating franchise operations while enforcing strict tenant data isolation, statutory fiscal compliance, and tamper-resistant access control. Unifying multi-branch operations without hardware-level barrier controls and database-enforced row isolation exposes confidential corporate and branch ledgers to internal and external threats; conversely, maintaining disconnected manual records impairs franchise scalability, compromises data privacy, and impedes accurate financial reporting.</p>
+
+<p>To resolve these operational bottlenecks and cybersecurity vulnerabilities, this study develops KSYN FitConnect. The system introduces a centralized web platform that synchronizes branch activities, automates 7.5% corporate royalties and 10% BIR Form 2307 coach withholding tax deductions, integrates live digital payment checkouts (Xendit), manages front-desk locker deposits, reconciles cashier shift cash variances, and actuates physical optical turnstiles using dynamic rotating optical passes and RFID keycards. By enforcing multi-tenant Row-Level Security (RLS) in PostgreSQL alongside Role-Based Access Control (RBAC), the platform ensures complete branch autonomy while providing corporate governance.</p>
+
+<h3 class="section-title">Objectives of the Study</h3>
+
+<p>The general objective of this study is to design, develop, test, and evaluate <strong>KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation</strong> for KSYN Fitness Gym. The system aims to centralize franchise operations, automate statutory financial settlements, enforce multi-tenant data boundaries, and actuate physical turnstile access barriers securely.</p>
+
+<p class="no-indent">Specifically, the study aims to:</p>
+
+<p class="no-indent"><strong>1. Design KSYN FitConnect with a secure multi-tenant architecture that supports centralized franchise administration while enforcing strict logical separation of branch records by incorporating:</strong></p>
+<ol type="a">
+  <li>a fine-grained Role-Based Access Control (RBAC) model defining explicit permissions across seven stakeholder tiers: Super Administrator, Corporate Auditor, Branch Owner (Franchisee/Investor), Branch Administrator, Front-Desk POS Staff, Fitness Coach/Trainer, and Gym Member;</li>
+  <li>franchise and branch governance modules supporting multi-tenant isolation, branch profiling, and corporate royalty rule administration;</li>
+  <li>membership lifecycle and subscription billing modules supporting multi-tier packages, validity tracking, and automated expiration;</li>
+  <li>front-desk Point of Sale (POS) retail checkout and refundable locker reservation management with cash deposit tracking (PHP 200 held cash);</li>
+  <li>cashier shift variance accountability audit modules reconciling opening floats, recorded sales, and actual physical cash counts;</li>
+  <li>staff and personal training administration modules governing trainer split-routine design, 1-on-1 session logging, and biometric progression tracking;</li>
+  <li>an automated franchise fiscal engine computing 7.5% corporate royalties on gross sales and 10% Philippine Creditable Withholding Tax (CWT) under BIR Form 2307 guidelines on coach commissions;</li>
+  <li>an inter-branch member transfer clearance workflow coordinating destination branch request dispatch and home branch administrative approval;</li>
+  <li>a Branch Owner investor console tracking branch EBITDA margins, CapEx asset straight-line depreciation ledgers, and staff rosters; and</li>
+  <li>a physical access control subsystem integrating dynamic 60-second HMAC-SHA256 rotating optical QR passes, 13.56MHz RFID keycard UID validation, anti-passback cooldown rules, and WebSocket turnstile solenoid relay drivers.</li>
+</ol>
+
+<p class="no-indent"><strong>2. Develop KSYN FitConnect by:</strong></p>
+<ol type="a">
+  <li>implementing a modular Single-Page Application (SPA) frontend in React.js (v18.x) utilizing responsive CSS Grid and Flexbox viewports scalable across mobile phones (320px–480px), tablets (768px), and PC half-screen snapped split-views (960px);</li>
+  <li>engineering RESTful API micro-services in Node.js and Express.js enforcing JWT authentication, rate limiting, and parameter validation;</li>
+  <li>deploying an enterprise PostgreSQL (v15+) relational database enforcing foreign key referential integrity, transaction atomicity, and Row-Level Security (RLS) policies scoped via <code>SET LOCAL app.current_tenant_id</code>;</li>
+  <li>implementing adaptive salted password hashing using <code>bcryptjs</code> (Blowfish work factor 10, RFC 2898) and dynamic 60-second time-bounded HMAC-SHA256 optical QR pass generation;</li>
+  <li>integrating a bidirectional WebSocket hardware bridge driver (<code>turnstileBridge.js</code>) actuating physical turnstile solenoid relays and processing 13.56MHz RFID serial reads; and</li>
+  <li>integrating an asynchronous digital payment bridge via the Xendit API supporting Credit/Debit cards, GCash, Maya, and QR Ph with cryptographic webhook signature settlement.</li>
+</ol>
+
+<p class="no-indent"><strong>3. Test the functionality, access-control mechanisms, transaction atomicity, and cybersecurity defenses of KSYN FitConnect by:</strong></p>
+<ol type="a">
+  <li>verifying the execution correctness of member onboarding, subscription renewals, locker rentals, cashier shift variance audits, coach commission splits, and CapEx depreciation schedules;</li>
+  <li>validating multi-tenant isolation via negative cross-tenant injection test cases (TC-01 to TC-05) ensuring zero unauthorized read, write, or export access across branches;</li>
+  <li>assessing turnstile barrier defenses against token expiration, concurrent multi-lane replay attacks, and 5-minute anti-passback violations; and</li>
+  <li>benchmarking system latency, throughput, and error rates under concurrent load stress testing using k6 simulating 20 active concurrent users.</li>
+</ol>
+
+<p class="no-indent"><strong>4. Evaluate KSYN FitConnect using the international standard ISO/IEC 27001:2022 (Information Security Management Systems — Requirements and Annex A Security Controls) to assess:</strong></p>
+<ol type="a">
+  <li>Technological Controls (Clause 8), including secure authentication (Control 8.5), vulnerability management (Control 8.8), audit logging (Control 8.15), network security (Control 8.20), and cryptographic protection (Control 8.24);</li>
+  <li>Organizational Controls (Clause 5), including access control policies (Control 5.15) and privacy protection of personally identifiable information (Control 5.34);</li>
+  <li>Physical Controls (Clause 7), including turnstile entry controls and physical barrier actuation (Control 7.2); and</li>
+  <li>compliance with Republic Act No. 10173 (Data Privacy Act of 2012) and Republic Act No. 8293 (Intellectual Property Code of the Philippines).</li>
+</ol>
+
+<h3 class="section-title">Significance of the Study</h3>
+
+<p>This study demonstrates the practical implementation of multi-tenant database isolation, Role-Based Access Control, automated fiscal accounting, and physical turnstile solenoid automation within a commercial fitness franchise. Developed under the Bachelor of Science in Information Technology with specialization in Information and Network Security program at the University of Makati, the findings and artifacts provide significant value to the following beneficiaries:</p>
+
+<p><strong>KSYN Corporate Leadership.</strong> The platform delivers consolidated franchise oversight, real-time royalty accrual ledgers, and network-level financial reporting without exposing confidential branch records across independent franchisee nodes, establishing centralized governance and brand integrity.</p>
+
+<p><strong>KSYN Franchisees and Branch Owners (Investors).</strong> Branch investors obtain a dedicated financial console displaying real-time branch revenues, EBITDA margins, franchise royalty debits, CapEx asset straight-line depreciation ledgers, and branch staff rosters, safeguarding capital investments and ensuring operational transparency.</p>
+
+<p><strong>Branch Administrators (General Managers).</strong> Branch managers obtain an integrated toolset to administer local memberships, trainer schedules, retail stock procurement, locker inventories, and inter-branch athlete transfer clearances within an isolated, tenant-protected environment.</p>
+
+<p><strong>Front-Desk POS Staff and Cashiers.</strong> Front-desk staff benefit from automated optical turnstile monitoring, accelerated barcode/RFID check-ins, computerized locker reservation workflows with refundable deposit tracking, and end-of-shift cash drawer variance reconciliation audits, eliminating manual paper logging.</p>
+
+<p><strong>Gym Coaches and Personal Trainers.</strong> Personal trainers gain dedicated tools to author workout splits, log 1-on-1 athlete sessions, and track body composition progress. Automated calculations for 10% BIR Form 2307 Creditable Withholding Tax (CWT) provide complete transparency over gross commissions and net payouts.</p>
+
+<p><strong>Gym Members and Athletes.</strong> Members obtain a self-service digital pass portal featuring dynamic 60-second rotating optical QR codes, online subscription renewal through Xendit (GCash/Maya/Cards), class reservations, and workout tracking, eliminating physical reception queues and protecting personal contact details from public paper exposure.</p>
+
+<p><strong>Information Security Researchers and Academia.</strong> The study provides an empirical reference architecture detailing how PostgreSQL Row-Level Security, connection-pool tenant isolation, cryptographic HMAC tokens, and physical hardware solenoid relay bridges can be unified into an enterprise web platform evaluated under ISO/IEC 27001:2022.</p>
+
+<h3 class="section-title">Scope and Limitations of the Study</h3>
+
+<p>This study encompasses the design, implementation, verification, and empirical security evaluation of KSYN FitConnect for KSYN Fitness Gym. The functional scope includes seven authenticated stakeholder roles, multi-tenant branch partitioning across seven modeled branch facilities (HQ-00, BGC-01, MKT-02, FRV-03, KAP-04, DLM-05, ALB-06, KTP-07), membership subscription lifecycles, digital payments via Xendit, automated 7.5% corporate royalties, 10% BIR Form 2307 coach withholding tax deductions, front-desk locker rentals with refundable cash deposits (PHP 200), cashier shift cash variance audits, coach workout routine authoring, inter-branch transfer clearances, and CapEx depreciation schedules.</p>
+
+<p>Access control is fortified through dynamic HMAC-SHA256 60-second rotating optical QR codes, physical 13.56MHz RFID keycard UID validation, a 5-minute hardware anti-passback cooldown timer, and a WebSocket hardware bridge actuating physical turnstile solenoid barrier relays. The technical evaluation is conducted under the international information security standard <strong>ISO/IEC 27001:2022 (Annex A Information Security Controls)</strong> and guided by OWASP Application Security Verification Standard (ASVS v5.0) requirements and statutory privacy principles under Republic Act No. 10173.</p>
+
+<p>The study is subject to the following limitations:</p>
+<ol>
+  <li><strong>Academic Staging Scope:</strong> The platform is evaluated as an engineered capstone prototype within a controlled academic and operational staging testbed; enterprise-wide nationwide commercial production rollout across dozens of concurrent franchises is outside the immediate study scope.</li>
+  <li><strong>Hardware Barrier Boundaries:</strong> While the system implements functional WebSocket solenoid relay driver logic and hardware pulse triggering, physical security against "tailgating" (unauthorized individuals slipping behind an authorized member) depends on physical turnstile turn-stoppers and on-site front-desk supervision.</li>
+  <li><strong>Biometrics and Specialized Peripherals:</strong> Biometric facial recognition and optical fingerprint scanning hardware are excluded from scope in favor of dynamic optical QR tokens and contactless RFID keycards.</li>
+  <li><strong>Network Connectivity Dependency:</strong> The platform operates as a cloud-hosted web application requiring active branch internet connectivity; offline-first distributed consensus synchronization and local offline credential databases are excluded.</li>
+  <li><strong>Accounting & ERP Integration:</strong> The system computes localized shift reconciliations, franchise royalties, and BIR Form 2307 tax deductions; direct API integration into third-party enterprise resource planning (ERP) suites (e.g., SAP, Oracle, NetSuite) is outside the prototype scope.</li>
+</ol>
+
+<h3 class="section-title">Operational Definition of Terms</h3>
+
+<p><span class="def-term">Anti-Passback Cooldown.</span> A hardware security rule enforcing a mandatory 5-minute delay before an admitted credential can unlock the turnstile barrier again, preventing members from handing their pass to an accomplice.</p>
+
+<p><span class="def-term">BIR Form 2307 (Certificate of Creditable Tax Withheld at Source).</span> A Philippine Bureau of Internal Revenue tax document reflecting the statutory 10% Creditable Withholding Tax (CWT) deducted from personal trainer session commissions pursuant to Republic Act No. 8424.</p>
+
+<p><span class="def-term">Broken Object-Level Authorization (BOLA).</span> A security vulnerability where an authenticated user manipulates record identifiers in API requests to access data belonging to another user or branch. Mitigated via strict PostgreSQL Row-Level Security.</p>
+
+<p><span class="def-term">Branch Owner (Franchisee / Investor).</span> A primary stakeholder role authorized to govern branch-level finances, inspect EBITDA margins, audit franchise royalty payables, manage CapEx depreciation schedules, and oversee branch staff without global administrative access.</p>
+
+<p><span class="def-term">Cashier Shift Variance Audit.</span> A front-desk accountability procedure calculating the mathematical discrepancy between opening float, recorded POS transactions, and actual physical cash counted at shift conclusion.</p>
+
+<p><span class="def-term">Dynamic Rotating Optical QR Pass.</span> A time-bounded, cryptographic optical credential generated via HMAC-SHA256 that rotates every 60 seconds with a unique nonce (JTI), preventing credential reuse and screenshot sharing.</p>
+
+<p><span class="def-term">Insecure Direct Object Reference (IDOR).</span> A vulnerability where an application provides direct access to database records based on user-supplied input without server-side tenant validation.</p>
+
+<p><span class="def-term">ISO/IEC 27001:2022.</span> The international standard specifying requirements for establishing, implementing, maintaining, and continually improving Information Security Management Systems (ISMS), utilized in this study to evaluate system access control, cryptography, and data protection.</p>
+
+<p><span class="def-term">Multi-Tenant Architecture.</span> A software design where a single application and relational database serve multiple distinct franchise branches while maintaining strict logical isolation of data and operational state.</p>
+
+<p><span class="def-term">Principle of Least Privilege (PoLP).</span> A cybersecurity practice granting each user role only the minimum access rights necessary to complete authorized duties.</p>
+
+<p><span class="def-term">Role-Based Access Control (RBAC).</span> An authorization framework restricting system operations according to predefined organizational roles.</p>
+
+<p><span class="def-term">Row-Level Security (RLS).</span> A database security feature in PostgreSQL restricting which table rows are visible or mutable based on the authenticated session's tenant context (<code>SET LOCAL app.current_tenant_id</code>).</p>
+
+<p><span class="def-term">Turnstile Solenoid Relay Bridge.</span> A hardware driver interfacing the web application to physical turnstile barrier solenoids via local WebSocket commands, dispatching electrical unlocking pulses upon valid scan authentication.</p>
+
+<p><span class="def-term">Xendit Payment Bridge.</span> An integrated digital payment gateway processing asynchronous credit card, GCash, Maya, and QR Ph settlements via cryptographically verified webhooks.</p>
+
+</body>
+</html>

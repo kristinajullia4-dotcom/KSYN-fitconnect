@@ -1,0 +1,24 @@
+{
+  "name": "ksyn/server-php",
+  "description": "KSYN FitConnect Enterprise Platform - Slim 4 Microframework Backend API",
+  "type": "project",
+  "config": {
+    "policy": {
+      "advisories": {
+        "block": false
+      }
+    }
+  },
+  "require": {
+    "php": "^8.2 || ^8.3 || ^8.4 || ^8.5",
+    "slim/slim": "^4.14",
+    "slim/psr7": "^1.7",
+    "firebase/php-jwt": "^6.10",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ksyn\\": "src/"
+    }
+  }
+}

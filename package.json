@@ -1,0 +1,16 @@
+{
+  "name": "ksyn-fitconnect",
+  "version": "1.0.0",
+  "description": "KSYN FitConnect Enterprise Platform - Secure Multi-Tenant Franchise Management System",
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "npm run build --prefix client",
+    "dev": "concurrently \"node server/server.js\" \"npm run dev --prefix client\"",
+    "server": "node server/server.js",
+    "client": "npm run dev --prefix client",
+    "test:api": "node server/test_api.js"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

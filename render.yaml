@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ksyn-fitconnect
+    env: node
+    plan: free
+    buildCommand: npm install --prefix client && npm run build --prefix client && npm install --prefix server
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: QR_HMAC_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: PAYMENT_WEBHOOK_SECRET
+        generateValue: true

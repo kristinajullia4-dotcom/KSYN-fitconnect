@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter II: Review of Related Literature and Studies - KSYN FitConnect</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.5in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 8.5in;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+  h1.chapter-title {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h2.chapter-subtitle {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 24pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h3.section-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 20pt;
+    margin-bottom: 8pt;
+    text-indent: 0;
+  }
+  h4.subsection-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  table.academic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14pt;
+    margin-bottom: 16pt;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+  table.academic-table th, table.academic-table td {
+    border: 1px solid #000000;
+    padding: 6pt 8pt;
+    vertical-align: top;
+    text-align: left;
+    text-indent: 0;
+  }
+  table.academic-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center;
+  }
+  .caption {
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  .diagram-box {
+    text-align: center;
+    margin: 18pt 0;
+    padding: 12pt;
+    border: 1px solid #cccccc;
+    background-color: #fafafa;
+  }
+  .reference-entry {
+    padding-left: 0.5in;
+    text-indent: -0.5in;
+    margin-bottom: 10pt;
+    text-align: justify;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="chapter-title">CHAPTER II</h1>
+<h2 class="chapter-subtitle">REVIEW OF RELATED LITERATURE AND STUDIES</h2>
+
+<p>This chapter reviews multi-tenant software architecture, database Row-Level Security (RLS), Role-Based Access Control (RBAC), cryptographic credential verification, physical access control barriers, digital payment gateways, statutory tax automation, and international cybersecurity standards as the foundational pillars of KSYN FitConnect. It integrates theoretical literature and empirical studies by theme, followed by a synthesis of reviewed works, the identification of the research gap, and the conceptual framework operationalized through the Input–Process–Output (IPO) model.</p>
+
+<h3 class="section-title">Secure Multi-Tenant Franchise and Multi-Branch Management Systems</h3>
+
+<p>Multi-tenant architecture enables multiple independent organizational units or commercial franchisees to share a common application instance and database infrastructure while retaining complete logical isolation over their configurations, operational workflows, and private data. Bezemer and Zaidman (2010) identify infrastructure optimization, centralized version maintenance, and scalable resource pooling as primary advantages of multi-tenancy, while emphasizing that software architectural complexity can offset these benefits if tenant boundaries are poorly engineered. The National Institute of Standards and Technology (NIST) cloud computing reference architecture reinforces resource pooling as a core cloud characteristic; however, a shared web application does not automatically ensure tenant data security without programmatic isolation boundaries (Bezemer & Zaidman, 2010; Mell & Grance, 2011).</p>
+
+<p>An industrial experience report by Bezemer et al. (2010) investigates the reengineering of legacy single-tenant enterprise applications into shared multi-tenant deployments, identifying database query isolation and transaction scoping as the most critical failure points. In complementary research, Krebs et al. (2012) analyze architectural trade-offs between shared-database and separate-database patterns, demonstrating that while shared-database multi-tenancy minimizes hosting costs, it introduces severe cross-tenant data leakage risks if tenant identifiers are not enforced systematically across all query pathways. Neither investigation directly addresses the unique operational characteristics of fitness franchises, where cross-branch access privileges, coach commission splits, front-desk locker rentals, and physical turnstile barriers operate simultaneously (Bezemer et al., 2010; Krebs et al., 2012).</p>
+
+<p>Contemporary guidance from the OWASP Foundation extends multi-tenant security perimeters beyond basic SQL queries to encompass memory caches, asynchronous workers, background reporting tasks, and file exports (OWASP Foundation, 2023). In multi-branch franchise platforms, centralized corporate oversight must coexist with branch confidentiality: corporate administrators require consolidated financial visibility to compute franchise royalties, while individual branch managers and cashiers must be strictly prohibited from viewing or altering adjacent branch records. For KSYN FitConnect, each franchise branch operates as an isolated tenant. Membership registrations, subscriptions, locker reservations, inventory sales, and shift audits execute within strictly partitioned branch scopes, while corporate reporting uses authorized query paths rather than unrestricted database access.</p>
+
+<h3 class="section-title">Tenant Data Isolation and Database Row-Level Security (RLS)</h3>
+
+<p>Tenant data isolation ensures that authenticated users are programmatically restricted from accessing or manipulating records outside their authorized organizational boundary. Krebs et al. (2012) establish the architectural imperative of tenant separation, while OWASP categorizes Broken Object-Level Authorization (BOLA) and Insecure Direct Object Reference (IDOR) as the leading web and API security vulnerabilities (OWASP Foundation, 2023). In a vulnerable multi-tenant system, simply substituting a primary key identifier in an API request allows an authenticated attacker to view or delete another branch's member profiles or revenue ledgers.</p>
+
+<p>PostgreSQL Row-Level Security (RLS) provides a native, kernel-level enforcement mechanism that evaluates row-visibility and modification policies directly within the database engine (PostgreSQL Global Development Group, 2023). When RLS is enabled on a table, the database suppresses rows failing the security policy by default. However, standard administrative connections and database superusers can bypass these policies unless strict database role configuration and <code>FORCE ROW LEVEL SECURITY</code> directives are applied. Database privileges must therefore be configured alongside application-level middleware to establish defense in depth.</p>
+
+<p>In KSYN FitConnect, every tenant-owned table incorporates a mandatory <code>branch_id</code> foreign key. To prevent context bleeding across pooled database connections, the application server establishes transaction-local tenant context using the session variable:
+<code>SET LOCAL app.current_tenant_id = :authenticated_branch_id;</code>
+Within that transaction block, PostgreSQL RLS policies evaluate table rows against this setting. If an application bug omits a <code>WHERE branch_id = ...</code> clause, PostgreSQL automatically suppresses all rows belonging to other branches, failing closed by default. Parameterized queries eliminate SQL injection vulnerabilities, input validation guards API boundaries, and immutable audit logs record the actor, tenant context, target resource, and outcome on every state change (OWASP Foundation, 2020, 2023).</p>
+
+<h3 class="section-title">Role-Based Access Control and Least-Privilege Authorization</h3>
+
+<p>Role-Based Access Control (RBAC) associates fine-grained permissions with defined organizational roles and assigns users to those roles based on their operational responsibilities (Ferraiolo & Kuhn, 1992; Sandhu et al., 1996). Ferraiolo and Kuhn formalize RBAC principles, while Sandhu et al. describe hierarchical access models that prevent users from acquiring permissions exceeding their legitimate functional scope. These models support organizing authority around business responsibilities rather than managing ad-hoc user permissions individually.</p>
+
+<p>The Principle of Least Privilege (PoLP) mandates that each user account receives only the minimum system access necessary to perform authorized duties. However, in a multi-branch franchise, role assignment alone is insufficient: two users possessing the "Branch Administrator" role must not access each other's branch facilities. Fine-grained authorization must therefore bind role permissions to explicit tenant scopes and record ownership relationships (OWASP Foundation, 2023). KSYN FitConnect enforces a seven-tier role hierarchy governing corporate leadership, branch investors, general managers, front-desk staff, personal trainers, and gym members.</p>
+
+<div class="caption">Table 1. Proposed Role-Based Access Control Matrix of KSYN FitConnect</div>
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 28%;">User Role</th>
+      <th>Authorized Functions and Operational Scope</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Super Admin</strong></td>
+      <td>Manages enterprise branches, global roles, system configuration, corporate royalty rules, and system-wide audit ledgers. Operational branch data access requires explicit branch selection and audit logging.</td>
+    </tr>
+    <tr>
+      <td><strong>Corporate Auditor</strong></td>
+      <td>Inspects consolidated multi-branch financial performance, royalty reconciliation ledgers, and BIR Form 2307 tax deduction reports across authorized branches; strictly read-only access.</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Owner (Franchisee / Investor)</strong></td>
+      <td>Monitors branch financial health, EBITDA margins, franchise royalty debits, CapEx asset straight-line depreciation ledgers, and branch staff profiles via a dedicated console (<code>InvestorDashboard.jsx</code>). Restricted strictly to owned branches.</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Administrator</strong></td>
+      <td>Administers branch member profiles, subscription tiers, trainer schedules, retail inventory procurement, and inter-branch athlete transfer clearances within the assigned branch.</td>
+    </tr>
+    <tr>
+      <td><strong>Front-Desk Staff</strong></td>
+      <td>Monitors live optical turnstiles, processes manual attendance overrides, issues locker keys with refundable cash deposits (PHP 200 held cash), handles POS retail sales, and reconciles shift cash drawer variances.</td>
+    </tr>
+    <tr>
+      <td><strong>Gym Coach / Trainer</strong></td>
+      <td>Authors athlete workout routine splits, logs 1-on-1 personal training sessions, records body metric progression, and reviews personal commission history after automated 10% BIR 2307 tax deductions; restricted strictly to assigned clients.</td>
+    </tr>
+    <tr>
+      <td><strong>Member</strong></td>
+      <td>Self-service member portal: views personal profile, subscription status, payment history, class bookings, and generates dynamic 60-second rotating optical QR passes; updates permitted personal profile fields only.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="section-title">Authentication, Session Management, and Credential Security</h3>
+
+<p>Authentication verifies an identity claim; session management maintains authenticated state across stateless HTTP requests; authorization enforces permissible operations. NIST Special Publication 800-63B-4 establishes modern guidelines for digital identity, authenticator assurance, and credential protection (Temoshok et al., 2025). KSYN FitConnect combines adaptive salted password hashing, brute-force rate limiting, cryptographically signed JSON Web Tokens (JWT), and server-side session invalidation.</p>
+
+<p>RFC 7519 defines the JSON Web Token (JWT) structure, while RFC 8725 establishes best current practices to mitigate signature stripping, algorithm confusion, and replay attacks (Jones et al., 2015; Sheffer et al., 2020). KSYN FitConnect issues signed JWT tokens containing strictly non-confidential claims (user ID, role, and branch context). Tokens are validated using explicit cryptographic algorithms and restricted expiration windows. Attendance access tokens and administrative login tokens utilize distinct payload signatures and purpose validation rules.</p>
+
+<p>For password protection, RFC 2898 and OWASP password storage standards mandate adaptive, salted one-way hashing functions (OWASP Foundation, 2023). KSYN FitConnect utilizes <code>bcryptjs</code> (Blowfish-based cipher) configured with an adaptive computational work factor of 10 and unique cryptographic salts per account. Passwords are never stored in plaintext, logged to disk, or exposed in API payloads. Browser sessions utilize HTTP-only, Secure cookies with <code>SameSite=Strict</code> attributes to eliminate Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF) vectors. Transport Layer Security (TLS 1.3) protects all network communications against interception (Rescorla, 2018).</p>
+
+<h3 class="section-title">Physical Turnstile Solenoid Relays and Contactless Verification</h3>
+
+<p>Commercial gym access control requires automated physical barrier actuation to enforce membership validity and prevent unauthorized entry. While Liew and Tan (2021) demonstrate a software-based QR attendance system in an educational setting, their model lacks physical hardware barriers, anti-passback cooldown logic, and commercial payment validation. In contrast, commercial fitness facilities require real-time hardware turnstile integration to prevent visual pass sharing and tailgating.</p>
+
+<p>RFC 6238 defines the Time-Based One-Time Password (TOTP) algorithm, establishing that short-lived validity windows combined with atomic single-use nonce consumption eliminate token replay attacks (M'Raihi et al., 2011). KSYN FitConnect implements this principle for member access control:
+1. Authenticated members generate dynamic HMAC-SHA256 optical QR passes that expire strictly after 60 seconds.
+2. Upon presentation to a turnstile barcode reader or presentation of a 13.56MHz contactless RFID keycard UID, the server validates credential authenticity and executes an atomic database transaction.
+3. The server immediately consumes the token nonce and verifies that the member is not subject to an active anti-passback cooldown (enforcing a mandatory 5-minute delay before re-entry).
+4. Upon successful validation, the server dispatches an unlocking pulse command (<code>SOLENOID_RELAY_OPEN</code>, 500ms duration) over a local WebSocket bridge driver (<code>turnstileBridge.js</code>) to the physical turnstile solenoid relay.</p>
+
+<h3 class="section-title">Digital Payments and Statutory Fiscal Compliance in the Philippines</h3>
+
+<p>Commercial fitness franchise operations require integrated digital payment channels and statutory tax compliance. Traditional manual cash collections and paper receipts frequently result in untracked cash variances and delayed bank settlements. Modern fintech application programming interfaces (APIs) enable asynchronous payment collection across mobile wallets and credit rails.</p>
+
+<p>KSYN FitConnect integrates the Xendit payment gateway API, providing members with real-time checkout options for Credit/Debit cards, GCash, Maya, and QR Ph. Webhook callback notifications verify asynchronous settlements using cryptographic HMAC signatures, ensuring that membership subscriptions are activated only upon guaranteed settlement. Furthermore, under Philippine tax law (National Internal Revenue Code / Republic Act No. 8424) and Bureau of Internal Revenue (BIR) Revenue Regulations, independent fitness coaches and contracted service providers are subject to a 10% Creditable Withholding Tax (CWT). The platform automates this deduction at the point of session verification, logging gross earnings, tax withheld, and net payouts, thereby generating BIR Form 2307 audit ledgers while calculating fixed 7.5% corporate franchise royalties on gross branch revenues.</p>
+
+<h3 class="section-title">Data Privacy, Intellectual Property, and Information Security Standards</h3>
+
+<p>Republic Act No. 10173, the Data Privacy Act of 2012, mandates that personal information controllers implement organizational, physical, and technical measures to protect personal data against accidental or unlawful destruction, alteration, and unauthorized disclosure (National Privacy Commission, 2016a). Public front-desk logbooks that expose member names, phone numbers, and check-in times violate privacy proportionality principles. KSYN FitConnect replaces paper logbooks with encrypted digital records, restricts profile access via RBAC, and sanitizes audit logs to exclude confidential health details.</p>
+
+<p>Pursuant to Republic Act No. 8293 (Intellectual Property Code of the Philippines), software source code, system architectures, cryptographic QR generation algorithms, and multi-tenant RLS schemas remain the exclusive intellectual property of the student development authors, licensed to KSYN Fitness Inc. for operational deployment and academic evaluation.</p>
+
+<p>For technical security evaluation, the study adopts the international standard <strong>ISO/IEC 27001:2022 (Information Security, Cybersecurity and Privacy Protection — Information Security Management Systems)</strong> and its companion standard <strong>ISO/IEC 27002:2022 (Information Security Controls)</strong>. ISO/IEC 27001:2022 provides an internationally recognized framework of 93 information security controls organized into four core themes:
+1. <em>Organizational Controls (Clause 5)</em>: Policies for access control (5.15), access rights (5.18), and privacy protection (5.34).
+2. <em>People Controls (Clause 6)</em>: Information security responsibilities (6.5) and access revocation upon termination.
+3. <em>Physical Controls (Clause 7)</em>: Physical entry controls and barrier actuation (7.2).
+4. <em>Technological Controls (Clause 8)</em>: Secure authentication (8.5), vulnerability management (8.8), audit logging (8.15), network security (8.20), use of cryptography (8.24), and application security requirements (8.26).</p>
+
+<p>The OWASP Application Security Verification Standard (ASVS v5.0) and Web Security Testing Guide (WSTG v4.2) complement ISO/IEC 27001:2022 by providing granular verification requirements for testing cross-tenant isolation, parameter tampering, and token replay resistance (OWASP Foundation, 2020, 2025).</p>
+
+<h3 class="section-title">Synthesis of Literature and Studies</h3>
+
+<p>The reviewed literature establishes that centralized multi-tenant cloud platforms deliver significant operational efficiencies for franchise networks, provided that tenant boundaries are enforced at the database level rather than through interface filters alone (Bezemer et al., 2010; Krebs et al., 2012). Research by Ferraiolo and Kuhn (1992) and Sandhu et al. (1996) demonstrates that Role-Based Access Control effectively organizes operational responsibilities, while OWASP guidance establishes that multi-tenant security requires binding roles to verified tenant scopes to prevent BOLA and IDOR vulnerabilities.</p>
+
+<p>Security engineering literature demonstrates that salted adaptive password hashing (bcrypt RFC 2898), time-bounded dynamic HMAC tokens (RFC 6238), and TLS 1.3 transport encryption form a robust defense-in-depth model for web applications. Furthermore, physical access control research indicates that combining dynamic optical passes with hardware solenoid relay drivers and anti-passback cooldown rules resolves the pass-sharing and congestion vulnerabilities inherent in manual paper logbooks. Statutory Philippine frameworks—including RA 10173 for data privacy, RA 8293 for software intellectual property, and BIR Form 2307 regulations for tax withholding—establish the legal context governing commercial gym management.</p>
+
+<p>Within the reviewed literature, the explicit research gap is the unified engineering and empirical evaluation of these disparate mechanisms—multi-tenant database Row-Level Security, a seven-tier franchise role hierarchy, Xendit payment gateways, automated 7.5% corporate royalties, 10% BIR 2307 tax deductions, front-desk locker deposit accounting, and WebSocket turnstile solenoid relay actuation—within a commercial fitness franchise evaluated against <strong>ISO/IEC 27001:2022 Annex A security controls</strong>. KSYN FitConnect directly bridges this gap.</p>
+
+<h3 class="section-title">Conceptual Framework</h3>
+
+<p>The study utilizes the <strong>Input–Process–Output (IPO)</strong> model to illustrate how franchise operational requirements, cybersecurity principles, and statutory mandates are transformed into the KSYN FitConnect platform (Figure 1).</p>
+
+<div class="caption">Figure 1. IPO Conceptual Model of KSYN FitConnect</div>
+<div class="diagram-box">
+  <svg width="680" height="420" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- INPUT BOX -->
+    <rect x="20" y="20" width="190" height="380" rx="8" fill="#f8fafc" stroke="#1e3a8a" stroke-width="2"/>
+    <rect x="20" y="20" width="190" height="35" rx="8" fill="#1e3a8a"/>
+    <text x="115" y="44" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">INPUT</text>
+    <text x="30" y="75" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">Knowledge Requirements:</text>
+    <text x="30" y="92" fill="#334155" font-family="Times New Roman" font-size="8pt">• Multi-tenant RLS Architecture</text>
+    <text x="30" y="106" fill="#334155" font-family="Times New Roman" font-size="8pt">• 7-Tier RBAC & Least Privilege</text>
+    <text x="30" y="120" fill="#334155" font-family="Times New Roman" font-size="8pt">• 7.5% Royalty & BIR 2307 Tax</text>
+    <text x="30" y="134" fill="#334155" font-family="Times New Roman" font-size="8pt">• RA 10173 & RA 8293 Laws</text>
+    <text x="30" y="148" fill="#334155" font-family="Times New Roman" font-size="8pt">• ISO/IEC 27001:2022 Controls</text>
+
+    <text x="30" y="175" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">Software Requirements:</text>
+    <text x="30" y="192" fill="#334155" font-family="Times New Roman" font-size="8pt">• React.js Frontend (Vite)</text>
+    <text x="30" y="206" fill="#334155" font-family="Times New Roman" font-size="8pt">• Node.js / Express.js REST API</text>
+    <text x="30" y="220" fill="#334155" font-family="Times New Roman" font-size="8pt">• PostgreSQL 15+ (RLS Engine)</text>
+    <text x="30" y="234" fill="#334155" font-family="Times New Roman" font-size="8pt">• bcryptjs & HMAC-SHA256</text>
+    <text x="30" y="248" fill="#334155" font-family="Times New Roman" font-size="8pt">• Xendit Payment Gateway API</text>
+
+    <text x="30" y="275" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">Hardware Requirements:</text>
+    <text x="30" y="292" fill="#334155" font-family="Times New Roman" font-size="8pt">• Turnstile Solenoid Barrier</text>
+    <text x="30" y="306" fill="#334155" font-family="Times New Roman" font-size="8pt">• WebSocket Relay Drivers</text>
+    <text x="30" y="320" fill="#334155" font-family="Times New Roman" font-size="8pt">• 13.56MHz RFID USB Reader</text>
+    <text x="30" y="334" fill="#334155" font-family="Times New Roman" font-size="8pt">• Optical Barcode Scanner</text>
+    <text x="30" y="348" fill="#334155" font-family="Times New Roman" font-size="8pt">• Mobile Web & Workstations</text>
+
+    <!-- ARROW 1 -->
+    <line x1="210" y1="210" x2="245" y2="210" stroke="#000" stroke-width="2"/>
+
+    <!-- PROCESS BOX -->
+    <rect x="245" y="20" width="190" height="380" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+    <rect x="245" y="20" width="190" height="35" rx="8" fill="#0f766e"/>
+    <text x="340" y="44" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">PROCESS (DDTE)</text>
+    <text x="255" y="75" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">1. Design Phase:</text>
+    <text x="255" y="92" fill="#334155" font-family="Times New Roman" font-size="8pt">• Multi-tenant schema & RLS</text>
+    <text x="255" y="106" fill="#334155" font-family="Times New Roman" font-size="8pt">• 7-role permission matrix</text>
+    <text x="255" y="120" fill="#334155" font-family="Times New Roman" font-size="8pt">• Responsive UI wireframes</text>
+
+    <text x="255" y="145" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">2. Develop Phase:</text>
+    <text x="255" y="162" fill="#334155" font-family="Times New Roman" font-size="8pt">• REST APIs & JWT guards</text>
+    <text x="255" y="176" fill="#334155" font-family="Times New Roman" font-size="8pt">• WebSocket solenoid driver</text>
+    <text x="255" y="190" fill="#334155" font-family="Times New Roman" font-size="8pt">• Xendit webhook callbacks</text>
+    <text x="255" y="204" fill="#334155" font-family="Times New Roman" font-size="8pt">• Locker deposit & POS shifts</text>
+
+    <text x="255" y="230" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">3. Test Phase:</text>
+    <text x="255" y="247" fill="#334155" font-family="Times New Roman" font-size="8pt">• Negative cross-tenant RLS</text>
+    <text x="255" y="261" fill="#334155" font-family="Times New Roman" font-size="8pt">• Token replay & anti-passback</text>
+    <text x="255" y="275" fill="#334155" font-family="Times New Roman" font-size="8pt">• k6 load concurrency (20 users)</text>
+
+    <text x="255" y="300" fill="#000" font-family="Times New Roman" font-size="9pt" font-weight="bold">4. Evaluate Phase:</text>
+    <text x="255" y="317" fill="#334155" font-family="Times New Roman" font-size="8pt">• ISO/IEC 27001:2022 Annex A</text>
+    <text x="255" y="331" fill="#334155" font-family="Times New Roman" font-size="8pt">• Technical checklist audit</text>
+    <text x="255" y="345" fill="#334155" font-family="Times New Roman" font-size="8pt">• Role-based security trials</text>
+
+    <!-- ARROW 2 -->
+    <line x1="435" y1="210" x2="470" y2="210" stroke="#000" stroke-width="2"/>
+
+    <!-- OUTPUT BOX -->
+    <rect x="470" y="20" width="190" height="380" rx="8" fill="#f8fafc" stroke="#581c87" stroke-width="2"/>
+    <rect x="470" y="20" width="190" height="35" rx="8" fill="#581c87"/>
+    <text x="565" y="44" fill="#fff" font-family="Times New Roman" font-size="11pt" font-weight="bold" text-anchor="middle">OUTPUT</text>
+    <text x="480" y="75" fill="#000" font-family="Times New Roman" font-size="9.5pt" font-weight="bold">KSYN FitConnect Platform:</text>
+    <text x="480" y="100" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Secure Multi-Tenant Franchise</text>
+    <text x="480" y="115" fill="#334155" font-family="Times New Roman" font-size="8.5pt">  Architecture with RLS</text>
+    <text x="480" y="135" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• 7-Tier Enforced RBAC Model</text>
+    <text x="480" y="155" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Solenoid Barrier Relay Bridge</text>
+    <text x="480" y="170" fill="#334155" font-family="Times New Roman" font-size="8.5pt">  & Anti-Passback Cooldown</text>
+    <text x="480" y="190" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Dynamic 60s Optical QR & RFID</text>
+    <text x="480" y="210" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Xendit Digital Payment Bridge</text>
+    <text x="480" y="230" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• 7.5% Corporate Royalty Engine</text>
+    <text x="480" y="250" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• 10% BIR 2307 Tax Automation</text>
+    <text x="480" y="270" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Locker Deposit & POS Shift Audit</text>
+    <text x="480" y="290" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Investor CapEx & EBITDA Suite</text>
+    <text x="480" y="310" fill="#334155" font-family="Times New Roman" font-size="8.5pt">• Verified ISO/IEC 27001:2022</text>
+    <text x="480" y="325" fill="#334155" font-family="Times New Roman" font-size="8.5pt">  Security Audit Compliance</text>
+
+    <!-- FEEDBACK LOOP -->
+    <path d="M 565 400 L 565 415 L 340 415 L 340 400" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,4"/>
+  </svg>
+</div>
+
+<h3 class="section-title">References</h3>
+
+<div class="reference-entry">Bezemer, C.-P., & Zaidman, A. (2010). Multi-tenant SaaS applications: Maintenance dream or nightmare?. In <em>Proceedings of the Joint ERCIM Workshop on Software Evolution and International Workshop on Principles of Software Evolution</em> (pp. 88–92). Association for Computing Machinery. https://doi.org/10.1145/1862372.1862393</div>
+
+<div class="reference-entry">Bezemer, C.-P., Zaidman, A., Platzbeecker, B., Hurkmans, T., & 't Hart, A. (2010). Enabling multi-tenancy: An industrial experience report. In <em>2010 IEEE International Conference on Software Maintenance</em> (pp. 1–8). IEEE. https://doi.org/10.1109/ICSM.2010.5609735</div>
+
+<div class="reference-entry">Bureau of Internal Revenue. (2018). <em>Tax Reform for Acceleration and Inclusion (TRAIN) Act Regulations</em> (Revenue Regulations No. 11-2018). Republic of the Philippines.</div>
+
+<div class="reference-entry">Ferraiolo, D. F., & Kuhn, D. R. (1992). Role-based access controls. In <em>Proceedings of the 15th National Computer Security Conference</em> (pp. 554–563). https://csrc.nist.gov/projects/role-based-access-control/rbac-library</div>
+
+<div class="reference-entry">International Organization for Standardization, & International Electrotechnical Commission. (2022a). <em>Information security, cybersecurity and privacy protection — Information security controls</em> (ISO/IEC Standard No. 27002:2022). https://www.iso.org/standard/75652.html</div>
+
+<div class="reference-entry">International Organization for Standardization, & International Electrotechnical Commission. (2022b). <em>Information security, cybersecurity and privacy protection — Information security management systems — Requirements</em> (ISO/IEC Standard No. 27001:2022). https://www.iso.org/standard/27001</div>
+
+<div class="reference-entry">Jones, M. B., Bradley, J., & Sakimura, N. (2015). <em>JSON Web Token (JWT)</em> (RFC 7519). Internet Engineering Task Force. https://doi.org/10.17487/RFC7519</div>
+
+<div class="reference-entry">Krebs, R., Momm, C., & Kounev, S. (2012). Architectural concerns in multi-tenant SaaS applications. In <em>Proceedings of the 2nd International Conference on Cloud Computing and Services Science</em> (Vol. 1, pp. 426–431). SciTePress. https://doi.org/10.5220/0003957604260431</div>
+
+<div class="reference-entry">Liew, K. J., & Tan, T. H. (2021). QR code-based student attendance system. In <em>2021 2nd Asia Conference on Computers and Communications</em> (pp. 10–14). IEEE. https://doi.org/10.1109/ACCC54619.2021.00009</div>
+
+<div class="reference-entry">Mell, P., & Grance, T. (2011). <em>The NIST definition of cloud computing</em> (NIST Special Publication 800-145). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.SP.800-145</div>
+
+<div class="reference-entry">M'Raihi, D., Machani, S., Pei, M., & Rydell, J. (2011). <em>TOTP: Time-based one-time password algorithm</em> (RFC 6238). Internet Engineering Task Force. https://doi.org/10.17487/RFC6238</div>
+
+<div class="reference-entry">National Privacy Commission. (2016a). <em>Implementing Rules and Regulations of the Data Privacy Act of 2012</em>. Republic of the Philippines.</div>
+
+<div class="reference-entry">OWASP Foundation. (2020). <em>Web Security Testing Guide</em> (Version 4.2). https://owasp.org/www-project-web-security-testing-guide/</div>
+
+<div class="reference-entry">OWASP Foundation. (2023). <em>OWASP Top 10 API Security Risks — 2023</em>. https://owasp.org/API-Security/editions/2023/en/0x11-t10/</div>
+
+<div class="reference-entry">OWASP Foundation. (2025). <em>Application Security Verification Standard</em> (Version 5.0.0). https://owasp.org/www-project-application-security-verification-standard/</div>
+
+<div class="reference-entry">PostgreSQL Global Development Group. (2023). <em>Row Security Policies</em>. PostgreSQL Documentation. https://www.postgresql.org/docs/current/ddl-rowsecurity.html</div>
+
+<div class="reference-entry">Republic Act No. 8293. (1997). <em>An Act Prescribing the Intellectual Property Code and Establishing the Intellectual Property Office, Providing for Its Powers and Functions, and for Other Purposes</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Republic Act No. 8424. (1997). <em>National Internal Revenue Code of 1997 (Tax Reform Act of 1997)</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Republic Act No. 10173. (2012). <em>Data Privacy Act of 2012</em>. Official Gazette of the Republic of the Philippines.</div>
+
+<div class="reference-entry">Rescorla, E. (2018). <em>The Transport Layer Security (TLS) Protocol Version 1.3</em> (RFC 8446). Internet Engineering Task Force. https://doi.org/10.17487/RFC8446</div>
+
+<div class="reference-entry">Sandhu, R. S., Coyne, E. J., Feinstein, H. L., & Youman, C. E. (1996). Role-based access control models. <em>IEEE Computer</em>, 29(2), 38–47. https://doi.org/10.1109/2.485845</div>
+
+<div class="reference-entry">Sheffer, Y., Hardt, D., & Jones, M. B. (2020). <em>JSON Web Token best current practices</em> (RFC 8725). Internet Engineering Task Force. https://doi.org/10.17487/RFC8725</div>
+
+<div class="reference-entry">Temoshok, D., Fenton, J. L., Choong, Y.-Y., Lefkovitz, N., Regenscheid, A., Galluzzo, R., & Richer, J. P. (2025). <em>Digital identity guidelines: Authentication and authenticator management</em> (NIST Special Publication 800-63B-4). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.SP.800-63b-4</div>
+
+</body>
+</html>
