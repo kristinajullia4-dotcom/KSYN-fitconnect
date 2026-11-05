@@ -94,8 +94,8 @@ async function dispatchEmail(options) {
       console.log(`[MAIL SUCCESS via Brevo HTTPS] Email delivered to ${options.to} (MessageId: ${data.messageId})`);
       return { success: true, provider: 'brevo', messageId: data.messageId };
     } catch (brevoErr) {
-      console.error('[Brevo HTTPS Error]:', brevoErr.message);
-      if (!resendApiKey) throw brevoErr;
+      console.warn('[Brevo HTTPS Warning - Auto Fallback]:', brevoErr.message);
+      // Gracefully fall through to Resend or Google SMTP rather than aborting!
     }
   }
 
@@ -125,8 +125,8 @@ async function dispatchEmail(options) {
       console.log(`[MAIL SUCCESS via Resend HTTPS] Email delivered to ${options.to} (MessageId: ${data.id})`);
       return { success: true, provider: 'resend', messageId: data.id };
     } catch (resendErr) {
-      console.error('[Resend HTTPS Error]:', resendErr.message);
-      throw resendErr;
+      console.warn('[Resend HTTPS Warning - Auto Fallback]:', resendErr.message);
+      // Gracefully fall through to Google SMTP rather than aborting!
     }
   }
 

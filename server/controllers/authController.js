@@ -873,7 +873,8 @@ async function sendRegistrationOtp(req, res) {
     return res.status(200).json({
       success: true,
       message: `Verification code sent to ${cleanEmail}. Please check your email inbox and spam folder.`,
-      email_sent: true
+      email_sent: true,
+      provider: mailResult?.provider
     });
   } catch (err) {
     console.error('[sendRegistrationOtp error]:', err);
@@ -1580,7 +1581,8 @@ async function forgotPassword(req, res) {
     return res.status(200).json({
       success: true,
       message: `Password reset code sent to ${cleanEmail}. Please check your email inbox and spam folder.`,
-      email_sent: true
+      email_sent: true,
+      provider: mailResult?.provider
     });
   } catch (err) {
     console.error('[forgotPassword error]:', err);
