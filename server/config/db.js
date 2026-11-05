@@ -1112,6 +1112,9 @@ function loadPersistentStore() {
     if (fs.existsSync(STORE_FILE)) {
       const rawData = fs.readFileSync(STORE_FILE, 'utf8');
       const parsed = JSON.parse(rawData);
+      if (parsed.users && Array.isArray(parsed.users)) {
+        parsed.users = parsed.users.filter(u => u.email !== 'kristinajullia4@gmail.com' && u.username !== 'kristinajullia4');
+      }
       for (const key of Object.keys(parsed)) {
         if (key === 'mfa_tickets') continue;
         if (key === 'revoked_tokens' && Array.isArray(parsed[key])) {
@@ -1223,6 +1226,10 @@ function loadPersistentStore() {
         memoryStore.coach_sales_commissions = [];
       }
 
+      if (Array.isArray(memoryStore.users)) {
+        memoryStore.users = memoryStore.users.filter(u => u.email !== 'kristinajullia4@gmail.com' && u.username !== 'kristinajullia4');
+      }
+
       savePersistentStoreSync();
 
       console.log(`[KSYN FitConnect DB] Durable store loaded from ${STORE_FILE} (${memoryStore.users?.length || 0} users)`);
@@ -1319,6 +1326,7 @@ async function initDatabase() {
       });
       const client = await pool.connect();
       await client.query('SELECT 1');
+      await client.query("DELETE FROM users WHERE LOWER(email) = 'kristinajullia4@gmail.com' AND role = 'member'").catch(() => {});
       await client.query(`
         CREATE TABLE IF NOT EXISTS otp_verifications (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
