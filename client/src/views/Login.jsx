@@ -216,18 +216,11 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
 
       setRecoveryStep('verify');
       setRecoveryResendCountdown(60);
-      if (data.dev_otp) {
-        setRecoveryDevOtp(data.dev_otp);
-        setRecoveryOtpValues(String(data.dev_otp).split(''));
-      } else {
-        setRecoveryDevOtp(null);
-        setRecoveryOtpValues(['', '', '', '', '', '']);
-      }
-      const msg = data.email_sent
-        ? 'A 6-digit password reset code was sent to your email.'
-        : (data.dev_otp ? `Reset code generated (${data.dev_otp}).` : 'Verification code dispatched to your registered email.');
+      setRecoveryDevOtp(null);
+      setRecoveryOtpValues(['', '', '', '', '', '']);
+      const msg = `A 6-digit password reset code was sent to ${recoveryEmail.trim()}. Please check your email inbox and spam folder.`;
       setRecoveryResendNotice(msg);
-      toast.info(msg, data.email_sent ? 'Code Sent' : 'Code Generated');
+      toast.info(msg, 'Code Sent');
       setTimeout(() => setRecoveryResendNotice(null), 6000);
       setTimeout(() => recoveryOtpInputsRef.current[0]?.focus(), 100);
     } catch (err) {
@@ -257,16 +250,9 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
       }
 
       setRecoveryResendCountdown(60);
-      if (data.dev_otp) {
-        setRecoveryDevOtp(data.dev_otp);
-        setRecoveryOtpValues(String(data.dev_otp).split(''));
-      } else {
-        setRecoveryDevOtp(null);
-        setRecoveryOtpValues(['', '', '', '', '', '']);
-      }
-      const msg = data.email_sent
-        ? 'A fresh 6-digit code has been sent to your email.'
-        : (data.dev_otp ? `Fresh reset code generated (${data.dev_otp}).` : 'Fresh verification code dispatched to your registered email.');
+      setRecoveryDevOtp(null);
+      setRecoveryOtpValues(['', '', '', '', '', '']);
+      const msg = `A fresh 6-digit code has been sent to ${recoveryEmail.trim()}. Please check your email inbox and spam folder.`;
       setRecoveryResendNotice(msg);
       toast.info(msg, 'Code Resent');
       setTimeout(() => setRecoveryResendNotice(null), 6000);

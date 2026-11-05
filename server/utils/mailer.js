@@ -8,41 +8,32 @@ const DEFAULT_EMAIL_USER = 'jmarquez.k12150582@umak.edu.ph';
 const DEFAULT_EMAIL_PASS = 'ycgmrwgkzwhumbtj';
 
 function isPlaceholderConfig() {
-  const user = (process.env.EMAIL_USER || process.env.SMTP_USER || DEFAULT_EMAIL_USER).trim().toLowerCase();
-  const pass = (process.env.EMAIL_PASS || process.env.SMTP_PASS || DEFAULT_EMAIL_PASS).trim().toLowerCase();
-  if (!user || !pass) return true;
-  if (user === 'no-reply@ksynfitconnect.com' || user.includes('example.com') || user.includes('placeholder')) return true;
-  if (pass === 'smtp_app_password_vault' || pass.includes('placeholder') || pass.includes('your_app_password')) return true;
-  return false;
+  return false; // Live email dispatch active across all environments
 }
 
-const transporter = nodemailer.createTransport(
-  process.env.SMTP_HOST
-    ? {
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 587,
-        secure: process.env.SMTP_PORT === '465',
-        auth: {
-          user: (process.env.SMTP_USER || process.env.EMAIL_USER || DEFAULT_EMAIL_USER)?.trim(),
-          pass: (process.env.SMTP_PASS || process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS)?.trim()
-        },
-        connectionTimeout: 15000,
-        greetingTimeout: 15000,
-        socketTimeout: 20000
-      }
-    : {
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-          user: (process.env.EMAIL_USER || DEFAULT_EMAIL_USER)?.trim(),
-          pass: (process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS)?.trim()
-        },
-        connectionTimeout: 15000,
-        greetingTimeout: 15000,
-        socketTimeout: 20000
-      }
-);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  family: 4, // CRITICAL: forces IPv4 to prevent connection timeouts on cloud container networks (Render/Docker)
+  auth: {
+    user: (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim(),
+    pass: (process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS).trim()
+  },
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 20000,
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+// Verify connection on module load
+transporter.verify((err, success) => {
+  if (err) {
+    console.warn('[KSYN Mailer Warning] SMTP Gmail connection verify notice:', err.message);
+  } else {
+    console.log('[KSYN Mailer] Live Gmail SMTP connection verified successfully (IPv4)! Ready to dispatch emails.');
+  }
+});
 
 /**
  * Send 6-digit OTP verification email
@@ -99,25 +90,13 @@ async function sendOtpEmail(toEmail, otpCode, userName = null, customSubject = n
   console.log(`Facility  : KSYN Member Gateway`);
   console.log('='.repeat(64) + '\n');
 
-  if (isPlaceholderConfig()) {
-    console.log('[MAIL SANDBOX] Real SMTP credentials not configured (placeholder detected in .env).');
-    console.log(`[MAIL SANDBOX] Verification code [${otpCode}] returned directly to client in dev mode.`);
-    return {
-      success: false,
-      dev_sandbox: true,
-      error: 'SMTP credentials not configured (placeholder in .env)',
-      otpCode
-    };
-  }
-
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('[MAIL] OTP Email sent successfully:', info.messageId);
-    return { success: true, info, otpCode };
+    console.log(`[MAIL SUCCESS] OTP Email sent successfully to ${recipient}: ${info.messageId}`);
+    return { success: true, info };
   } catch (err) {
-    console.warn('[MAIL] Nodemailer Send Notice:', err.message);
-    console.log(`[MAIL RESILIENCE] OTP Code [${otpCode}] logged to console. Evaluator bypass '123456' available.`);
-    return { success: false, dev_sandbox: true, error: err.message, otpCode };
+    console.error(`[MAIL ERROR] Failed to send OTP email to ${recipient}:`, err.message);
+    throw new Error(`Email delivery failed: ${err.message}. Please check your email address.`);
   }
 }
 
@@ -183,17 +162,12 @@ async function sendFreePassAwardEmail(toEmail, applicantName, branchName, passCo
   };
 
   try {
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('[MAIL] Free Pass Award Email sent successfully:', info.messageId);
-      return { success: true, info, passCode };
-    } else {
-      console.log('[MAIL] Nodemailer credentials not configured. Free pass email logged to console.');
-      return { success: true, simulated: true, passCode };
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[MAIL SUCCESS] Free Pass Award Email sent successfully to ${recipient}: ${info.messageId}`);
+    return { success: true, info, passCode };
   } catch (err) {
-    console.warn('[MAIL] Nodemailer Send Warning (logged to console):', err.message);
-    return { success: true, warning: err.message, passCode };
+    console.error(`[MAIL ERROR] Free pass email send failed to ${recipient}:`, err.message);
+    throw err;
   }
 }
 
@@ -359,17 +333,12 @@ Manila, Philippines`,
   };
 
   try {
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('[MAIL] Franchise Discovery Email sent successfully:', info.messageId);
-      return { success: true, info };
-    } else {
-      console.log('[MAIL] Nodemailer credentials not configured. Franchise discovery email logged to console.');
-      return { success: true, simulated: true };
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[MAIL SUCCESS] Franchise Discovery Email sent successfully to ${recipient}: ${info.messageId}`);
+    return { success: true, info };
   } catch (err) {
-    console.warn('[MAIL] Nodemailer Send Warning (logged to console):', err.message);
-    return { success: true, warning: err.message };
+    console.error(`[MAIL ERROR] Franchise discovery email send failed to ${recipient}:`, err.message);
+    throw err;
   }
 }
 
@@ -433,19 +402,12 @@ async function sendTransferCoordinationEmail({
   };
 
   try {
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS && !isPlaceholderConfig()) {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('[MAIL] Inter-branch transfer email sent successfully:', info.messageId);
-      return { success: true, info };
-    } else {
-      console.log('[MAIL SIMULATED] Inter-branch transfer email logged:');
-      console.log(`  To: ${recipientEmail} (${recipientName})`);
-      console.log(`  Subject: ${mailOptions.subject}`);
-      return { success: true, simulated: true };
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[MAIL SUCCESS] Inter-branch transfer email sent successfully to ${recipientEmail}: ${info.messageId}`);
+    return { success: true, info };
   } catch (err) {
-    console.warn('[MAIL ERROR/FALLBACK]:', err.message);
-    return { success: true, warning: err.message };
+    console.error(`[MAIL ERROR] Inter-branch transfer email send failed to ${recipientEmail}:`, err.message);
+    throw err;
   }
 }
 

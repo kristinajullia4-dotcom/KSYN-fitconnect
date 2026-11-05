@@ -870,15 +870,10 @@ async function sendRegistrationOtp(req, res) {
       details: { email: cleanEmail }
     });
 
-    const emailSent = Boolean(mailResult && mailResult.success);
-
     return res.status(200).json({
       success: true,
-      message: emailSent
-        ? 'Verification code sent to your email. Please check your inbox (or spam folder).'
-        : `Verification code generated [${otpCode}].`,
-      email_sent: emailSent,
-      dev_otp: otpCode
+      message: `Verification code sent to ${cleanEmail}. Please check your email inbox and spam folder.`,
+      email_sent: true
     });
   } catch (err) {
     console.error('[sendRegistrationOtp error]:', err);
@@ -1582,16 +1577,10 @@ async function forgotPassword(req, res) {
       details: { email: cleanEmail }
     });
 
-    const isDev = process.env.NODE_ENV !== 'production';
-    const emailSent = Boolean(mailResult && mailResult.success);
-
     return res.status(200).json({
       success: true,
-      message: emailSent
-        ? 'Reset code sent to your email.'
-        : 'Reset code generated (SMTP sandbox active).',
-      email_sent: emailSent,
-      dev_otp: otpCode
+      message: `Password reset code sent to ${cleanEmail}. Please check your email inbox and spam folder.`,
+      email_sent: true
     });
   } catch (err) {
     console.error('[forgotPassword error]:', err);

@@ -196,7 +196,7 @@ export default function GoogleOnboardingModal({
       setOtpTargetName(targetName || cleanEmail.split('@')[0]);
       setOtpCode('');
       setOtpCountdown(60);
-      setDevOtp(otpData.dev_otp || '123456');
+      setDevOtp('');
       setOtpMessage(otpData.message || `Verification code sent to ${cleanEmail}`);
       setIsOtpMode(true);
     } catch (err) {
@@ -219,7 +219,7 @@ export default function GoogleOnboardingModal({
       });
       const data = await res.json();
       setOtpCountdown(60);
-      setDevOtp(data.dev_otp || '123456');
+      setDevOtp('');
       setOtpMessage(data.message || `New code dispatched to ${otpTargetEmail}`);
     } catch (err) {
       setFormError(err.message || 'Failed to resend verification code.');

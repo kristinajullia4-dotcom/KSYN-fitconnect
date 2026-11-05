@@ -671,15 +671,11 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
         branch_id: regBranchId,
         username: regUsername.trim()
       }));
-      if (data.dev_otp) {
-        setRegDevOtp(data.dev_otp);
-        setOtpValues(String(data.dev_otp).split(''));
-      }
+      setOtpValues(['', '', '', '', '', '']);
+      setRegDevOtp(null);
       setOtpError(null);
-      const msg = data.email_sent
-        ? `Verification code dispatched to ${regEmail.trim()}`
-        : (data.dev_otp ? `Verification code generated (${data.dev_otp}).` : 'Verification code dispatched to your registered email.');
-      toast.info(msg, data.email_sent ? 'OTP Dispatched' : 'Code Generated');
+      const msg = `Verification code sent to ${regEmail.trim()}. Please check your email inbox and spam folder.`;
+      toast.info(msg, 'Email Dispatched');
       setTimeout(() => otpInputsRef.current[0]?.focus(), 100);
     } catch (err) {
       setRegError(err.message || 'Failed to send verification code. Please check your email.');
@@ -764,13 +760,9 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
       }
 
       setResendCountdown(60);
-      if (data.dev_otp) {
-        setRegDevOtp(data.dev_otp);
-        setOtpValues(String(data.dev_otp).split(''));
-      }
-      const msg = data.email_sent
-        ? 'A fresh 6-digit code has been sent to your email.'
-        : (data.dev_otp ? `Fresh verification code generated (${data.dev_otp}).` : 'Fresh verification code dispatched to your registered email.');
+      setOtpValues(['', '', '', '', '', '']);
+      setRegDevOtp(null);
+      const msg = `Fresh verification code sent to ${regEmail.trim()}. Please check your email inbox and spam folder.`;
       setResendNotice(msg);
       toast.info(msg, 'Code Resent');
       setTimeout(() => setResendNotice(null), 5000);
@@ -912,18 +904,11 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
 
       setRecoveryStep('verify');
       setRecoveryResendCountdown(60);
-      if (data.dev_otp) {
-        setRecoveryDevOtp(data.dev_otp);
-        setRecoveryOtpValues(String(data.dev_otp).split(''));
-      } else {
-        setRecoveryDevOtp(null);
-        setRecoveryOtpValues(['', '', '', '', '', '']);
-      }
-      const msg = data.email_sent
-        ? `Reset code sent to ${recoveryEmail.trim()}`
-        : (data.dev_otp ? `Reset code generated (${data.dev_otp}).` : 'Reset code dispatched to your registered email.');
+      setRecoveryDevOtp(null);
+      setRecoveryOtpValues(['', '', '', '', '', '']);
+      const msg = `Password reset code sent to ${recoveryEmail.trim()}. Please check your email inbox and spam folder.`;
       setRecoveryResendNotice(msg);
-      toast.info(msg, data.email_sent ? 'Password Reset OTP' : 'Code Generated');
+      toast.info(msg, 'Password Reset OTP Sent');
       setTimeout(() => setRecoveryResendNotice(null), 6000);
       setTimeout(() => recoveryOtpInputsRef.current[0]?.focus(), 100);
     } catch (err) {
@@ -953,16 +938,9 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
       }
 
       setRecoveryResendCountdown(60);
-      if (data.dev_otp) {
-        setRecoveryDevOtp(data.dev_otp);
-        setRecoveryOtpValues(String(data.dev_otp).split(''));
-      } else {
-        setRecoveryDevOtp(null);
-        setRecoveryOtpValues(['', '', '', '', '', '']);
-      }
-      const msg = data.email_sent
-        ? 'A fresh 6-digit code has been sent to your email.'
-        : (data.dev_otp ? `Fresh reset code generated (${data.dev_otp}).` : 'Fresh reset code dispatched to your registered email.');
+      setRecoveryDevOtp(null);
+      setRecoveryOtpValues(['', '', '', '', '', '']);
+      const msg = `Fresh password reset code sent to ${recoveryEmail.trim()}. Please check your email inbox and spam folder.`;
       setRecoveryResendNotice(msg);
       toast.info(msg, 'Code Resent');
       setTimeout(() => setRecoveryResendNotice(null), 6000);
