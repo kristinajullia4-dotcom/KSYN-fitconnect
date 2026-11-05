@@ -45,14 +45,109 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Verify connection on module load
-transporter.verify((err, success) => {
-  if (err) {
-    console.warn('[KSYN Mailer Warning] SMTP Gmail connection verify notice:', err.message);
-  } else {
-    console.log('[KSYN Mailer] Live Gmail SMTP connection verified successfully (IPv4)! Ready to dispatch emails.');
+// Verify connection on module load if not in API-only mode
+if (!process.env.BREVO_API_KEY && !process.env.RESEND_API_KEY) {
+  transporter.verify((err, success) => {
+    if (err) {
+      console.warn('[KSYN Mailer Warning] SMTP Gmail connection notice:', err.message);
+    } else {
+      console.log('[KSYN Mailer] Live Gmail SMTP connection verified successfully (IPv4)! Ready to dispatch emails.');
+    }
+  });
+}
+
+/**
+ * Universal Email Dispatcher
+ * Automatically uses HTTPS REST API (Port 443 - Brevo or Resend) when configured,
+ * completely bypassing Render Free tier SMTP firewall blocks!
+ */
+async function dispatchEmail(options) {
+  const brevoApiKey = (process.env.BREVO_API_KEY || '').trim();
+  const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
+  const senderEmail = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
+
+  // 1. Brevo HTTPS API (Port 443 - Guaranteed free cloud delivery to any inbox)
+  if (brevoApiKey) {
+    try {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': brevoApiKey,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'KSYN Fitness', email: senderEmail },
+          to: [{ email: options.to, name: options.toName || options.to.split('@')[0] }],
+          replyTo: options.replyTo ? { email: options.replyTo } : { email: senderEmail },
+          subject: options.subject,
+          htmlContent: options.html,
+          textContent: options.text
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Brevo API HTTP ${response.status}`);
+      }
+      console.log(`[MAIL SUCCESS via Brevo HTTPS] Email delivered to ${options.to} (MessageId: ${data.messageId})`);
+      return { success: true, provider: 'brevo', messageId: data.messageId };
+    } catch (brevoErr) {
+      console.error('[Brevo HTTPS Error]:', brevoErr.message);
+      if (!resendApiKey) throw brevoErr;
+    }
   }
-});
+
+  // 2. Resend HTTPS API (Port 443 - Sub-second delivery)
+  if (resendApiKey) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'KSYN Fitness <onboarding@resend.dev>',
+          to: [options.to],
+          reply_to: options.replyTo || senderEmail,
+          subject: options.subject,
+          html: options.html,
+          text: options.text
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Resend API HTTP ${response.status}`);
+      }
+      console.log(`[MAIL SUCCESS via Resend HTTPS] Email delivered to ${options.to} (MessageId: ${data.id})`);
+      return { success: true, provider: 'resend', messageId: data.id };
+    } catch (resendErr) {
+      console.error('[Resend HTTPS Error]:', resendErr.message);
+      throw resendErr;
+    }
+  }
+
+  // 3. Fallback: SMTP via Google (Port 465) for local / paid / unblocked environments
+  try {
+    const info = await transporter.sendMail({
+      from: `"KSYN Fitness" <${senderEmail}>`,
+      to: options.to,
+      replyTo: options.replyTo || senderEmail,
+      subject: options.subject,
+      text: options.text,
+      html: options.html
+    });
+    console.log(`[MAIL SUCCESS via SMTP] Email delivered to ${options.to} (MessageId: ${info.messageId})`);
+    return { success: true, provider: 'smtp', messageId: info.messageId };
+  } catch (smtpErr) {
+    console.error(`[SMTP ERROR on ${options.to}]:`, smtpErr.message);
+    throw new Error(
+      `Email delivery timed out (${smtpErr.message}). Render Free Tier blocks outbound SMTP ports 465/587. Please add your BREVO_API_KEY in Render Environment tab to dispatch via HTTPS Port 443.`
+    );
+  }
+}
 
 /**
  * Send 6-digit OTP verification email
@@ -109,14 +204,13 @@ async function sendOtpEmail(toEmail, otpCode, userName = null, customSubject = n
   console.log(`Facility  : KSYN Member Gateway`);
   console.log('='.repeat(64) + '\n');
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[MAIL SUCCESS] OTP Email sent successfully to ${recipient}: ${info.messageId}`);
-    return { success: true, info };
-  } catch (err) {
-    console.error(`[MAIL ERROR] Failed to send OTP email to ${recipient}:`, err.message);
-    throw new Error(`Email delivery failed: ${err.message}. Please check your email address.`);
-  }
+  return await dispatchEmail({
+    to: recipient,
+    toName: userName,
+    subject: subject,
+    text: `Your KSYN Fitness verification code is: ${otpCode}. This code will expire in 10 minutes.`,
+    html: mailOptions.html
+  });
 }
 
 /**
@@ -180,14 +274,14 @@ async function sendFreePassAwardEmail(toEmail, applicantName, branchName, passCo
     `
   };
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[MAIL SUCCESS] Free Pass Award Email sent successfully to ${recipient}: ${info.messageId}`);
-    return { success: true, info, passCode };
-  } catch (err) {
-    console.error(`[MAIL ERROR] Free pass email send failed to ${recipient}:`, err.message);
-    throw err;
-  }
+  const result = await dispatchEmail({
+    to: recipient,
+    toName: applicantName,
+    subject: subject,
+    text: mailOptions.text,
+    html: mailOptions.html
+  });
+  return { success: true, ...result, passCode };
 }
 
 /**
@@ -351,14 +445,14 @@ Manila, Philippines`,
     `
   };
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[MAIL SUCCESS] Franchise Discovery Email sent successfully to ${recipient}: ${info.messageId}`);
-    return { success: true, info };
-  } catch (err) {
-    console.error(`[MAIL ERROR] Franchise discovery email send failed to ${recipient}:`, err.message);
-    throw err;
-  }
+  return await dispatchEmail({
+    to: recipient,
+    toName: applicantName,
+    replyTo: replyToEmail,
+    subject: `KSYN Fitness Franchise — Discovery Meeting Invitation (${applicantName})`,
+    text: mailOptions.text,
+    html: mailOptions.html
+  });
 }
 
 /**
@@ -420,14 +514,13 @@ async function sendTransferCoordinationEmail({
     `
   };
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[MAIL SUCCESS] Inter-branch transfer email sent successfully to ${recipientEmail}: ${info.messageId}`);
-    return { success: true, info };
-  } catch (err) {
-    console.error(`[MAIL ERROR] Inter-branch transfer email send failed to ${recipientEmail}:`, err.message);
-    throw err;
-  }
+  return await dispatchEmail({
+    to: recipientEmail,
+    toName: recipientName,
+    subject: mailOptions.subject,
+    text: mailOptions.text,
+    html: mailOptions.html
+  });
 }
 
 module.exports = {
