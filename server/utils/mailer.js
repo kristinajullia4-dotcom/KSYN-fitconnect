@@ -68,6 +68,7 @@ async function dispatchEmail(options) {
 
   // 1. Brevo HTTPS API (Port 443 - Guaranteed free cloud delivery to any inbox)
   if (brevoApiKey) {
+    const brevoSender = (process.env.BREVO_SENDER_EMAIL || 'kristinajullia4@gmail.com').trim();
     try {
       const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
@@ -77,9 +78,9 @@ async function dispatchEmail(options) {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          sender: { name: 'KSYN Fitness', email: senderEmail },
+          sender: { name: 'KSYN Fitness', email: brevoSender },
           to: [{ email: options.to, name: options.toName || options.to.split('@')[0] }],
-          replyTo: options.replyTo ? { email: options.replyTo } : { email: senderEmail },
+          replyTo: options.replyTo ? { email: options.replyTo } : { email: brevoSender },
           subject: options.subject,
           htmlContent: options.html,
           textContent: options.text
