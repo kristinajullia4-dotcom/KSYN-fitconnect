@@ -39,6 +39,7 @@ router.get('/mail-diagnostic', async (req, res) => {
   const resendKey = (process.env.RESEND_API_KEY || '').trim();
   const emailUser = (process.env.EMAIL_USER || 'jmarquez.k12150582@umak.edu.ph').trim();
   const targetEmail = (req.query.to || 'kristinajullia4@gmail.com').trim().toLowerCase();
+  const forceProvider = req.query.provider; // e.g. 'smtp'
 
   const diagnostic = {
     timestamp: new Date().toISOString(),
@@ -47,7 +48,8 @@ router.get('/mail-diagnostic', async (req, res) => {
       brevo_key_preview: brevoKey ? brevoKey.substring(0, 15) + '...' : null,
       has_resend_key: !!resendKey,
       email_user: emailUser,
-      node_env: process.env.NODE_ENV || 'development'
+      node_env: process.env.NODE_ENV || 'development',
+      force_provider: forceProvider || 'auto'
     },
     test_recipient: targetEmail,
     test_result: null,
@@ -55,9 +57,20 @@ router.get('/mail-diagnostic', async (req, res) => {
   };
 
   try {
-    const { sendOtpEmail } = require('../utils/mailer');
-    const result = await sendOtpEmail(targetEmail, '888999', 'KSYN Diagnostic Runner', 'KSYN Fitness - Live Cloud Email Verification');
-    diagnostic.test_result = result;
+    const { sendOtpEmail, transporter } = require('../utils/mailer');
+    if (forceProvider === 'smtp') {
+      const info = await transporter.sendMail({
+        from: `"KSYN Fitness" <${emailUser}>`,
+        to: targetEmail,
+        subject: 'KSYN Direct SMTP Test',
+        text: 'Direct Google Workspace SMTP delivery verification.',
+        html: '<p>Direct Google Workspace SMTP delivery verification.</p>'
+      });
+      diagnostic.test_result = { success: true, provider: 'direct-smtp', messageId: info.messageId };
+    } else {
+      const result = await sendOtpEmail(targetEmail, '888999', 'KSYN Diagnostic Runner', 'KSYN Fitness - Live Cloud Email Verification');
+      diagnostic.test_result = result;
+    }
     return res.json({ success: true, diagnostic });
   } catch (err) {
     diagnostic.test_error = {
