@@ -66,7 +66,38 @@ async function dispatchEmail(options) {
   const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
   const senderEmail = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
 
-  // 1. Brevo HTTPS API (Port 443 - Guaranteed free cloud delivery to any inbox)
+  // 1. Resend HTTPS API (Port 443 - Sub-second delivery, zero compliance hold)
+  if (resendApiKey) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'KSYN Fitness <onboarding@resend.dev>',
+          to: [options.to],
+          reply_to: options.replyTo || senderEmail,
+          subject: options.subject,
+          html: options.html,
+          text: options.text
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Resend API HTTP ${response.status}`);
+      }
+      console.log(`[MAIL SUCCESS via Resend HTTPS] Email delivered to ${options.to} (MessageId: ${data.id})`);
+      return { success: true, provider: 'resend', messageId: data.id };
+    } catch (resendErr) {
+      console.warn('[Resend HTTPS Warning - Auto Fallback]:', resendErr.message);
+      // Gracefully fall through to Brevo or Google SMTP rather than aborting!
+    }
+  }
+
+  // 2. Brevo HTTPS API (Port 443 - Guaranteed free cloud delivery to any inbox)
   if (brevoApiKey) {
     const brevoSender = (process.env.BREVO_SENDER_EMAIL || 'kristinajullia4@gmail.com').trim();
     try {
@@ -95,37 +126,6 @@ async function dispatchEmail(options) {
       return { success: true, provider: 'brevo', messageId: data.messageId };
     } catch (brevoErr) {
       console.warn('[Brevo HTTPS Warning - Auto Fallback]:', brevoErr.message);
-      // Gracefully fall through to Resend or Google SMTP rather than aborting!
-    }
-  }
-
-  // 2. Resend HTTPS API (Port 443 - Sub-second delivery)
-  if (resendApiKey) {
-    try {
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: 'KSYN Fitness <onboarding@resend.dev>',
-          to: [options.to],
-          reply_to: options.replyTo || senderEmail,
-          subject: options.subject,
-          html: options.html,
-          text: options.text
-        })
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || `Resend API HTTP ${response.status}`);
-      }
-      console.log(`[MAIL SUCCESS via Resend HTTPS] Email delivered to ${options.to} (MessageId: ${data.id})`);
-      return { success: true, provider: 'resend', messageId: data.id };
-    } catch (resendErr) {
-      console.warn('[Resend HTTPS Warning - Auto Fallback]:', resendErr.message);
       // Gracefully fall through to Google SMTP rather than aborting!
     }
   }
