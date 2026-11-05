@@ -1,3 +1,7 @@
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const nodemailer = require('nodemailer');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -12,8 +16,13 @@ function isPlaceholderConfig() {
 }
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  family: 4, // CRITICAL: forces IPv4 to prevent connection timeouts on cloud container networks (Render/Docker)
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  lookup: (hostname, options, callback) => {
+    // Explicitly enforce IPv4 resolution to prevent ENETUNREACH on Render/Docker cloud networks
+    return dns.lookup(hostname, { family: 4 }, callback);
+  },
   auth: {
     user: (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim(),
     pass: (process.env.EMAIL_PASS || DEFAULT_EMAIL_PASS).trim()
