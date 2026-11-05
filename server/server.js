@@ -2,6 +2,16 @@ const dns = require('dns');
 if (dns.setDefaultResultOrder) {
   dns.setDefaultResultOrder('ipv4first');
 }
+// Enforce IPv4 on cloud container networks where IPv6 is not routed (e.g. Render/Docker)
+dns.resolve6 = (h, o, cb) => (typeof o === 'function' ? o : cb)(null, []);
+if (dns.Resolver && dns.Resolver.prototype) {
+  dns.Resolver.prototype.resolve6 = function(h, o, cb) {
+    (typeof o === 'function' ? o : cb)(null, []);
+  };
+}
+if (dns.promises) {
+  dns.promises.resolve6 = async () => [];
+}
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 require('dotenv').config();

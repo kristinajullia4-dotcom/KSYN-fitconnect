@@ -2,6 +2,16 @@ const dns = require('dns');
 if (dns.setDefaultResultOrder) {
   dns.setDefaultResultOrder('ipv4first');
 }
+// Permanently disable IPv6 DNS queries in Nodemailer resolver to prevent ENETUNREACH on Render/Docker
+dns.resolve6 = (h, o, cb) => (typeof o === 'function' ? o : cb)(null, []);
+if (dns.Resolver && dns.Resolver.prototype) {
+  dns.Resolver.prototype.resolve6 = function(h, o, cb) {
+    (typeof o === 'function' ? o : cb)(null, []);
+  };
+}
+if (dns.promises) {
+  dns.promises.resolve6 = async () => [];
+}
 const nodemailer = require('nodemailer');
 const path = require('path');
 const dotenv = require('dotenv');
