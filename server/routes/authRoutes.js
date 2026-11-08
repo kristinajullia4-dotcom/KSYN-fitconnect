@@ -35,7 +35,8 @@ router.post('/google/complete', completeGoogleRegistration);
 
 // Email System Diagnostic Endpoint
 router.get('/mail-diagnostic', async (req, res) => {
-  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || '').trim();
+  const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSBTg9ex_epmkEP01lHqQLsiALhGJ5kK4hGq_TH46udKM8f4tc14Ci-iNFW8T49ZlD/exec';
+  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || DEFAULT_GOOGLE_SCRIPT_URL).trim();
   const brevoKey = (process.env.BREVO_API_KEY || '').trim();
   const resendKey = (process.env.RESEND_API_KEY || '').trim();
   const emailUser = (process.env.EMAIL_USER || 'jmarquez.k12150582@umak.edu.ph').trim();

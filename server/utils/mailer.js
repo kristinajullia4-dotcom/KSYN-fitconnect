@@ -62,7 +62,8 @@ if (!process.env.BREVO_API_KEY && !process.env.RESEND_API_KEY) {
  * completely bypassing Render Free tier SMTP firewall blocks!
  */
 async function dispatchEmail(options) {
-  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || '').trim();
+  const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSBTg9ex_epmkEP01lHqQLsiALhGJ5kK4hGq_TH46udKM8f4tc14Ci-iNFW8T49ZlD/exec';
+  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || DEFAULT_GOOGLE_SCRIPT_URL).trim();
   const brevoApiKey = (process.env.BREVO_API_KEY || '').trim();
   const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
   const senderEmail = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
