@@ -550,11 +550,91 @@ async function sendTransferCoordinationEmail({
   });
 }
 
+/**
+ * Send Automated Franchise Inquiry Acknowledgment & Prospectus Packet to Applicant
+ */
+async function sendFranchiseInquiryEmail({ toEmail, applicantName, desiredLocation, proposedCapital, notes }) {
+  const recipient = toEmail ? toEmail.trim() : '';
+  const subject = `KSYN Fitness Franchise — Official Inquiry Acknowledgment & Prospectus (${applicantName})`;
+
+  const mailOptions = {
+    from: `"KSYN Franchise Expansion" <${(process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim()}>`,
+    to: recipient,
+    subject: subject,
+    text: `Hello ${applicantName}, thank you for your franchise inquiry for ${desiredLocation || 'KSYN Fitness'}. Our corporate expansion team will contact you within 24 hours.`,
+    html: `
+      <div style="background-color: #0d0f12; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 36px 20px; border-radius: 8px; max-width: 580px; margin: 0 auto; border: 1px solid #262a30;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h1 style="color: #F5C518; font-size: 26px; font-weight: 900; letter-spacing: 3px; margin: 0; text-transform: uppercase;">KSYN FITNESS</h1>
+          <p style="color: #9ca3af; font-size: 11px; margin-top: 6px; text-transform: uppercase; letter-spacing: 1.5px;">Corporate Franchise & Commercial Licensing Network</p>
+        </div>
+
+        <div style="background-color: #14171d; border-radius: 8px; padding: 26px 22px; border: 1px solid #2e333d;">
+          <div style="display: inline-block; background: rgba(245, 197, 24, 0.15); color: #F5C518; border: 1px solid rgba(245, 197, 24, 0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px;">
+            Application Received &bull; Under Commercial Review
+          </div>
+
+          <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 12px 0;">Franchise Inquiry Acknowledged</h2>
+          <p style="color: #d1d5db; font-size: 13.5px; line-height: 1.6; margin: 0 0 14px 0;">
+            Hello <strong>${applicantName}</strong>,
+          </p>
+          <p style="color: #9ca3af; font-size: 13px; line-height: 1.6; margin: 0 0 16px 0;">
+            Thank you for your commercial interest in bringing KSYN High-Performance Fitness to your target territory. We have received your preliminary expansion inquiry and territory reservation interest.
+          </p>
+
+          <div style="background: #0a0c10; padding: 16px; border-radius: 6px; border: 1px solid #262a30; margin-bottom: 18px; font-size: 12.5px; line-height: 1.8;">
+            <div><strong style="color: #9ca3af;">Candidate Name:</strong> <span style="color: #ffffff; font-weight: 600;">${applicantName}</span></div>
+            <div><strong style="color: #9ca3af;">Target Commercial Hub:</strong> <span style="color: #F5C518; font-weight: 700;">${desiredLocation || 'Metro Manila'}</span></div>
+            <div><strong style="color: #9ca3af;">Capital Investment Range:</strong> <span style="color: #86efac; font-weight: 600;">${proposedCapital || 'Standard Commercial Tier'}</span></div>
+            ${notes ? `<div><strong style="color: #9ca3af;">Applicant Notes:</strong> <span style="color: #d1d5db;">${notes}</span></div>` : ''}
+          </div>
+
+          <div style="color: #e5e7eb; font-size: 13px; font-weight: 700; margin-bottom: 10px;">
+            What Happens Next (Our 6-Step Onboarding Roadmap):
+          </div>
+          <ol style="color: #9ca3af; font-size: 12px; line-height: 1.7; padding-left: 20px; margin: 0 0 18px 0;">
+            <li><strong>Territory Screening:</strong> Feasibility and commercial density assessment.</li>
+            <li><strong>Discovery Meeting:</strong> Brand alignment and unit economics briefing.</li>
+            <li><strong>Site Inspection:</strong> Foot traffic and structural audit (450–900+ sqm).</li>
+            <li><strong>Licensing Agreement:</strong> Contract execution and territory exclusivity.</li>
+            <li><strong>Fit-Out & Installation:</strong> Equipment delivery, turnstiles, and POS setup.</li>
+            <li><strong>Grand Opening:</strong> Staff onboarding, digital pre-selling, and launch.</li>
+          </ol>
+
+          <p style="color: #9ca3af; font-size: 12px; line-height: 1.5; margin: 0 0 16px 0;">
+            Our Franchise Development Director will reach out within <strong>24 to 48 hours</strong> to coordinate your introductory Discovery Call.
+          </p>
+
+          <p style="color: #9ca3af; font-size: 12px; margin: 0; line-height: 1.4;">
+            Best regards,<br/>
+            <strong style="color: #ffffff;">KSYN Franchise Expansion Directorate</strong><br/>
+            <span style="font-size: 11px; color: #6b7280;">Corporate Boardroom &bull; Taguig, Manila</span>
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #6b7280; font-size: 11px; line-height: 1.4;">
+          KSYN Enterprise Gym & Franchise Network &bull; Manila, Philippines<br/>
+          &copy; ${new Date().getFullYear()} KSYN Fitness Inc. All applications remain confidential under DPA Section 11.
+        </div>
+      </div>
+    `
+  };
+
+  return await dispatchEmail({
+    to: recipient,
+    toName: applicantName,
+    subject: mailOptions.subject,
+    text: mailOptions.text,
+    html: mailOptions.html
+  });
+}
+
 module.exports = {
   transporter,
   sendOtpEmail,
   sendFreePassAwardEmail,
   sendFranchiseDiscoveryEmail,
+  sendFranchiseInquiryEmail,
   sendTransferCoordinationEmail,
   isPlaceholderConfig
 };

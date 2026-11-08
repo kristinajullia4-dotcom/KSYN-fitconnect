@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { memoryStore, query, isPostgres, saveStore } = require('../config/db');
 const { logAuditEvent } = require('../middleware/auditLogger');
-const { sendFranchiseDiscoveryEmail } = require('../utils/mailer');
+const { sendFranchiseDiscoveryEmail, sendFranchiseInquiryEmail } = require('../utils/mailer');
 
 // Root Super Admin identifier protected from demotion or suspension
 const ROOT_SUPER_ADMIN_ID = 'u0000000-0000-0000-0000-000000000001';
@@ -997,10 +997,26 @@ async function createFranchiseInquiry(req, res) {
       details: { applicant: newInquiry.fullName, location: newInquiry.desiredLocation }
     });
 
+    // Send automated acknowledgment & prospectus email to applicant
+    let emailResult = null;
+    try {
+      emailResult = await sendFranchiseInquiryEmail({
+        toEmail: newInquiry.email,
+        applicantName: newInquiry.fullName,
+        desiredLocation: newInquiry.desiredLocation,
+        proposedCapital: newInquiry.proposedCapital,
+        notes: newInquiry.notes
+      });
+      console.log(`[createFranchiseInquiry] Automated confirmation email dispatched to ${newInquiry.email}:`, emailResult?.success);
+    } catch (mailErr) {
+      console.warn(`[createFranchiseInquiry] Automated confirmation email error for ${newInquiry.email}:`, mailErr.message);
+    }
+
     res.status(201).json({
       success: true,
-      message: 'Franchise inquiry received. KSYN Franchise Director will contact you within 24 hours.',
-      inquiry: newInquiry
+      message: 'Franchise inquiry received. Confirmation prospectus sent to your email and KSYN Franchise Director will contact you within 24 hours.',
+      inquiry: newInquiry,
+      emailSent: emailResult?.success || false
     });
   } catch (err) {
     console.error('[createFranchiseInquiry Error]:', err);

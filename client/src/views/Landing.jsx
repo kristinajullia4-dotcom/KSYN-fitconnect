@@ -25,8 +25,11 @@ import {
   Heart,
   CalendarCheck,
   Ticket,
+  AlertCircle,
+  Loader2,
   X
 } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 import AuthModal from '../components/AuthModal';
 import FranchiseTermsModal from '../components/FranchiseTermsModal';
 import FreePassModal from '../components/FreePassModal';
@@ -38,6 +41,7 @@ import CookieConsentBanner from '../components/CookieConsentBanner';
 import { BRANCH_DIRECTORY, DISTRICT_TABS } from '../config/branchData';
 
 export default function Landing({ onNavigateLogin, onNavigateRegister }) {
+  const { toast } = useToast();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState('register');
   const [selectedDistrict, setSelectedDistrict] = useState('All Districts');
@@ -68,6 +72,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showEulaModal, setShowEulaModal] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [inquirySubmitting, setInquirySubmitting] = useState(false);
+  const [inquiryError, setInquiryError] = useState('');
 
   // Free Pass 1-Day Trial states
   const [showFreePassModal, setShowFreePassModal] = useState(false);
@@ -92,39 +98,91 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    if (!franchiseForm.fullName || !franchiseForm.email || !franchiseForm.phone) {
-      alert('Please fill out all required fields.');
+    setInquiryError('');
+
+    if (!franchiseForm.fullName || !franchiseForm.fullName.trim()) {
+      const msg = 'Please enter your Full Name.';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Required Field');
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!franchiseForm.email || !emailRegex.test(franchiseForm.email.trim())) {
+      const msg = 'Please enter a valid Email Address (e.g., investor@example.com).';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Valid Email Required');
+      return;
+    }
+
+    if (!franchiseForm.phone || !franchiseForm.phone.trim()) {
+      const msg = 'Please enter your Contact Number.';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Required Field');
+      return;
+    }
+
+    if (franchiseForm.targetLocation?.includes('Other') && (!franchiseForm.customRegionDetail || !franchiseForm.customRegionDetail.trim())) {
+      const msg = 'Please specify your target city or preferred region.';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Location Details Required');
+      return;
+    }
+
     if (!agreedToTerms) {
-      alert('Please accept the KSYN Franchise Terms & Conditions before submitting.');
+      const msg = 'Please check the box to accept the KSYN Franchise Terms & Conditions.';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Terms Required');
       return;
     }
+
     if (!agreedToPrivacy) {
-      alert('Please acknowledge and consent to the KSYN Privacy Policy (RA 10173).');
+      const msg = 'Please check the box to consent to the KSYN Privacy Policy (RA 10173).';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Privacy Consent Required');
       return;
     }
+
+    setInquirySubmitting(true);
+
     try {
-      await fetch('/api/franchise-inquiry', {
+      const response = await fetch('/api/franchise-inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fullName: franchiseForm.fullName,
-          email: franchiseForm.email,
-          phone: franchiseForm.phone,
+          fullName: franchiseForm.fullName.trim(),
+          email: franchiseForm.email.trim(),
+          phone: franchiseForm.phone.trim(),
           desiredLocation: franchiseForm.customRegionDetail
-            ? `${franchiseForm.targetLocation} - ${franchiseForm.customRegionDetail}`
+            ? `${franchiseForm.targetLocation} - ${franchiseForm.customRegionDetail.trim()}`
             : franchiseForm.targetLocation,
           targetLocation: franchiseForm.targetLocation,
-          customRegionDetail: franchiseForm.customRegionDetail,
+          customRegionDetail: franchiseForm.customRegionDetail ? franchiseForm.customRegionDetail.trim() : '',
           proposedCapital: franchiseForm.investmentCapital,
-          notes: franchiseForm.notes
+          notes: franchiseForm.notes ? franchiseForm.notes.trim() : ''
         })
       });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || `Server responded with status ${response.status}`);
+      }
+
+      toast?.success?.(
+        'Franchise inquiry submitted! Check your email for the official prospectus packet.',
+        'Inquiry Acknowledged'
+      );
+      setFormSubmitted(true);
+      setInquiryError('');
     } catch (err) {
-      console.warn('Franchise inquiry submit:', err);
+      console.error('[Franchise inquiry submit error]:', err);
+      const msg = err.message || 'Unable to submit your inquiry at this moment. Please check your connection and try again.';
+      setInquiryError(msg);
+      toast?.error?.(msg, 'Submission Failed');
+    } finally {
+      setInquirySubmitting(false);
     }
-    setFormSubmitted(true);
   };
 
   return (
@@ -1978,16 +2036,19 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                 <button
                   onClick={() => {
                     setFormSubmitted(false);
+                    setInquiryError('');
+                    setInquirySubmitting(false);
+                    setAgreedToTerms(false);
+                    setAgreedToPrivacy(false);
                     setFranchiseForm({
                       fullName: '',
                       email: '',
                       phone: '',
                       targetLocation: 'Makati CBD',
                       customRegionDetail: '',
-                      investmentCapital: '₱4,000,000 – ₱6,000,000',
+                      investmentCapital: '₱4,000,000 – ₱6,000,000 (450–600 sqm Standard Commercial Hub)',
                       notes: ''
                     });
-                    setAgreedToTerms(false);
                   }}
                   className="ksyn-btn ksyn-btn-outline"
                   style={{ padding: '8px 20px', fontSize: '0.8125rem', borderColor: '#333' }}
@@ -1996,7 +2057,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleInquirySubmit}>
+              <form onSubmit={handleInquirySubmit} noValidate>
                 <div style={{ marginBottom: '24px' }}>
                   <h3 style={{ fontSize: '1.375rem', fontWeight: 800, marginBottom: '6px' }}>
                     Tell us more about your interest in opening a KSYN Fitness franchise with us
@@ -2282,19 +2343,57 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                     <strong style={{ color: '#d1d5db' }}>Commercial Disclosure:</strong> Historical figures, capital investment ranges, and revenue splits are illustrative for preliminary evaluation and do not constitute a financial guarantee of future profits. Territory reservations are subject to feasibility review and signed licensing agreements.
                   </div>
 
+                  {inquiryError && (
+                    <div
+                      role="alert"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        background: 'rgba(239, 68, 68, 0.12)',
+                        border: '1px solid rgba(239, 68, 68, 0.4)',
+                        borderRadius: '8px',
+                        padding: '12px 14px',
+                        color: '#fca5a5',
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                        lineHeight: 1.4,
+                        marginTop: '4px'
+                      }}
+                    >
+                      <AlertCircle size={18} style={{ color: '#ef4444', flexShrink: 0 }} />
+                      <span>{inquiryError}</span>
+                    </div>
+                  )}
+
                   <button
                     id="submit-franchise-inquiry-btn"
                     type="submit"
+                    disabled={inquirySubmitting}
                     className="ksyn-btn ksyn-btn-gold"
                     style={{
                       width: '100%',
                       padding: '14px',
                       fontSize: '1rem',
                       fontWeight: 800,
-                      marginTop: '8px'
+                      marginTop: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      cursor: inquirySubmitting ? 'not-allowed' : 'pointer',
+                      opacity: inquirySubmitting ? 0.75 : 1
                     }}
                   >
-                    <Send size={16} /> Submit Franchise Inquiry
+                    {inquirySubmitting ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" /> Submitting Inquiry...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} /> Submit Franchise Inquiry
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
