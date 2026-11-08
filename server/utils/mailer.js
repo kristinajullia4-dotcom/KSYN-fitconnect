@@ -62,9 +62,34 @@ if (!process.env.BREVO_API_KEY && !process.env.RESEND_API_KEY) {
  * completely bypassing Render Free tier SMTP firewall blocks!
  */
 async function dispatchEmail(options) {
+  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || '').trim();
   const brevoApiKey = (process.env.BREVO_API_KEY || '').trim();
   const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
   const senderEmail = (process.env.EMAIL_USER || DEFAULT_EMAIL_USER).trim();
+
+  // 0. Google Apps Script HTTPS Relay (Port 443 - Native Gmail delivery to ANY inbox worldwide with zero holds)
+  if (googleScriptUrl) {
+    try {
+      const response = await fetch(googleScriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Google Apps Script handles text/plain without CORS preflight
+        body: JSON.stringify({
+          to: options.to,
+          subject: options.subject,
+          html: options.html,
+          text: options.text
+        }),
+        redirect: 'follow'
+      });
+      const data = await response.json();
+      if (data && data.success) {
+        console.log(`[MAIL SUCCESS via Google Apps Script] Delivered to ${options.to}`);
+        return { success: true, provider: 'google-apps-script', messageId: data.messageId || 'gas-' + Date.now() };
+      }
+    } catch (gasErr) {
+      console.warn('[Google Apps Script Warning - Falling back]:', gasErr.message);
+    }
+  }
 
   // 1. Resend HTTPS API (Port 443 - Sub-second delivery, zero compliance hold)
   if (resendApiKey) {

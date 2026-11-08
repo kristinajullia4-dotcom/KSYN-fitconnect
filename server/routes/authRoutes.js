@@ -35,6 +35,7 @@ router.post('/google/complete', completeGoogleRegistration);
 
 // Email System Diagnostic Endpoint
 router.get('/mail-diagnostic', async (req, res) => {
+  const googleScriptUrl = (process.env.GOOGLE_SCRIPT_URL || '').trim();
   const brevoKey = (process.env.BREVO_API_KEY || '').trim();
   const resendKey = (process.env.RESEND_API_KEY || '').trim();
   const emailUser = (process.env.EMAIL_USER || 'jmarquez.k12150582@umak.edu.ph').trim();
@@ -44,6 +45,7 @@ router.get('/mail-diagnostic', async (req, res) => {
   const diagnostic = {
     timestamp: new Date().toISOString(),
     environment: {
+      has_google_script_url: !!googleScriptUrl,
       has_brevo_key: !!brevoKey,
       brevo_key_preview: brevoKey ? brevoKey.substring(0, 15) + '...' : null,
       has_resend_key: !!resendKey,
