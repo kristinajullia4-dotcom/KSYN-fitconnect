@@ -71,6 +71,7 @@ import SubscriptionBillingCard from '../components/SubscriptionBillingCard';
 import { broadcastMemberUpgrade, broadcastClassBooking } from '../utils/portalSync';
 import { saveVerifiedGoogleAccount } from '../utils/googleAccounts';
 import { formatUserDisplayName } from '../utils/userDisplay';
+import { generateOfficialReceiptPdf, generateDataPrivacyArchivePdf } from '../utils/pdfGenerators';
 
 export const isClassConcluded = (cls) => {
   if (!cls) return false;
@@ -4170,6 +4171,96 @@ function MemberPortalContent({
                     <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
                       {isPaidActive ? 'Makati Flagship, Katipunan, Alabang, Fairview' : 'Settle plan to activate dynamic QR pass'}
                     </div>
+                  </div>
+                </div>
+
+                {/* Official Compliance & Fiscal Receipt Actions */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  borderTop: '1px solid #1f2737',
+                  paddingTop: '12px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Shield size={14} className="text-emerald-400" />
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                      BIR E-Invoicing & RA 10173 Philippine Data Privacy Act Certified
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        generateOfficialReceiptPdf({
+                          user: safeUser,
+                          subscription: subscription || { plan: safeUser.membership_plan, status: 'active', total_paid: 16000, start_date: '2026-11-10', end_date: '2027-11-10' },
+                          branch: { name: safeUser.branch_name, code: safeUser.branch_code || 'KAT' }
+                        });
+                        toast.success('Official Receipt (E-OR) with 12% VAT breakdown downloaded!', 'BIR Receipt Generated');
+                      }}
+                      className="ksyn-btn"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        background: '#15803d',
+                        color: '#ffffff',
+                        border: '1px solid #16a34a',
+                        borderRadius: '6px',
+                        padding: '6px 12px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Receipt size={13} /> Download Official Receipt (E-OR)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        generateDataPrivacyArchivePdf({
+                          user: safeUser,
+                          attendanceLogs: attendanceLogs || [],
+                          subscription: subscription || {},
+                          waiver: { sha256_seal: safeUser.parq_signature_hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }
+                        });
+                        const jsonArchive = {
+                          data_subject: safeUser.name,
+                          dpo_statute: 'RA 10173 Philippine Data Privacy Act Section 16',
+                          exported_at: new Date().toISOString(),
+                          profile: safeUser,
+                          subscription: subscription,
+                          attendance: attendanceLogs || []
+                        };
+                        const blob = new Blob([JSON.stringify(jsonArchive, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `KSYN-SAR-Archive-${safeUser.id || 'Member'}.json`;
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        toast.success('Data Subject Access Archive (PDF + JSON) downloaded pursuant to RA 10173 Section 16!', 'SAR Data Portability');
+                      }}
+                      className="ksyn-btn"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        background: '#1e293b',
+                        color: '#38bdf8',
+                        border: '1px solid #0284c7',
+                        borderRadius: '6px',
+                        padding: '6px 12px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Shield size={13} /> Download My Data Archive (RA 10173 SAR)
+                    </button>
                   </div>
                 </div>
               </div>

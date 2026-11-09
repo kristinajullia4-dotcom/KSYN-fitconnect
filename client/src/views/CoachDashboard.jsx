@@ -48,11 +48,13 @@ import {
   BadgeCheck,
   Wrench,
   Camera,
-  User
+  User,
+  Download
 } from 'lucide-react';
 import Tooltip from '../components/Tooltip';
 import Bir2307Modal from '../components/Bir2307Modal';
 import { formatUserDisplayName } from '../utils/userDisplay';
+import { generateCoachPayslipPdf } from '../utils/pdfGenerators';
 
 export const formatPtPackageWithPrice = (rawPlan, client) => {
   if (!rawPlan) return '12-Session Signature PT Package (₱6,000)';
@@ -4182,6 +4184,33 @@ export default function CoachDashboard({
                 <span className="mono" style={{ fontSize: '0.75rem', color: '#658256', background: 'rgba(101, 130, 86, 0.1)', padding: '4px 10px', borderRadius: '6px', border: '1px solid rgba(101, 130, 86, 0.3)' }}>
                   {commissionSlip?.slip_number || 'SLIP-202610-001'}
                 </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    generateCoachPayslipPdf({
+                      coach: user || { name: 'Coach Marcus Reyes', specialty: 'Personal Trainer & Performance Coach' },
+                      commissionSlip: commissionSlip || { slip_number: 'SLIP-202611-001', pt_session_split: calculatedPtShare, group_class_stipend: calculatedStipend, tier_bonus: calculatedTierBonus },
+                      commissions: commissions || { month: 'November 2026', sessionsCount: 12, servicingCommissionTotal: calculatedPtShare },
+                      branch: { name: user?.branch_name || 'KSYN Fitness Katipunan' }
+                    });
+                    toast.success('Official Coach Commission Payslip PDF generated & downloaded!', 'Payslip Exported');
+                  }}
+                  className="ksyn-btn"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 12px',
+                    fontSize: '0.75rem',
+                    background: '#e1c256',
+                    color: '#000000',
+                    border: '1px solid #d4af37',
+                    fontWeight: 800,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Download size={13} /> Commission Payslip (PDF)
+                </button>
                 <button
                   type="button"
                   onClick={handleExportCompensationExcel}

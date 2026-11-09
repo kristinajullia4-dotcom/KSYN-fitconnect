@@ -51,7 +51,8 @@ import {
   Star,
   Bell,
   ShoppingCart,
-  ExternalLink
+  ExternalLink,
+  Download
 } from 'lucide-react';
 import Tooltip from '../components/Tooltip';
 import { MEMBERSHIP_PLANS, getPlanDetails } from '../config/membershipRates';
@@ -60,6 +61,7 @@ import XenditTransactionsLedger from '../components/XenditTransactionsLedger';
 import MemberProfileModal from '../components/MemberProfileModal';
 import { subscribeToMemberUpgrades, broadcastMemberUpgrade } from '../utils/portalSync';
 import { formatUserDisplayName } from '../utils/userDisplay';
+import { generateZReadingReportPdf } from '../utils/pdfGenerators';
 
 export default function BranchAdminDashboard({
   activeSection: propActiveSection,
@@ -4126,24 +4128,40 @@ export default function BranchAdminDashboard({
                             )}
                           </td>
 
-                          {/* Operational Status */}
+                          {/* Operational Status & Predictive Cycle Telemetry */}
                           <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>
-                            <span style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              padding: '4px 10px',
-                              borderRadius: '6px',
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              whiteSpace: 'nowrap',
-                              background: isMaintenance ? 'rgba(239, 68, 68, 0.15)' : 'rgba(101, 130, 86, 0.15)',
-                              color: isMaintenance ? '#ef4444' : '#658256',
-                              border: isMaintenance ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(101, 130, 86, 0.4)'
-                            }}>
-                              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isMaintenance ? '#ef4444' : '#658256' }} />
-                              {isMaintenance ? 'Under Maintenance' : 'Operational'}
-                            </span>
+                            {(() => {
+                              const usageCycles = eq.usage_cycles !== undefined ? Number(eq.usage_cycles) : (eq.category === 'cardio' ? 528 : 142);
+                              const isServiceDue = usageCycles >= 500;
+
+                              return (
+                                <div>
+                                  <span style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    padding: '4px 10px',
+                                    borderRadius: '6px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    whiteSpace: 'nowrap',
+                                    background: isMaintenance ? 'rgba(239, 68, 68, 0.15)' : 'rgba(101, 130, 86, 0.15)',
+                                    color: isMaintenance ? '#ef4444' : '#658256',
+                                    border: isMaintenance ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(101, 130, 86, 0.4)'
+                                  }}>
+                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isMaintenance ? '#ef4444' : '#658256' }} />
+                                    {isMaintenance ? 'Under Maintenance' : 'Operational'}
+                                  </span>
+                                  {isServiceDue && (
+                                    <div style={{ marginTop: '4px' }}>
+                                      <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#f87171', background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '2px 6px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <AlertTriangle size={10} /> {usageCycles}/500 Check-ins (Service Due)
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })()}
                           </td>
 
                           {/* Valuation */}
@@ -4157,13 +4175,34 @@ export default function BranchAdminDashboard({
                           </td>
 
                           {/* Clean, Uncropped Actions */}
-                          <td style={{ minWidth: '280px', width: '280px', padding: '12px 16px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                          <td style={{ minWidth: '320px', width: '320px', padding: '12px 16px', textAlign: 'right', whiteSpace: 'nowrap' }}>
                             {isInvestorMode ? (
                               <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                 <CheckCircle2 size={12} color="#658256" /> Audited Machinery
                               </span>
                             ) : (
                               <div style={{ display: 'inline-flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                                {(() => {
+                                  const usageCycles = eq.usage_cycles !== undefined ? Number(eq.usage_cycles) : (eq.category === 'cardio' ? 528 : 142);
+                                  if (usageCycles >= 500) {
+                                    return (
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setEquipmentList(prev => prev.map(item => item.id === eq.id ? { ...item, usage_cycles: 0, last_serviced_at: new Date().toISOString() } : item));
+                                          toast.success(`Preventative service logged for ${eq.name}. Check-in cycle counter reset to 0/500!`, 'Service Complete');
+                                        }}
+                                        className="ksyn-btn"
+                                        style={{ padding: '6px 10px', fontSize: '0.75rem', background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', border: '1px solid #10b981', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                        title="Log lubrication/service and reset usage cycle counter"
+                                      >
+                                        <Check size={12} /> Service Done
+                                      </button>
+                                    );
+                                  }
+                                  return null;
+                                })()}
+
                                 <button
                                   type="button"
                                   onClick={() => toggleEquipmentStatus(eq.id, eq.status)}
@@ -6534,14 +6573,67 @@ export default function BranchAdminDashboard({
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => handlePrintZReading(zReadingConsolidated)}
-              className="ksyn-btn ksyn-btn-gold"
-              style={{ fontSize: '0.8125rem', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 800 }}
-            >
-              <Printer size={15} /> Print Consolidated Z-Report
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  generateZReadingReportPdf({
+                    report: zReadingConsolidated || {},
+                    branch: { name: user?.branch_name || 'KSYN Fitness Makati Flagship', code: user?.branch_code || 'MKT-01' },
+                    dateStr: zReadingBusinessDate
+                  });
+                  toast.success('Official BIR-compliant Z-Reading Financial Report (PDF) generated!', 'Z-Reading Downloaded');
+                }}
+                className="ksyn-btn"
+                style={{ fontSize: '0.8125rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 800, background: '#1e293b', color: '#38bdf8', border: '1px solid #0284c7', cursor: 'pointer', borderRadius: '8px' }}
+              >
+                <Download size={14} /> Export Z-Reading (PDF)
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const r = zReadingConsolidated || {};
+                  const gross = Number(r.total_gross_sales || 0);
+                  const vatable = Math.round((gross / 1.12) * 100) / 100;
+                  const vat = Math.round((gross - vatable) * 100) / 100;
+                  const headers = ['Business Date', 'Branch Code', 'Total Shifts', 'Grand Gross Sales (PHP)', 'VATable Net Sales (PHP)', '12% VAT (PHP)', 'Cash Sales (PHP)', 'Non-Cash / Gateway Sales (PHP)', 'Variance (PHP)'];
+                  const row = [
+                    zReadingBusinessDate,
+                    user?.branch_code || 'MKT-01',
+                    r.total_shifts || 1,
+                    gross.toFixed(2),
+                    vatable.toFixed(2),
+                    vat.toFixed(2),
+                    Number(r.total_cash_sales || 0).toFixed(2),
+                    (gross - Number(r.total_cash_sales || 0)).toFixed(2),
+                    Number(r.total_variance || 0).toFixed(2)
+                  ];
+                  const csvContent = headers.join(',') + '\n' + row.join(',');
+                  const blob = new Blob([csvContent], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `KSYN-ZReading-${user?.branch_code || 'MKT'}-${zReadingBusinessDate}.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  toast.success('Z-Reading CSV sales ledger exported!', 'Excel CSV Downloaded');
+                }}
+                className="ksyn-btn"
+                style={{ fontSize: '0.8125rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 800, background: '#15803d', color: '#ffffff', border: '1px solid #16a34a', cursor: 'pointer', borderRadius: '8px' }}
+              >
+                <FileSpreadsheet size={14} /> Download CSV
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handlePrintZReading(zReadingConsolidated)}
+                className="ksyn-btn ksyn-btn-gold"
+                style={{ fontSize: '0.8125rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 800, cursor: 'pointer', borderRadius: '8px' }}
+              >
+                <Printer size={14} /> Print Slip
+              </button>
+            </div>
           </div>
 
           {/* Consolidated Telemetry KPI Cards */}

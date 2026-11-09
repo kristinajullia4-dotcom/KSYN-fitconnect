@@ -272,9 +272,21 @@ async function verifyPassAndCheckIn(req, res) {
       });
     }
 
+    // 5.1.1. Branch Archiving & Suspension Safeguard Check
+    const scanningBranchId = branchId || scannerUser?.branch_id || member.branch_id;
+    const targetBranch = (memoryStore.branches || []).find(b => b.id === scanningBranchId);
+    if (targetBranch && (targetBranch.status === 'Suspended' || targetBranch.is_active === false)) {
+      return res.status(403).json({
+        success: false,
+        valid: false,
+        reason: 'BRANCH_OPERATIONS_SUSPENDED',
+        gate_state: 'RELAY_FROZEN_LOCKED',
+        message: `Franchise Operations Alert: Branch '${targetBranch.name}' is currently SUSPENDED by Corporate HQ. Turnstile relays are frozen. Turnstile entry denied.`
+      });
+    }
+
     // 5.2. Hard Anti-Passback (APB) Enforcement (15-Minute Re-entry Cooldown)
     const now = Date.now();
-    const scanningBranchId = branchId || scannerUser?.branch_id || member.branch_id;
     const apbCooldownMs = 15 * 60 * 1000; // 15-minute cooldown
     // Cryptographic Supervisor Verification (Defeats trivial boolean override)
     let supervisorAuthorized = false;

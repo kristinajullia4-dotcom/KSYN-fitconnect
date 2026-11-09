@@ -8,6 +8,7 @@
     "dev": "concurrently \"node server/server.js\" \"npm run dev --prefix client\"",
     "server": "node server/server.js",
     "client": "npm run dev --prefix client",
+    "db:seed": "node scripts/seedDb.js",
     "test:api": "node server/test_api.js"
   },
   "devDependencies": {

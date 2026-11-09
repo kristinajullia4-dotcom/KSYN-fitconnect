@@ -2891,6 +2891,168 @@
   ],
   "audit_logs": [
     {
+      "id": "932a71ed-cd19-4ac2-8820-d74ff081389c",
+      "branch_id": "GLOBAL",
+      "user_id": "SYSTEM_CRON",
+      "user_role": "dpo",
+      "action": "DPA_RETENTION_SCHEDULE_PURGE",
+      "resource": "data_lifecycle",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "turnstile_nonces_purged": 0,
+        "guest_parq_anonymized": 0,
+        "financial_tax_records_protected_10y": 0,
+        "statutes": [
+          "RA 10173 Sections 11 & 20",
+          "BIR RR 5-2014 10-Year Books Retention"
+        ]
+      },
+      "prev_hash": "d7945f1382b949630d33b34ce6b5274c71f38fd77a4f0787dfe1b3fa2c41bdda",
+      "hash": "5651ad08a2639bba15260943507f1023ec1afdef8d6f3077e7e9e4057db27377",
+      "created_at": "2026-11-09T18:42:44.809Z"
+    },
+    {
+      "id": "558c69ac-f1bb-44c7-afd8-1c4e0e5c6264",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000002",
+      "user_role": "employee",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::1",
+      "details": {
+        "role": "employee",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "fc7bed72f0629d738852cb4b34e8a66734fcefe9acd7215208e491d02999cd10",
+      "hash": "d7945f1382b949630d33b34ce6b5274c71f38fd77a4f0787dfe1b3fa2c41bdda",
+      "created_at": "2026-11-09T18:42:33.131Z"
+    },
+    {
+      "id": "ce2951bb-2ec0-45d9-af43-89ae0aa683ff",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "user_role": "branch_admin",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::1",
+      "details": {
+        "role": "branch_admin",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "bc615fa6e41eb67a5d80ac6d18d6f36e8c015f9049db8d7f5d928a894ae568ea",
+      "hash": "fc7bed72f0629d738852cb4b34e8a66734fcefe9acd7215208e491d02999cd10",
+      "created_at": "2026-11-09T18:42:32.940Z"
+    },
+    {
+      "id": "24160b58-ecdf-4092-ae15-7d94f510ccf2",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "user_role": "branch_admin",
+      "action": "AUTH_LOGIN_FAILED",
+      "resource": "auth",
+      "ip_address": "::1",
+      "details": {
+        "identifier": "admin.makati@ksyn.com",
+        "reason": "Password mismatch",
+        "failedAttempts": 1
+      },
+      "prev_hash": "83e6f1f587bf9da36761f5324a85e4b26f00490af8f2ae270f3921f92933aff2",
+      "hash": "bc615fa6e41eb67a5d80ac6d18d6f36e8c015f9049db8d7f5d928a894ae568ea",
+      "created_at": "2026-11-09T18:42:32.830Z"
+    },
+    {
+      "id": "efd3b803-8376-4ff4-b10b-bfce82d18f95",
+      "branch_id": "b-kat-02",
+      "user_id": "8eab3688-2260-4cd8-bd26-33b1e54e3e70",
+      "user_role": "member",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_2d9c721c3c2a4c51",
+        "email": "julliakris09@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "ebf0c8b7544a643bf0d7c5d90e72d4f747fed17e2a00b339ca5855d81f760a58",
+      "hash": "83e6f1f587bf9da36761f5324a85e4b26f00490af8f2ae270f3921f92933aff2",
+      "created_at": "2026-11-09T17:49:27.206Z"
+    },
+    {
+      "id": "73a307c8-238a-46b0-9381-b4396529f36e",
+      "branch_id": "b-kat-02",
+      "user_id": "8eab3688-2260-4cd8-bd26-33b1e54e3e70",
+      "user_role": "member",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_2d9c721c3c2a4c51",
+        "email": "julliakris09@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "b83ab2b6d2a59df516573df54bd5a5b119f3cfb439b3d39197b53b5c6c3bc1e8",
+      "hash": "ebf0c8b7544a643bf0d7c5d90e72d4f747fed17e2a00b339ca5855d81f760a58",
+      "created_at": "2026-11-09T17:49:12.059Z"
+    },
+    {
+      "id": "35d670e7-54e6-46d9-b1db-8678be97e9f4",
+      "branch_id": "b-kat-02",
+      "user_id": "8eab3688-2260-4cd8-bd26-33b1e54e3e70",
+      "user_role": "member",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_2d9c721c3c2a4c51",
+        "email": "julliakris09@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "ea010e8b0dda5cf462b3d9def3ab2e048d5cad4fd86a0384fc37eb78e00c7c13",
+      "hash": "b83ab2b6d2a59df516573df54bd5a5b119f3cfb439b3d39197b53b5c6c3bc1e8",
+      "created_at": "2026-11-09T17:49:05.133Z"
+    },
+    {
+      "id": "12d0ca12-413d-42e1-85e5-45287b508c47",
+      "branch_id": "b-kat-02",
+      "user_id": "8eab3688-2260-4cd8-bd26-33b1e54e3e70",
+      "user_role": "member",
+      "action": "AUTH_LOGIN_FAILED",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "identifier": "julliakris09@gmail.com",
+        "reason": "Password mismatch",
+        "failedAttempts": 1
+      },
+      "prev_hash": "c39d555b66dfd3f48270c64195db70fb38ac40410f4b19be7659a62334cc4cd3",
+      "hash": "ea010e8b0dda5cf462b3d9def3ab2e048d5cad4fd86a0384fc37eb78e00c7c13",
+      "created_at": "2026-11-09T17:48:30.927Z"
+    },
+    {
+      "id": "a16953d6-de5d-4b89-a3c7-a494ded06564",
+      "branch_id": "GLOBAL",
+      "user_id": "SYSTEM_CRON",
+      "user_role": "dpo",
+      "action": "DPA_RETENTION_SCHEDULE_PURGE",
+      "resource": "data_lifecycle",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "turnstile_nonces_purged": 0,
+        "guest_parq_anonymized": 0,
+        "financial_tax_records_protected_10y": 0,
+        "statutes": [
+          "RA 10173 Sections 11 & 20",
+          "BIR RR 5-2014 10-Year Books Retention"
+        ]
+      },
+      "prev_hash": "c269676a68075a65d3081c7f64daa2bb36a0ed895341c542683b7688876094b1",
+      "hash": "c39d555b66dfd3f48270c64195db70fb38ac40410f4b19be7659a62334cc4cd3",
+      "created_at": "2026-11-09T17:48:16.244Z"
+    },
+    {
       "id": "e6a81ab7-b80a-41bb-acd6-cdfd97dd3ea5",
       "branch_id": "b-frv-05",
       "user_id": "24043326-9f55-4764-a1fd-340c7b449405",
@@ -102743,6 +102905,42 @@
       "month_year": "2026-11",
       "status": "pending",
       "awarded_at": null
+    },
+    {
+      "id": "fpa-001",
+      "branch_id": "b-mkt-01",
+      "full_name": "Christian Bautista",
+      "email": "christian.b@gmail.com",
+      "phone_number": "09171234567",
+      "zip_code": "1226",
+      "applied_at": "2026-09-02T08:30:00.000Z",
+      "month_year": "2026-09",
+      "status": "pending",
+      "awarded_at": null
+    },
+    {
+      "id": "fpa-002",
+      "branch_id": "b-mkt-01",
+      "full_name": "Angela Santos",
+      "email": "angela.santos@yahoo.com",
+      "phone_number": "+63 920 888 1234",
+      "zip_code": "1226",
+      "applied_at": "2026-09-04T11:15:00.000Z",
+      "month_year": "2026-09",
+      "status": "pending",
+      "awarded_at": null
+    },
+    {
+      "id": "fpa-003",
+      "branch_id": "b-kat-02",
+      "full_name": "Paolo Hernandez",
+      "email": "paolo.h@gmail.com",
+      "phone_number": "09189876543",
+      "zip_code": "1108",
+      "applied_at": "2026-09-03T14:20:00.000Z",
+      "month_year": "2026-09",
+      "status": "pending",
+      "awarded_at": null
     }
   ],
   "pt_clients": [
@@ -104670,6 +104868,10 @@
     "jmarquez.k12150582@umak.edu.ph": {
       "count": 1,
       "firstFailed": 1793268564100
+    },
+    "julliakris09@gmail.com": {
+      "count": 1,
+      "firstFailed": 1794246510841
     }
   },
   "refresh_tokens": [
@@ -120232,6 +120434,24 @@
       "token_hash": "2136861c5df4861ba02b0c5f2ae7242e597bdd7c6597db514005e1eed172e027",
       "expires_at": "2026-11-16T17:16:06.397Z",
       "created_at": "2026-11-09T17:16:06.397Z",
+      "is_revoked": false
+    },
+    {
+      "id": "62561572-9166-457f-8067-e88c76d0c00e",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "family_id": "a0cd82dd-670a-43f5-8e25-99da8e38ce47",
+      "token_hash": "ced36158dd550d3e1f05f5d0fcc9593bddcebb2b13c98d1b6644044e6c3d7d7a",
+      "expires_at": "2026-11-16T18:42:32.940Z",
+      "created_at": "2026-11-09T18:42:32.940Z",
+      "is_revoked": false
+    },
+    {
+      "id": "f687fc03-b17e-4072-b174-80d4e09d7b01",
+      "user_id": "u1000000-0000-0000-0000-000000000002",
+      "family_id": "fccd9918-54d5-4467-8e0e-84c1f8e1caa9",
+      "token_hash": "8b5b85b0abb314c95c3d5cf503924a7dd8ebb64b22bb71e730732f5e1ecc49c8",
+      "expires_at": "2026-11-16T18:42:33.131Z",
+      "created_at": "2026-11-09T18:42:33.131Z",
       "is_revoked": false
     }
   ],
