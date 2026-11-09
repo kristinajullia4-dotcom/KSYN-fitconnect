@@ -345,8 +345,8 @@ const memoryStore = {
       name: 'Demo Athlete',
       phone: '+63 917 123 4567',
       rfid_card_uid: null,
-      membership_plan: '1_day',
-      status: 'expired',
+      membership_plan: '1_month',
+      status: 'active',
       created_at: new Date('2026-10-13T00:00:00Z')
     }
   ],
@@ -360,15 +360,15 @@ const memoryStore = {
       plan_tier: '1_month',
       plan_name: '1-Month Flagship Membership (₱2,999/mo)',
       monthly_due_amount: 2999.00,
-      billing_day: 13,
-      next_billing_date: '2026-11-13',
+      billing_day: 10,
+      next_billing_date: '2026-12-10',
       payment_method_id: 'pm-mkt-077',
       auto_debit_retries: 0,
       parq_signed: true,
       parq_signature_hash: 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0',
-      status: 'expired',
-      start_date: '2026-09-13',
-      end_date: '2026-10-13',
+      status: 'active',
+      start_date: '2026-11-10',
+      end_date: '2026-12-10',
       price: 2999.00,
       access_fee: 0.00,
       annual_fee: 0.00,
@@ -1219,8 +1219,13 @@ function loadPersistentStore() {
       if (!Array.isArray(memoryStore.pos_transactions)) {
         memoryStore.pos_transactions = [];
       }
-      if (!Array.isArray(memoryStore.membership_subscriptions)) {
-        memoryStore.membership_subscriptions = memoryStore.subscriptions || [];
+      if (Array.isArray(memoryStore.subscriptions)) {
+        memoryStore.membership_subscriptions = memoryStore.subscriptions;
+      } else if (Array.isArray(memoryStore.membership_subscriptions)) {
+        memoryStore.subscriptions = memoryStore.membership_subscriptions;
+      } else {
+        memoryStore.subscriptions = [];
+        memoryStore.membership_subscriptions = memoryStore.subscriptions;
       }
       if (!Array.isArray(memoryStore.coach_sales_commissions)) {
         memoryStore.coach_sales_commissions = [];

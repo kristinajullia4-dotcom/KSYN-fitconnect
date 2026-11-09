@@ -27,16 +27,23 @@ async function generateDynamicPass(req, res) {
 
     // Fetch member's subscription
     const userSubs = (memoryStore.subscriptions || []).filter(s => s.user_id === user.id);
-    const subscription = userSubs.find(s => s.status === 'active') || (userSubs.length > 0 ? userSubs[userSubs.length - 1] : null);
+    const subscription = userSubs.find(s => s.status === 'active' && (!s.end_date || new Date(s.end_date).getTime() >= Date.now())) || (userSubs.length > 0 ? userSubs[userSubs.length - 1] : null);
     const branch = memoryStore.branches.find(b => b.id === user.branch_id);
 
-    // Turnstile Access Gate: Require Active or Valid Contract (pending_payment / unpaid / cancelled / expired are blocked from pass generation)
-    if (!subscription || subscription.status === 'expired' || subscription.status === 'cancelled' || subscription.status === 'pending_payment' || subscription.status === 'unpaid' || user.status === 'pending_payment') {
+    const isExpiredByDate = Boolean(subscription?.end_date && new Date(subscription.end_date).getTime() < Date.now());
+
+    // Turnstile Access Gate: Require Active or Valid Contract (pending_payment / unpaid / cancelled / expired / past_due / expired-by-date are blocked from pass generation)
+    if (!subscription || subscription.status === 'expired' || subscription.status === 'past_due' || subscription.status === 'cancelled' || subscription.status === 'pending_payment' || subscription.status === 'unpaid' || user.status === 'pending_payment' || isExpiredByDate) {
+      if (subscription && isExpiredByDate && subscription.status === 'active') {
+        subscription.status = 'expired';
+      }
       return res.status(403).json({
         success: false,
         error: 'MEMBERSHIP_PAYMENT_REQUIRED',
-        message: 'Active membership subscription required. Please settle your membership plan to unlock your digital turnstile pass.',
-        subscription_status: subscription ? subscription.status : 'unpaid'
+        message: isExpiredByDate
+          ? `Your membership contract expired on ${subscription.end_date}. Please renew your plan to unlock your digital turnstile pass.`
+          : 'Active membership subscription required. Please settle your membership plan to unlock your digital turnstile pass.',
+        subscription_status: subscription ? (isExpiredByDate ? 'expired' : subscription.status) : 'unpaid'
       });
     }
 
@@ -236,7 +243,7 @@ async function verifyPassAndCheckIn(req, res) {
 
     // 5.1. Subscription Active & Delinquency Check
     const userSubs = (memoryStore.subscriptions || []).filter(s => s.user_id === member.id);
-    const subscription = userSubs.find(s => s.status === 'active') || (userSubs.length > 0 ? userSubs[userSubs.length - 1] : null);
+    const subscription = userSubs.find(s => s.status === 'active' && (!s.end_date || new Date(s.end_date).getTime() >= Date.now())) || (userSubs.length > 0 ? userSubs[userSubs.length - 1] : null);
     if (!subscription || subscription.status === 'expired' || subscription.status === 'cancelled' || subscription.status === 'pending_payment' || subscription.status === 'unpaid') {
       return res.status(403).json({
         success: false,
@@ -252,6 +259,16 @@ async function verifyPassAndCheckIn(req, res) {
         valid: false,
         reason: 'SUBSCRIPTION_PAST_DUE',
         message: `Turnstile Access Denied: Monthly membership dues are past due (Amount: ₱${(subscription.monthly_due_amount || 2499).toLocaleString()}). Please settle at the reception counter or update auto-debit method.`
+      });
+    }
+
+    if (subscription.end_date && new Date(subscription.end_date).getTime() < Date.now()) {
+      subscription.status = 'expired';
+      return res.status(403).json({
+        success: false,
+        valid: false,
+        reason: 'MEMBERSHIP_EXPIRED',
+        message: `Turnstile Access Denied: Membership contract expired on ${subscription.end_date}. Please renew your membership plan to enter.`
       });
     }
 

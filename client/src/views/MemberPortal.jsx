@@ -1011,9 +1011,9 @@ function MemberPortalContent({
     ? (subscription.status === 'pending_payment' || subscription.status === 'unpaid')
     : (user?.status === 'pending_payment');
   const isExpired = Boolean(
-    (subscription && (subscription.status === 'expired' || subscription.status === 'cancelled')) ||
+    (subscription && (subscription.status === 'expired' || subscription.status === 'cancelled' || subscription.status === 'past_due')) ||
     passError?.code === 'MEMBERSHIP_PAYMENT_REQUIRED' ||
-    (subscription?.end_date && new Date(subscription.end_date).getTime() < Date.now() && subscription?.plan !== '1_day')
+    (subscription?.end_date && new Date(subscription.end_date).getTime() < Date.now())
   );
   const hasActivePlan = Boolean(
     subscription &&
@@ -1028,7 +1028,7 @@ function MemberPortalContent({
   const daysLeft = !hasActivePlan
     ? 0
     : isOneDayPass
-      ? 1
+      ? (planEndDate && planEndDate.getTime() >= Date.now() ? 1 : 0)
       : (planEndDate ? Math.max(0, Math.ceil((planEndDate - new Date()) / (1000 * 60 * 60 * 24))) : 0);
 
   useEffect(() => {
@@ -4018,14 +4018,15 @@ function MemberPortalContent({
             const now = new Date();
             const rawEndDate = subscription?.end_date;
             const parsedEndDate = rawEndDate ? new Date(rawEndDate) : null;
-            const validEndDate = (parsedEndDate && !isNaN(parsedEndDate.getTime())) ? parsedEndDate : new Date('2026-12-31');
-            const calcDays = Math.ceil((validEndDate - now) / (1000 * 60 * 60 * 24));
-            const bannerDaysLeft = isOneDay ? 1 : (isNaN(calcDays) ? 0 : Math.max(0, calcDays));
+            const isDatePast = parsedEndDate ? (parsedEndDate.getTime() < now.getTime()) : false;
+            const calcDays = parsedEndDate ? Math.ceil((parsedEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+            const bannerDaysLeft = isDatePast ? 0 : (isOneDay ? (calcDays >= 0 ? 1 : 0) : Math.max(0, calcDays));
             const isUrgent = isOneDay || bannerDaysLeft <= 7;
             const currentPlanKey = subscription?.plan || user?.membership_plan || '12_months';
             const planInfo = getPlanDetails(currentPlanKey) || { name: 'Membership Plan' };
             const planNameFormatted = planInfo?.name || (currentPlanKey === '12_months' ? '12 Months Annual Elite' : '1 Month Pass');
-            const isPaidActive = !isPaymentPending && (subscription?.status === 'active' || user?.membership_status === 'active' || !user?.status || user?.status === 'active') && bannerDaysLeft > 0;
+            const isSubscriptionExpired = isDatePast || subscription?.status === 'expired' || subscription?.status === 'cancelled' || subscription?.status === 'past_due' || isExpired;
+            const isPaidActive = !isPaymentPending && !isSubscriptionExpired && (subscription?.status === 'active' || (!subscription && user?.membership_status === 'active')) && bannerDaysLeft > 0;
             const todayFormatted = (() => {
               try {
                 return new Intl.DateTimeFormat('en-PH', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(now);
@@ -4095,7 +4096,7 @@ function MemberPortalContent({
                       <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#ffffff', margin: '4px 0 0 0' }}>
                         {isPaidActive
                           ? 'Turnstile Gate Entry Granted (Cleared for Access Today)'
-                          : 'Turnstile Gate Entry Blocked (Payment / Renewal Required)'}
+                          : 'Turnstile Gate Entry Blocked (Membership Expired / Renewal Required)'}
                       </h3>
                     </div>
                   </div>
@@ -4131,16 +4132,24 @@ function MemberPortalContent({
                       {planNameFormatted}
                     </div>
                     <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-                      Status: <strong style={{ color: isPaidActive ? '#658256' : '#ef4444' }}>{isPaidActive ? 'Paid & Verified' : 'Payment Required'}</strong>
+                      Status: <strong style={{ color: isPaidActive ? '#658256' : '#ef4444' }}>
+                        {isPaidActive ? 'Paid & Verified' : (isSubscriptionExpired ? 'Expired / Inactive' : 'Payment Required')}
+                      </strong>
                     </div>
                   </div>
 
                   <div>
                     <div style={{ fontSize: '0.6875rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 800 }}>Pass Validity & Expiration</div>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: isUrgent ? '#ef4444' : '#658256', marginTop: '2px' }}>
-                      {isOneDay ? '24-Hour Access Active' : `${bannerDaysLeft} Days Remaining`}
+                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: isPaidActive ? (isUrgent ? '#e1c256' : '#658256') : '#ef4444', marginTop: '2px' }}>
+                      {isPaidActive
+                        ? (isOneDay ? '24-Hour Access Active' : `${bannerDaysLeft} Days Remaining`)
+                        : (isSubscriptionExpired ? `Pass Expired${calcDays < 0 ? ` (${Math.abs(calcDays)}d ago)` : ''}` : 'Payment Pending')}
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>Valid until: {subscription?.end_date || '2026-12-31'}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                      {isDatePast || isSubscriptionExpired
+                        ? `Expired on: ${subscription?.end_date || 'Past Date'}`
+                        : `Valid until: ${subscription?.end_date || '2026-12-31'}`}
+                    </div>
                   </div>
 
                   <div>
@@ -4154,7 +4163,7 @@ function MemberPortalContent({
                       ) : (
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                           <XCircle size={13} className="text-red-400" />
-                          <span>Payment Required</span>
+                          <span>Turnstile Access Denied (Renew to Unlock)</span>
                         </span>
                       )}
                     </div>
@@ -4672,8 +4681,8 @@ function MemberPortalContent({
                       Your active plan is <strong style={{ color: '#e1c256' }}>{safePlanName}</strong> • Facility: <strong style={{ color: '#e2e8f0' }}>{safeUser?.branch_name || 'KSYN Fitness Makati Flagship'}</strong>
                     </p>
                   </div>
-                  <span className={`badge ${subscription?.status === 'active' ? 'badge-active' : 'badge-gold'}`} style={{ fontSize: '0.75rem', textTransform: 'uppercase' }}>
-                    {subscription?.status === 'active' ? 'Active Entitlement' : 'Pending Payment'}
+                  <span className={`badge ${subscription?.status === 'active' && !isExpired ? 'badge-active' : (isExpired ? 'badge-danger' : 'badge-gold')}`} style={{ fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                    {subscription?.status === 'active' && !isExpired ? 'Active Entitlement' : (isExpired ? 'Expired Entitlement' : 'Pending Payment')}
                   </span>
                 </div>
 
