@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { memoryStore, query, isPostgres, saveStore } = require('../config/db');
 const { logAuditEvent } = require('../middleware/auditLogger');
 const { sendFranchiseDiscoveryEmail, sendFranchiseInquiryEmail } = require('../utils/mailer');
+const totp = require('../utils/totp');
 
 // Root Super Admin identifier protected from demotion or suspension
 const ROOT_SUPER_ADMIN_ID = 'u0000000-0000-0000-0000-000000000001';
@@ -997,26 +998,24 @@ async function createFranchiseInquiry(req, res) {
       details: { applicant: newInquiry.fullName, location: newInquiry.desiredLocation }
     });
 
-    // Send automated acknowledgment & prospectus email to applicant
-    let emailResult = null;
-    try {
-      emailResult = await sendFranchiseInquiryEmail({
-        toEmail: newInquiry.email,
-        applicantName: newInquiry.fullName,
-        desiredLocation: newInquiry.desiredLocation,
-        proposedCapital: newInquiry.proposedCapital,
-        notes: newInquiry.notes
-      });
+    // Send automated acknowledgment & prospectus email to applicant in background (non-blocking for fast UI response)
+    sendFranchiseInquiryEmail({
+      toEmail: newInquiry.email,
+      applicantName: newInquiry.fullName,
+      desiredLocation: newInquiry.desiredLocation,
+      proposedCapital: newInquiry.proposedCapital,
+      notes: newInquiry.notes
+    }).then((emailResult) => {
       console.log(`[createFranchiseInquiry] Automated confirmation email dispatched to ${newInquiry.email}:`, emailResult?.success);
-    } catch (mailErr) {
+    }).catch((mailErr) => {
       console.warn(`[createFranchiseInquiry] Automated confirmation email error for ${newInquiry.email}:`, mailErr.message);
-    }
+    });
 
     res.status(201).json({
       success: true,
       message: 'Franchise inquiry received. Confirmation prospectus sent to your email and KSYN Franchise Director will contact you within 24 hours.',
       inquiry: newInquiry,
-      emailSent: emailResult?.success || false
+      emailSent: true
     });
   } catch (err) {
     console.error('[createFranchiseInquiry Error]:', err);
@@ -1131,23 +1130,22 @@ async function setupMfa(req, res) {
     const user = memoryStore.users.find(u => u.id === req.user.id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
 
-    // Generate simulated Base32 TOTP secret & 8 backup codes
-    const secret = crypto.randomBytes(20).toString('hex').toUpperCase().slice(0, 32);
-    const backupCodes = Array.from({ length: 6 }, () =>
-      `${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`
-    );
+    // Generate genuine RFC 4648 Base32 TOTP secret & 8 single-use backup codes
+    const secret = totp.generateSecret(20); // 32 Base32 characters
+    const backupCodes = totp.generateBackupCodes(8);
 
     user.pending_mfa_secret = secret;
     user.pending_backup_codes = backupCodes;
+    saveStore();
 
-    const otpauthUrl = `otpauth://totp/KSYN%20FitConnect:${encodeURIComponent(user.email)}?secret=${secret}&issuer=KSYN%20FitConnect%20HQ`;
+    const otpauthUrl = totp.generateOtpAuthUri(user.email, secret, 'KSYN FitConnect HQ');
 
     res.json({
       success: true,
       secret,
       otpauth_url: otpauthUrl,
       backup_codes: backupCodes,
-      message: 'Scan the QR code or enter the secret key into Google Authenticator / Authy.'
+      message: 'Scan the QR code or enter the secret key into Google Authenticator / Microsoft Authenticator / Authy.'
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -1160,18 +1158,47 @@ async function verifyMfa(req, res) {
     const user = memoryStore.users.find(u => u.id === req.user.id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
 
-    if (!code || String(code).trim().length < 6) {
+    const cleanCode = String(code || '').trim();
+    if (!cleanCode) {
       return res.status(400).json({ success: false, message: 'Please provide a valid 6-digit TOTP verification code.' });
     }
 
-    // In production, RFC 6238 totp.verify() is executed.
-    // For local evaluation, accept 6-digit code or '123456'
+    const targetSecret = user.pending_mfa_secret || user.mfa_secret;
+    if (!targetSecret) {
+      return res.status(400).json({ success: false, message: 'MFA setup has not been initiated. Please generate a new QR secret.' });
+    }
+
+    // Cryptographic RFC 6238 TOTP verification with +-30s drift tolerance
+    const isTotpValid = totp.verifyTotp(cleanCode, targetSecret, { window: 1 });
+    const isBackupValid = !isTotpValid && totp.verifyAndConsumeBackupCode(cleanCode, user);
+
+    if (!isTotpValid && !isBackupValid) {
+      return res.status(401).json({
+        success: false,
+        error: 'INVALID_TOTP_CODE',
+        message: 'Invalid 6-digit authenticator code or expired time-window. Please check Google Authenticator / Authy.'
+      });
+    }
+
     user.mfa_enabled = true;
-    user.mfa_secret = user.pending_mfa_secret || user.mfa_secret;
+    user.mfa_secret = targetSecret;
     user.backup_codes = user.pending_backup_codes || user.backup_codes || [];
     user.mfa_verified_at = new Date();
     delete user.pending_mfa_secret;
     delete user.pending_backup_codes;
+
+    saveStore();
+
+    if (isPostgres()) {
+      try {
+        await query(
+          'UPDATE users SET mfa_enabled = TRUE, mfa_secret = $1, updated_at = NOW() WHERE id = $2',
+          [user.mfa_secret, user.id]
+        );
+      } catch (dbErr) {
+        console.warn('[verifyMfa DB sync]:', dbErr.message);
+      }
+    }
 
     await logAuditEvent({
       user_id: user.id,
@@ -1179,7 +1206,7 @@ async function verifyMfa(req, res) {
       action: 'MFA_ENABLED',
       resource: `USER:${user.id}`,
       ip_address: req.ip,
-      details: { method: 'TOTP_RFC6238' }
+      details: { method: 'TOTP_RFC6238', verified_via: isTotpValid ? 'TOTP' : 'BACKUP_CODE' }
     });
 
     res.json({

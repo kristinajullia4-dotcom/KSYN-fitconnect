@@ -52,6 +52,7 @@ import Bir2307Modal from '../components/Bir2307Modal';
 import Tooltip from '../components/Tooltip';
 import XenditTransactionsLedger from '../components/XenditTransactionsLedger';
 import { formatUserDisplayName } from '../utils/userDisplay';
+import { generateRoyaltyStatementPdf } from '../utils/pdfGenerators';
 
 // Safe inline formatters to guarantee zero crashes on undefined/null data
 const formatCurrency = (val) => {
@@ -2787,33 +2788,64 @@ Manila, Philippines`;
                           </span>
                         </td>
                         <td style={{ padding: '14px 18px', textAlign: 'center' }}>
-                          <button
-                            type="button"
-                            onClick={() => setSelectedBirRemittance({
-                              id: `rem-2026-q3-${(rep.branch_code || rep.branch_id || 'mkt').toLowerCase()}`,
-                              reference_no: `REMIT-${rep.branch_code || 'MKT'}-2026`,
-                              branch_name: rep.branch_name,
-                              branch_code: rep.branch_code,
-                              period: 'Q3 2026',
-                              gross_sales: rep.grossRevenue,
-                              gross_royalty: rep.corporateRoyalty,
-                              cwt_amount: Math.round(rep.corporateRoyalty * 0.05),
-                              net_remitted: rep.corporateRoyalty - Math.round(rep.corporateRoyalty * 0.05),
-                              payment_rail: 'PayMongo Corporate B2B Rail'
-                            })}
-                            className="ksyn-btn ksyn-btn-outline"
-                            style={{
-                              fontSize: '0.75rem',
-                              padding: '4px 10px',
-                              color: '#e1c256',
-                              borderColor: 'rgba(225, 194, 86, 0.3)',
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '5px'
-                            }}
-                          >
-                            <FileText size={12} /> View 2307
-                          </button>
+                          <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedBirRemittance({
+                                id: `rem-2026-q3-${(rep.branch_code || rep.branch_id || 'mkt').toLowerCase()}`,
+                                reference_no: `REMIT-${rep.branch_code || 'MKT'}-2026`,
+                                branch_name: rep.branch_name,
+                                branch_code: rep.branch_code,
+                                period: 'Q3 2026',
+                                gross_sales: rep.grossRevenue,
+                                gross_royalty: rep.corporateRoyalty,
+                                cwt_amount: Math.round(rep.corporateRoyalty * 0.05),
+                                net_remitted: rep.corporateRoyalty - Math.round(rep.corporateRoyalty * 0.05),
+                                payment_rail: 'PayMongo Corporate B2B Rail'
+                              })}
+                              className="ksyn-btn ksyn-btn-outline"
+                              style={{
+                                fontSize: '0.75rem',
+                                padding: '4px 10px',
+                                color: '#e1c256',
+                                borderColor: 'rgba(225, 194, 86, 0.3)',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px'
+                              }}
+                              title="View Official BIR Form 2307 Certificate"
+                            >
+                              <FileText size={12} /> View 2307
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => generateRoyaltyStatementPdf({
+                                reference_no: `REMIT-${rep.branch_code || 'MKT'}-2026`,
+                                branch_name: rep.branch_name,
+                                branch_code: rep.branch_code,
+                                period: 'Q3 2026',
+                                gross_sales: rep.grossRevenue,
+                                gross_royalty: rep.corporateRoyalty,
+                                cwt_amount: Math.round(rep.corporateRoyalty * 0.05),
+                                net_remitted: rep.corporateRoyalty - Math.round(rep.corporateRoyalty * 0.05),
+                                payment_rail: 'PayMongo Corporate B2B Rail',
+                                status: 'Verified'
+                              })}
+                              className="ksyn-btn ksyn-btn-outline"
+                              style={{
+                                fontSize: '0.75rem',
+                                padding: '4px 10px',
+                                color: '#38bdf8',
+                                borderColor: 'rgba(56, 189, 248, 0.3)',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px'
+                              }}
+                              title="Download Official 7.5% Royalty Remittance Statement PDF"
+                            >
+                              <Download size={12} /> Statement PDF
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

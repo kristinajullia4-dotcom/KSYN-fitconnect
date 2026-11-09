@@ -42,6 +42,7 @@ import Tooltip from '../components/Tooltip';
 import Bir2307Modal from '../components/Bir2307Modal';
 import BranchOwnerStaffManagement from './BranchOwnerStaffManagement';
 import { formatUserDisplayName } from '../utils/userDisplay';
+import { generateRoyaltyStatementPdf } from '../utils/pdfGenerators';
 
 function RemittanceReceiptModal({ remittance, onClose }) {
   if (!remittance) return null;
@@ -187,6 +188,14 @@ function RemittanceReceiptModal({ remittance, onClose }) {
           gap: '10px',
           background: '#0e111a'
         }}>
+          <button
+            type="button"
+            onClick={() => generateRoyaltyStatementPdf(remittance)}
+            className="ksyn-btn ksyn-btn-gold"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8125rem', fontWeight: 800 }}
+          >
+            <Download size={14} /> Download Statement (PDF)
+          </button>
           <button
             type="button"
             onClick={() => window.print()}
@@ -2094,6 +2103,27 @@ export default function InvestorDashboard({
                             }}
                           >
                             <Receipt size={12} /> View Receipt
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => generateRoyaltyStatementPdf(r)}
+                            className="ksyn-btn"
+                            style={{
+                              fontSize: '0.72rem',
+                              padding: '4px 8px',
+                              background: 'rgba(225, 194, 86, 0.1)',
+                              color: '#e1c256',
+                              border: '1px solid rgba(225, 194, 86, 0.35)',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              borderRadius: '6px',
+                              cursor: 'pointer',
+                              fontWeight: 700,
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            <Download size={12} /> Statement PDF
                           </button>
                         </div>
                       </td>

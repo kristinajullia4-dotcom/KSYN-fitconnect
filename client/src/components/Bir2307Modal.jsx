@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Printer, X, ShieldCheck, Download, FileText, CheckCircle, FileSpreadsheet } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Tooltip from './Tooltip';
+import { generateBir2307Pdf } from '../utils/pdfGenerators';
 
 export default function Bir2307Modal({ remittance, onClose }) {
   const { authFetch } = useAuth();
@@ -387,6 +388,25 @@ export default function Bir2307Modal({ remittance, onClose }) {
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Tooltip content="Download direct official PDF certificate" position="bottom">
+              <button
+                type="button"
+                onClick={() => generateBir2307Pdf(c)}
+                className="ksyn-btn ksyn-btn-gold"
+                style={{
+                  fontSize: '0.8125rem',
+                  padding: '8px 16px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                <Download size={15} /> Download PDF
+              </button>
+            </Tooltip>
             <Tooltip content="Export to Excel (.csv)" position="bottom">
               <button
                 onClick={handleExportExcel}

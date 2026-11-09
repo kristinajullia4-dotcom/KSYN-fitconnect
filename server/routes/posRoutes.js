@@ -6,6 +6,7 @@ const posShiftController = require('../controllers/posShiftController');
 const posCheckoutController = require('../controllers/posCheckoutController');
 const authGuard = require('../middleware/authGuard');
 const { rbacGuard } = require('../middleware/rbacGuard');
+const { qaSandboxGuard } = require('../middleware/qaSandboxGuard');
 
 // 1B. POS Xendit Status Check (Lookup by specific invoiceId/externalId so customer display & polling can verify settlement)
 router.get('/xendit/status/:invoiceId', posCheckoutController.getStatus);
@@ -18,8 +19,8 @@ router.post('/record-sale', rbacGuard('super_admin', 'branch_admin', 'employee',
 router.post('/pt-enrollment', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), posCheckoutController.enrollPtPackage);
 router.get('/coaches', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), posCheckoutController.getPosCoaches);
 
-// 1C. POS Xendit Instant Simulation (Authenticated QA Staff)
-router.post('/xendit/simulate-paid/:invoiceId', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), posCheckoutController.simulatePaid);
+// 1C. POS Xendit Instant Simulation (Authenticated QA Staff - Hardened in Production)
+router.post('/xendit/simulate-paid/:invoiceId', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), qaSandboxGuard, posCheckoutController.simulatePaid);
 
 // 2. Front Desk POS Sales Ledger
 router.get('/ledger', rbacGuard('super_admin', 'branch_admin', 'branch_owner', 'employee', 'staff'), financeController.getSalesLedger);
@@ -27,7 +28,7 @@ router.get('/ledger', rbacGuard('super_admin', 'branch_admin', 'branch_owner', '
 // 3. Dynamic QR Ph Cashless Generation & Verification
 router.post('/create-qr', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), xenditController.createDynamicQr);
 router.get('/qr-status/:id', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), xenditController.getQrStatus);
-router.post('/simulate-qr-paid/:id', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), xenditController.simulateQrPaid);
+router.post('/simulate-qr-paid/:id', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), qaSandboxGuard, xenditController.simulateQrPaid);
 
 // 4. POS Shift Session Management & Cash Drawer Accountability (Feature Requirements 2 & 3)
 router.post('/shifts/open', rbacGuard('super_admin', 'branch_admin', 'employee', 'staff'), posShiftController.openShift);

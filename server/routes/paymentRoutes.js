@@ -5,6 +5,7 @@ const xenditController = require('../controllers/xenditController');
 const memberController = require('../controllers/memberController');
 const authGuard = require('../middleware/authGuard');
 const { rbacGuard } = require('../middleware/rbacGuard');
+const { qaSandboxGuard } = require('../middleware/qaSandboxGuard');
 const xenditRoutes = require('./xenditRoutes');
 
 // 0. Xendit Enterprise Payment Gateway Sub-Router
@@ -46,7 +47,7 @@ router.get('/invoices', authGuard, paymentController.getInvoices);
 
 // 9. Segregated Xendit Transactions Ledger (PLANS, POS, PT ENROLLMENT)
 router.get('/transactions', authGuard, paymentController.getXenditTransactions);
-router.post('/simulate-paid', authGuard, paymentController.simulateInvoicePaid);
+router.post('/simulate-paid', authGuard, qaSandboxGuard, paymentController.simulateInvoicePaid);
 router.get('/reconcile', authGuard, paymentController.reconcileXenditInvoices);
 router.post('/reconcile', authGuard, paymentController.reconcileXenditInvoices);
 

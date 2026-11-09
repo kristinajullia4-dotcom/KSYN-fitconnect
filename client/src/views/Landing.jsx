@@ -97,13 +97,16 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
   };
 
   const handleInquirySubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
+    if (inquirySubmitting) return;
     setInquiryError('');
 
     if (!franchiseForm.fullName || !franchiseForm.fullName.trim()) {
       const msg = 'Please enter your Full Name.';
       setInquiryError(msg);
       toast?.error?.(msg, 'Required Field');
+      const el = document.getElementById('inquiry-fullname');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -112,6 +115,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       const msg = 'Please enter a valid Email Address (e.g., investor@example.com).';
       setInquiryError(msg);
       toast?.error?.(msg, 'Valid Email Required');
+      const el = document.getElementById('inquiry-email');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -119,6 +124,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       const msg = 'Please enter your Contact Number.';
       setInquiryError(msg);
       toast?.error?.(msg, 'Required Field');
+      const el = document.getElementById('inquiry-phone');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -126,6 +133,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       const msg = 'Please specify your target city or preferred region.';
       setInquiryError(msg);
       toast?.error?.(msg, 'Location Details Required');
+      const el = document.getElementById('inquiry-custom-region');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -133,6 +142,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       const msg = 'Please check the box to accept the KSYN Franchise Terms & Conditions.';
       setInquiryError(msg);
       toast?.error?.(msg, 'Terms Required');
+      const el = document.getElementById('franchise-terms-checkbox');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -140,6 +151,8 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       const msg = 'Please check the box to consent to the KSYN Privacy Policy (RA 10173).';
       setInquiryError(msg);
       toast?.error?.(msg, 'Privacy Consent Required');
+      const el = document.getElementById('franchise-privacy-checkbox');
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       return;
     }
 
@@ -175,6 +188,10 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
       );
       setFormSubmitted(true);
       setInquiryError('');
+      setTimeout(() => {
+        const target = document.getElementById('franchise');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
     } catch (err) {
       console.error('[Franchise inquiry submit error]:', err);
       const msg = err.message || 'Unable to submit your inquiry at this moment. Please check your connection and try again.';
@@ -2073,6 +2090,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                       Full Name *
                     </label>
                     <input
+                      id="inquiry-fullname"
                       type="text"
                       required
                       placeholder="e.g. Roberto Gomez"
@@ -2100,6 +2118,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                         Email Address *
                       </label>
                       <input
+                        id="inquiry-email"
                         type="email"
                         required
                         placeholder="investor@example.com"
@@ -2125,6 +2144,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                         Contact Number *
                       </label>
                       <input
+                        id="inquiry-phone"
                         type="tel"
                         required
                         placeholder="+63 917 123 4567"
@@ -2181,6 +2201,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                           Please specify your Target City, Municipality, or Preferred Commercial Hub *
                         </label>
                         <input
+                          id="inquiry-custom-region"
                           type="text"
                           name="customRegionDetail"
                           required
@@ -2257,7 +2278,24 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                   </div>
 
                   {/* Unbundled Franchise Terms & Privacy Consent */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+                  <div
+                    id="franchise-consent-box"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '10px',
+                      marginTop: '6px',
+                      padding: '12px 14px',
+                      background: (!agreedToTerms || !agreedToPrivacy) && inquiryError?.includes('accept')
+                        ? 'rgba(239, 68, 68, 0.08)'
+                        : 'rgba(255, 255, 255, 0.02)',
+                      border: (!agreedToTerms || !agreedToPrivacy) && inquiryError?.includes('accept')
+                        ? '1px solid rgba(239, 68, 68, 0.4)'
+                        : '1px solid #262626',
+                      borderRadius: '8px',
+                      transition: 'border-color 0.2s, background-color 0.2s'
+                    }}
+                  >
                     {/* Checkbox 1: Terms */}
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
                       <input
@@ -2369,6 +2407,7 @@ export default function Landing({ onNavigateLogin, onNavigateRegister }) {
                   <button
                     id="submit-franchise-inquiry-btn"
                     type="submit"
+                    onClick={handleInquirySubmit}
                     disabled={inquirySubmitting}
                     className="ksyn-btn ksyn-btn-gold"
                     style={{

@@ -6,6 +6,7 @@ const { logAuditEvent } = require('../middleware/auditLogger');
 const { resolvePlan, MEMBERSHIP_PLANS } = require('../config/membershipRates');
 const { sendOtpEmail } = require('../utils/mailer');
 const { JWT_SECRET, REFRESH_TOKEN_SECRET } = require('../config/secrets');
+const totp = require('../utils/totp');
 
 // 1. User Login (Instant activation & bypass of OTP/locks for staff, branch admin, branch owner, and super admin)
 async function login(req, res) {
@@ -1788,19 +1789,6 @@ async function verifyMfa(req, res) {
       });
     }
 
-    const cleanCode = String(totp_code).trim();
-    // Accept demo bypass code '888222' or '123456', or valid 6-digit numeric pattern
-    const isDemoCode = cleanCode === '888222' || cleanCode === '123456';
-    const isValidFormat = /^\d{6}$/.test(cleanCode);
-
-    if (!isDemoCode && !isValidFormat) {
-      return res.status(401).json({
-        success: false,
-        error: 'INVALID_TOTP_CODE',
-        message: 'Invalid 6-digit authenticator code.'
-      });
-    }
-
     let user;
     if (isPostgres()) {
       const result = await query('SELECT * FROM users WHERE id = $1', [ticketData.userId]);
@@ -1811,6 +1799,24 @@ async function verifyMfa(req, res) {
 
     if (!user) {
       return res.status(404).json({ success: false, message: 'User account not found.' });
+    }
+
+    const cleanCode = String(totp_code).trim();
+    
+    // Cryptographic RFC 6238 TOTP verification against user's Base32 secret
+    const isTotpValid = user.mfa_secret ? totp.verifyTotp(cleanCode, user.mfa_secret, { window: 1 }) : false;
+    const isBackupValid = !isTotpValid && totp.verifyAndConsumeBackupCode(cleanCode, user);
+
+    if (!isTotpValid && !isBackupValid) {
+      return res.status(401).json({
+        success: false,
+        error: 'INVALID_TOTP_CODE',
+        message: 'Invalid 6-digit authenticator code or expired time window. Please check your authenticator app.'
+      });
+    }
+
+    if (isBackupValid) {
+      saveStore();
     }
 
     // Evict used ticket (one-time use prevention)
