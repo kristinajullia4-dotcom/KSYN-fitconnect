@@ -127,16 +127,6 @@
       "created_at": "2026-01-01T00:00:00.000Z",
       "supervisor_pin_hash": "$2a$10$fKSYE2.oZsh.u3nOCDDJCeCwjzahvG4hspRyo/vZCeD/zZxYce9tq",
       "secondary_password_hash": "$2a$10$kQ475jJjOuz417lmDKPCoOtgzlKGnpY/2PZSUERzutEOTrnzhfOuO",
-      "mfa_enabled": true,
-      "mfa_secret": "8BB42333B4A8F8B4F293FEF27CDA68AC",
-      "backup_codes": [
-        "7745-4588",
-        "8543-6806",
-        "4699-3223",
-        "5435-8651",
-        "1596-2982",
-        "8570-8263"
-      ],
       "mfa_verified_at": "2026-10-31T19:20:39.469Z",
       "google_id": "google_6106faf6afacaa66",
       "auth_provider": "google"
@@ -283,41 +273,6 @@
       "created_at": "2026-01-02T00:00:00.000Z",
       "google_id": "google_2a651cf5f9004cf2",
       "auth_provider": "google"
-    },
-    {
-      "id": "u1000000-0000-0000-0000-000000000077",
-      "branch_id": "b-kat-02",
-      "role": "member",
-      "email": "kristinajullia4@gmail.com",
-      "username": "kristinajullia4",
-      "password_hash": "$2a$10$sfojQ//1bnuBXjzjxmXYA.RxPjXJI9Sp96RhqxL4CLoRfz7KrRtT.",
-      "name": "Kristina Jullia",
-      "phone": "+63 917 123 4567",
-      "rfid_card_uid": "KS-1701-5557",
-      "membership_plan": "1_month",
-      "status": "active",
-      "created_at": "2026-10-13T00:00:00.000Z",
-      "last_check_in": 1793511096228,
-      "last_checkin_timestamp": 1791958002964,
-      "auto_renew": false,
-      "membership_tier": "basic",
-      "google_id": "google_ca6f13e16893f861",
-      "auth_provider": "google",
-      "updated_at": "2026-11-01T04:36:27.010Z",
-      "branch_name": "KSYN Fitness Katipunan",
-      "branch_code": "KAT-02",
-      "address": "742 Evergreen St, Makati City",
-      "residential_address": "742 Evergreen St, Makati City",
-      "emergency_contact_name": "Urbano Marquez",
-      "emergency_contact_phone": "09686590582",
-      "emergency_phone": "09686590582",
-      "fitness_goal": "Athletic Conditioning & Hypertrophy",
-      "primary_fitness_goal": "Athletic Conditioning & Hypertrophy",
-      "profile_completion_percentage": 100,
-      "is_profile_complete": true,
-      "emergency_contact": "Urbano Marquez",
-      "current_weight_kg": 48,
-      "target_weight_kg": 68.5
     },
     {
       "id": "usr-admin-katipunan-02",
@@ -659,6 +614,20 @@
       "auth_provider": "google",
       "branch_name": "KSYN Fitness Fairview",
       "branch_code": "FRV-05"
+    },
+    {
+      "id": "u1000000-0000-0000-0000-000000000077",
+      "branch_id": "b-mkt-01",
+      "role": "member",
+      "email": "demo.athlete@ksynfitness.com",
+      "username": "demoathlete",
+      "password_hash": "$2a$10$sfojQ//1bnuBXjzjxmXYA.RxPjXJI9Sp96RhqxL4CLoRfz7KrRtT.",
+      "name": "Demo Athlete",
+      "phone": "+63 917 123 4567",
+      "rfid_card_uid": null,
+      "membership_plan": "1_day",
+      "status": "expired",
+      "created_at": "2026-10-13T00:00:00.000Z"
     }
   ],
   "subscriptions": [
@@ -2915,6 +2884,118 @@
     }
   ],
   "audit_logs": [
+    {
+      "id": "3d2f3a96-16b1-4623-8926-ef29023480ac",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000002",
+      "user_role": "employee",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "employee",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "ea018d1a37b61c3a8ca6f2e4bcbe771ab5788ec899d0ef0ef0e52a1bc76dcd33",
+      "hash": "f994d9b2ee9ea68eb2a1185e15349e92acbea1fc05f050782c3d7f91352e13c0",
+      "created_at": "2026-11-09T17:16:06.397Z"
+    },
+    {
+      "id": "c8889cc7-a310-4cab-aba3-714cc5a4d86f",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000005",
+      "user_role": "coach",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "coach",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "48a10addae14ea06f8d9ed5abbeec5bb0d5f88ec46cdea536c5ec98c6ca11172",
+      "hash": "ea018d1a37b61c3a8ca6f2e4bcbe771ab5788ec899d0ef0ef0e52a1bc76dcd33",
+      "created_at": "2026-11-09T17:16:06.336Z"
+    },
+    {
+      "id": "f8bf944e-9177-4da0-bc72-9ce72b2384f8",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "user_role": "branch_admin",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "branch_admin",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "a6509b3ee0909d2613c35d4e8bcea6338b983599d7fa7d7d5fd8443ee39d488b",
+      "hash": "48a10addae14ea06f8d9ed5abbeec5bb0d5f88ec46cdea536c5ec98c6ca11172",
+      "created_at": "2026-11-09T17:16:06.271Z"
+    },
+    {
+      "id": "4c458318-3d7b-4e79-a4af-9ad043cbf6b6",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "branch_owner",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "ae8ebea60de6c3ae8ec41bf455bb27bbd184cce6fcf8de2736334e7c5abcbfc8",
+      "hash": "a6509b3ee0909d2613c35d4e8bcea6338b983599d7fa7d7d5fd8443ee39d488b",
+      "created_at": "2026-11-09T17:16:06.209Z"
+    },
+    {
+      "id": "2c0eab06-e2d9-478a-8f95-99a42a3b05f6",
+      "branch_id": null,
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "user_role": "super_admin",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "super_admin",
+        "branch_code": "GLOBAL"
+      },
+      "prev_hash": "47633f15fbb594f3bdbd6e48303064135647018fb304a849a7063286a5106bf9",
+      "hash": "ae8ebea60de6c3ae8ec41bf455bb27bbd184cce6fcf8de2736334e7c5abcbfc8",
+      "created_at": "2026-11-09T17:16:06.129Z"
+    },
+    {
+      "id": "e9022703-ebcf-4b4d-b1bb-24a1d8ef34ba",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "user_role": "branch_admin",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "branch_admin",
+        "branch_code": "MKT-01"
+      },
+      "prev_hash": "5afa415e260c99f44f9ee137a3f2907a3dbc47763825776863a21bf798431ad6",
+      "hash": "47633f15fbb594f3bdbd6e48303064135647018fb304a849a7063286a5106bf9",
+      "created_at": "2026-11-09T17:15:37.961Z"
+    },
+    {
+      "id": "e6c0d556-3ff0-43db-80ac-7e92eafe8b43",
+      "branch_id": null,
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "user_role": "super_admin",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "role": "super_admin",
+        "branch_code": "GLOBAL"
+      },
+      "prev_hash": "e955494c4d320f5da8dba3e4ee80cb3cd4f4315cfb306b3b51c7f06a08b6fa8b",
+      "hash": "5afa415e260c99f44f9ee137a3f2907a3dbc47763825776863a21bf798431ad6",
+      "created_at": "2026-11-09T17:15:37.895Z"
+    },
     {
       "id": "a2773559-f222-4b73-8835-062c66e51304",
       "branch_id": "GLOBAL",
@@ -119870,6 +119951,69 @@
       "token_hash": "a1dceee3dd6c9dfd244196230d23df31ea10355343780235662eeb6c481bbcce",
       "expires_at": "2026-11-10T14:25:18.331Z",
       "created_at": "2026-11-03T14:25:18.331Z",
+      "is_revoked": false
+    },
+    {
+      "id": "622dec6a-81d0-47a4-8157-74cb9721e67c",
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "family_id": "eb73881c-4bc1-44cc-858b-0761da66c85d",
+      "token_hash": "ae0ba6ad91e6ae552f6fe7fd26bbe51fff93796b5294b5c8be0c029c4bcf1824",
+      "expires_at": "2026-11-16T17:15:37.895Z",
+      "created_at": "2026-11-09T17:15:37.895Z",
+      "is_revoked": false
+    },
+    {
+      "id": "8c031065-c0d4-4805-a4c4-0f09657329b7",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "family_id": "f4f62320-0438-4427-8b1e-8967439dd520",
+      "token_hash": "c625679e4da6804336d0820a4c686ac10e62dd86a04883f06c373cd38bd64787",
+      "expires_at": "2026-11-16T17:15:37.961Z",
+      "created_at": "2026-11-09T17:15:37.961Z",
+      "is_revoked": false
+    },
+    {
+      "id": "6d732a4c-1c39-4274-ac4f-4da835d3b4ef",
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "family_id": "defea1a5-239d-4a51-80d5-cf7a22716953",
+      "token_hash": "a0313ed8927c6396d0e9227f1fe1a65fd21819e994ad1778c36314e76c5b546b",
+      "expires_at": "2026-11-16T17:16:06.129Z",
+      "created_at": "2026-11-09T17:16:06.129Z",
+      "is_revoked": false
+    },
+    {
+      "id": "66e62623-3c9f-4b90-ae0f-bd0e4a374f56",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "family_id": "d1535d03-93a5-4a9f-a7e6-b177e0af5de7",
+      "token_hash": "c21d3a1ea862c2637d0ebbe4557fd86b59f3a7ef612e012861f71c78616843ba",
+      "expires_at": "2026-11-16T17:16:06.209Z",
+      "created_at": "2026-11-09T17:16:06.209Z",
+      "is_revoked": false
+    },
+    {
+      "id": "245f31cf-bf0c-4369-b332-168563c7e33a",
+      "user_id": "u1000000-0000-0000-0000-000000000001",
+      "family_id": "e8a1aabb-e2fb-4da7-a34c-b0628da23022",
+      "token_hash": "7efd2696a998411c2f4be9e15d02b7ae1563414c1ba7c29a2a831929c4f4bc00",
+      "expires_at": "2026-11-16T17:16:06.271Z",
+      "created_at": "2026-11-09T17:16:06.271Z",
+      "is_revoked": false
+    },
+    {
+      "id": "b5337f2a-645e-4332-8f20-7567837e1449",
+      "user_id": "u1000000-0000-0000-0000-000000000005",
+      "family_id": "8474d021-92d2-400b-a757-e85ffdd140db",
+      "token_hash": "b8baeeba2b9636de945855c2d55d7043f44bef457e876c1909b32c7f0161fad6",
+      "expires_at": "2026-11-16T17:16:06.336Z",
+      "created_at": "2026-11-09T17:16:06.336Z",
+      "is_revoked": false
+    },
+    {
+      "id": "264a7336-b825-49a6-97c6-f3c43e22f117",
+      "user_id": "u1000000-0000-0000-0000-000000000002",
+      "family_id": "95280791-0571-4793-bcc3-f533065ebc6d",
+      "token_hash": "2136861c5df4861ba02b0c5f2ae7242e597bdd7c6597db514005e1eed172e027",
+      "expires_at": "2026-11-16T17:16:06.397Z",
+      "created_at": "2026-11-09T17:16:06.397Z",
       "is_revoked": false
     }
   ],

@@ -394,16 +394,6 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
       // Send { email, password } to backend POST /api/auth/login
       const result = await login(email.trim(), password);
 
-      // If Multi-Factor Authentication is triggered for administrative tier
-      if (result && result.mfa_required) {
-        setMfaData(result);
-        setTotpValues(['', '', '', '', '', '']);
-        setMfaError(null);
-        toast.info('Enter the 6-digit TOTP code from your authenticator app.', '2FA Security Shield');
-        setTimeout(() => totpInputsRef.current[0]?.focus(), 150);
-        return;
-      }
-
       const loggedInUser = result;
       setRemainingAttempts(null);
       setLockoutCountdown(0);
@@ -643,7 +633,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
           <span>Dual-Token Security</span>
           <span>&bull;</span>
           <span style={{ color: '#658256', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Shield size={12} /> 2FA Protected
+            <Shield size={12} /> RBAC Guarded
           </span>
         </div>
       </div>

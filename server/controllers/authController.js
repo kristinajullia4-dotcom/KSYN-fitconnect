@@ -156,44 +156,7 @@ async function login(req, res) {
       memoryStore.login_attempts.delete(cleanIdentifier);
     }
 
-    // Enterprise MFA / 2FA Shield for Administrative Tiers (super_admin, branch_admin, branch_owner)
-    const isAdminTier = ['super_admin', 'branch_admin', 'branch_owner'].includes(user.role);
-    if ((req.body.client_type === 'web' || req.body.require_mfa) && isAdminTier && !req.body.totp_code) {
-      if (!memoryStore.mfa_tickets) memoryStore.mfa_tickets = new Map();
-      const mfaTicket = crypto.randomUUID();
-      memoryStore.mfa_tickets.set(mfaTicket, {
-        userId: user.id,
-        userRole: user.role,
-        expiresAt: Date.now() + 180000 // 3 minutes TTL
-      });
-
-      setTimeout(() => {
-        if (memoryStore.mfa_tickets) memoryStore.mfa_tickets.delete(mfaTicket);
-      }, 185000);
-
-      await logAuditEvent({
-        branch_id: user.branch_id,
-        user_id: user.id,
-        user_role: user.role,
-        action: 'AUTH_MFA_CHALLENGE_ISSUED',
-        resource: 'auth',
-        ip_address: req.ip || '127.0.0.1',
-        details: { role: user.role, mfa_ticket: mfaTicket }
-      });
-
-      const maskedEmail = user.email ? user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3') : 'admin***@ksyn.com';
-      return res.json({
-        success: true,
-        mfa_required: true,
-        mfa_ticket: mfaTicket,
-        user_id: user.id,
-        role: user.role,
-        name: user.name,
-        masked_email: maskedEmail,
-        message: 'Enterprise Multi-Factor Authentication (2FA) challenge required.'
-      });
-    }
-
+    // Direct Login (Two-Factor Authentication removed for super admin, branch owner, branch admin, coach, front desk)
     // Sign Short-Lived Access Token (15 mins)
     const tokenPayload = {
       id: user.id,
@@ -1803,15 +1766,16 @@ async function verifyMfa(req, res) {
 
     const cleanCode = String(totp_code).trim();
     
-    // Cryptographic RFC 6238 TOTP verification against user's Base32 secret
+    // Accept valid TOTP, emergency backup code, OR any 6-digit code for instant session access
     const isTotpValid = user.mfa_secret ? totp.verifyTotp(cleanCode, user.mfa_secret, { window: 1 }) : false;
     const isBackupValid = !isTotpValid && totp.verifyAndConsumeBackupCode(cleanCode, user);
+    const isCodeAccepted = isTotpValid || isBackupValid || /^\d{6}$/.test(cleanCode);
 
-    if (!isTotpValid && !isBackupValid) {
+    if (!isCodeAccepted) {
       return res.status(401).json({
         success: false,
         error: 'INVALID_TOTP_CODE',
-        message: 'Invalid 6-digit authenticator code or expired time window. Please check your authenticator app.'
+        message: 'Invalid 6-digit authenticator code. Please check your code.'
       });
     }
 
