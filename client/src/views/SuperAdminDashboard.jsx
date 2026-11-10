@@ -10,6 +10,7 @@ import {
   Plus,
   Edit2,
   FileText,
+  FileSpreadsheet,
   ShieldCheck,
   CheckCircle,
   CheckCircle2,

@@ -4194,12 +4194,17 @@ function MemberPortalContent({
                     <button
                       type="button"
                       onClick={() => {
-                        generateOfficialReceiptPdf({
-                          user: safeUser,
-                          subscription: subscription || { plan: safeUser.membership_plan, status: 'active', total_paid: 16000, start_date: '2026-11-10', end_date: '2027-11-10' },
-                          branch: { name: safeUser.branch_name, code: safeUser.branch_code || 'KAT' }
-                        });
-                        toast.success('Official Receipt (E-OR) with 12% VAT breakdown downloaded!', 'BIR Receipt Generated');
+                        try {
+                          generateOfficialReceiptPdf({
+                            user: safeUser,
+                            subscription: subscription || { plan: safeUser?.membership_plan || '1-Year Black Elite Passport', status: 'active', total_paid: 16000, start_date: '2026-11-10', end_date: '2027-11-10' },
+                            branch: { name: safeUser?.branch_name || 'KSYN Fitness Katipunan', code: safeUser?.branch_code || 'KAT' }
+                          });
+                          toast.success('Official Receipt (E-OR) with 12% VAT breakdown downloaded!', 'BIR Receipt Generated');
+                        } catch (err) {
+                          console.error('Error generating official receipt:', err);
+                          toast.error('Failed to generate receipt: ' + err.message, 'Receipt Error');
+                        }
                       }}
                       className="ksyn-btn"
                       style={{
@@ -4221,28 +4226,36 @@ function MemberPortalContent({
                     <button
                       type="button"
                       onClick={() => {
-                        generateDataPrivacyArchivePdf({
-                          user: safeUser,
-                          attendanceLogs: attendanceLogs || [],
-                          subscription: subscription || {},
-                          waiver: { sha256_seal: safeUser.parq_signature_hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }
-                        });
-                        const jsonArchive = {
-                          data_subject: safeUser.name,
-                          dpo_statute: 'RA 10173 Philippine Data Privacy Act Section 16',
-                          exported_at: new Date().toISOString(),
-                          profile: safeUser,
-                          subscription: subscription,
-                          attendance: attendanceLogs || []
-                        };
-                        const blob = new Blob([JSON.stringify(jsonArchive, null, 2)], { type: 'application/json' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `KSYN-SAR-Archive-${safeUser.id || 'Member'}.json`;
-                        a.click();
-                        URL.revokeObjectURL(url);
-                        toast.success('Data Subject Access Archive (PDF + JSON) downloaded pursuant to RA 10173 Section 16!', 'SAR Data Portability');
+                        try {
+                          const currentLogs = Array.isArray(attendance) ? attendance : (Array.isArray(safeAttendance) ? safeAttendance : []);
+                          generateDataPrivacyArchivePdf({
+                            user: safeUser || {},
+                            attendanceLogs: currentLogs,
+                            subscription: subscription || {},
+                            waiver: { sha256_seal: safeUser?.parq_signature_hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }
+                          });
+                          const jsonArchive = {
+                            data_subject: safeUser?.name || 'Member',
+                            dpo_statute: 'RA 10173 Philippine Data Privacy Act Section 16',
+                            exported_at: new Date().toISOString(),
+                            profile: safeUser || {},
+                            subscription: subscription || {},
+                            attendance: currentLogs
+                          };
+                          const blob = new Blob([JSON.stringify(jsonArchive, null, 2)], { type: 'application/json' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `KSYN-SAR-Archive-${safeUser?.id || 'Member'}.json`;
+                          document.body.appendChild(a);
+                          a.click();
+                          document.body.removeChild(a);
+                          URL.revokeObjectURL(url);
+                          toast.success('Data Subject Access Archive (PDF + JSON) downloaded pursuant to RA 10173 Section 16!', 'SAR Data Portability');
+                        } catch (err) {
+                          console.error('Error generating SAR archive:', err);
+                          toast.error('Failed to download Data Archive: ' + err.message, 'Archive Error');
+                        }
                       }}
                       className="ksyn-btn"
                       style={{

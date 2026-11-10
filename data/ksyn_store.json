@@ -2891,6 +2891,489 @@
   ],
   "audit_logs": [
     {
+      "id": "4c997058-d309-4e23-b694-6b3efa44b886",
+      "branch_id": null,
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "user_role": "super_admin",
+      "action": "AUTH_LOGOUT_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "user": "superadmin@ksyn.com",
+        "role": "super_admin"
+      },
+      "prev_hash": "0acc2b1dffb835e335d08f0741496efde998f0a8c9cbeffd02607403b732f70e",
+      "hash": "940bcfedd73d64ea258e17a694dc9b5d4be656c182592201efd73e07e3fd895f",
+      "created_at": "2026-11-10T04:25:47.974Z"
+    },
+    {
+      "id": "a83a51d0-fb8f-40d0-aa35-0282b51cd982",
+      "branch_id": null,
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "user_role": "super_admin",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_6ffc43638a8ad532",
+        "email": "superadmin@ksyn.com",
+        "role": "super_admin"
+      },
+      "prev_hash": "7e3be917d5442cd4e8e33f562555a947cdfeb14edb855d85c7db7fa772307378",
+      "hash": "0acc2b1dffb835e335d08f0741496efde998f0a8c9cbeffd02607403b732f70e",
+      "created_at": "2026-11-10T04:13:14.845Z"
+    },
+    {
+      "id": "76dcf8ca-1be2-4934-aa6f-768ada9b4726",
+      "branch_id": null,
+      "user_id": "u0000000-0000-0000-0000-000000000001",
+      "user_role": "super_admin",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_9723ad19920d34fc",
+        "email": "superadmin@ksyn.com",
+        "role": "super_admin"
+      },
+      "prev_hash": "dbf8fd061e491b2cab41d087c1d04f516495a82df6da20ac1942779ae039203d",
+      "hash": "7e3be917d5442cd4e8e33f562555a947cdfeb14edb855d85c7db7fa772307378",
+      "created_at": "2026-11-10T04:13:14.838Z"
+    },
+    {
+      "id": "3718ec9b-5495-43cf-84e7-133fe974c65f",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "AUTH_LOGOUT_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "user": "owner.makati@ksyn.com",
+        "role": "branch_owner"
+      },
+      "prev_hash": "588d0a488de5415e6747ae559b5a79a0456010c34a1123492f01247fd4711918",
+      "hash": "dbf8fd061e491b2cab41d087c1d04f516495a82df6da20ac1942779ae039203d",
+      "created_at": "2026-11-10T04:12:48.062Z"
+    },
+    {
+      "id": "53aa061f-304c-4398-8b83-749da65a1e99",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "947713a653ac27b3252eaf430c89f21f3a4088015d9325ffc288c9b5affd8a23",
+      "hash": "588d0a488de5415e6747ae559b5a79a0456010c34a1123492f01247fd4711918",
+      "created_at": "2026-11-10T04:12:46.589Z"
+    },
+    {
+      "id": "e2b2c9c8-d775-4552-8564-e63257ecb250",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "0f405e08d3871d50abb4feacb9769a3adb8cb682f9cfdede161033bbf39bdcb2",
+      "hash": "947713a653ac27b3252eaf430c89f21f3a4088015d9325ffc288c9b5affd8a23",
+      "created_at": "2026-11-10T04:12:43.769Z"
+    },
+    {
+      "id": "fa6f4986-096d-4453-acd2-25a7d2f57bde",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "10d792ac8f1f143fbafa37085a85c5ce1f4708f004d521520a284488129c38b4",
+      "hash": "0f405e08d3871d50abb4feacb9769a3adb8cb682f9cfdede161033bbf39bdcb2",
+      "created_at": "2026-11-10T04:12:36.227Z"
+    },
+    {
+      "id": "90b18d38-5988-4b0c-b290-5544adb26b1a",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "0d8598a457f7e77363d2ffd63bc48c4b3d7bce410ab17e75187f7cfcd709f199",
+      "hash": "10d792ac8f1f143fbafa37085a85c5ce1f4708f004d521520a284488129c38b4",
+      "created_at": "2026-11-10T04:12:21.237Z"
+    },
+    {
+      "id": "c04f0cfc-42c0-4390-b01f-e3caa07acec8",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "45ab9f924a9ea7ca9181b7b85e7e97b2073ceeefc1ff5f423561e7c2c5fabff0",
+      "hash": "0d8598a457f7e77363d2ffd63bc48c4b3d7bce410ab17e75187f7cfcd709f199",
+      "created_at": "2026-11-10T04:12:21.216Z"
+    },
+    {
+      "id": "6e76a9d8-8993-4b27-b1b7-b09e71389623",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_7bb0e4aa1a2af5dd",
+        "email": "owner.makati@ksyn.com",
+        "role": "branch_owner"
+      },
+      "prev_hash": "514abd89f62285a35fd0410108c22c1803e238fdffc3702ac049f0c2898bf718",
+      "hash": "45ab9f924a9ea7ca9181b7b85e7e97b2073ceeefc1ff5f423561e7c2c5fabff0",
+      "created_at": "2026-11-10T04:12:20.762Z"
+    },
+    {
+      "id": "36bdd06a-afc8-4040-8491-59867a9a79ca",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000010",
+      "user_role": "branch_owner",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_a2fdb6ac27243a60",
+        "email": "owner.makati@ksyn.com",
+        "role": "branch_owner"
+      },
+      "prev_hash": "c9ef4952edb0777d6ef5bd94e7264eca5cdaa45de0fdab4567305cdc84420288",
+      "hash": "514abd89f62285a35fd0410108c22c1803e238fdffc3702ac049f0c2898bf718",
+      "created_at": "2026-11-10T04:12:20.757Z"
+    },
+    {
+      "id": "af12080e-b9c8-44d8-a202-822d3b824a33",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "AUTH_LOGOUT_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "user": "admin.makati@ksyn.com",
+        "role": "branch_admin"
+      },
+      "prev_hash": "4c5a4937c1d40831dbbfe5866153f4c7409c6bc396189e39c9042c30b003fe51",
+      "hash": "c9ef4952edb0777d6ef5bd94e7264eca5cdaa45de0fdab4567305cdc84420288",
+      "created_at": "2026-11-10T04:12:12.820Z"
+    },
+    {
+      "id": "7bf8a658-06fb-4f63-bcdc-ccdd5d8fbcf3",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "288978677d9a4e0a4a13121a7645d2d6dfcd9017fc710146fb24a15606ac4642",
+      "hash": "4c5a4937c1d40831dbbfe5866153f4c7409c6bc396189e39c9042c30b003fe51",
+      "created_at": "2026-11-10T04:12:06.223Z"
+    },
+    {
+      "id": "dc91c54d-0146-4e71-bd8e-0c90afb07a2e",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "7fa2855378ac44233a73a36cf3b67629eb0e9163b1a6adaa89501fae30dd6abb",
+      "hash": "288978677d9a4e0a4a13121a7645d2d6dfcd9017fc710146fb24a15606ac4642",
+      "created_at": "2026-11-10T04:12:03.810Z"
+    },
+    {
+      "id": "edd55a98-807a-4843-a589-7d54f1eed522",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "fc326107b94530ea50a431ecc9b3f919a5367ef1dc7cb6b4b0e3653a010cbdc1",
+      "hash": "7fa2855378ac44233a73a36cf3b67629eb0e9163b1a6adaa89501fae30dd6abb",
+      "created_at": "2026-11-10T04:12:03.561Z"
+    },
+    {
+      "id": "4a8165d8-8a99-4592-9909-de7fd4e99228",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "fa2e3dccbfcb1254aaafaba6d23f4cf4de3b4e373f0e88715b08fa43e9f22b22",
+      "hash": "fc326107b94530ea50a431ecc9b3f919a5367ef1dc7cb6b4b0e3653a010cbdc1",
+      "created_at": "2026-11-10T04:11:58.738Z"
+    },
+    {
+      "id": "8dcb1a6d-6af8-4237-8091-96a049445cc9",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "6336a7080f91e2425ba0dc29c50ce55dad9f3b48ab3399a093a15a35666fe72b",
+      "hash": "fa2e3dccbfcb1254aaafaba6d23f4cf4de3b4e373f0e88715b08fa43e9f22b22",
+      "created_at": "2026-11-10T04:11:48.180Z"
+    },
+    {
+      "id": "cbdaf55c-58ea-4c12-a453-007a9a315f22",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "DPA_PII_BULK_UNMASKED_ACCESS",
+      "resource": "member_roster",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "records_accessed": 6,
+        "statute": "RA 10173 Section 12 Legitimate Purpose Exemption",
+        "dpo_authorized": true
+      },
+      "prev_hash": "82cbc034ea3c6be69de4b4c1acf03fb8cf585552ac6e7185800526d67dfe4691",
+      "hash": "6336a7080f91e2425ba0dc29c50ce55dad9f3b48ab3399a093a15a35666fe72b",
+      "created_at": "2026-11-10T04:11:48.091Z"
+    },
+    {
+      "id": "5ad16d4c-6786-4ad7-b022-2a08cb86f24c",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_fdde6122acf69c40",
+        "email": "admin.makati@ksyn.com",
+        "role": "branch_admin"
+      },
+      "prev_hash": "d0fbd198d57b4da7fc4b0df66e02246c441879df058119580778a3a7f5782fa1",
+      "hash": "82cbc034ea3c6be69de4b4c1acf03fb8cf585552ac6e7185800526d67dfe4691",
+      "created_at": "2026-11-10T04:11:47.171Z"
+    },
+    {
+      "id": "27a1c48c-8cc7-4528-9fae-9f7e7ac18a32",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000009",
+      "user_role": "branch_admin",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_5cda65aacbd9aeb5",
+        "email": "admin.makati@ksyn.com",
+        "role": "branch_admin"
+      },
+      "prev_hash": "6e54a55f4378fe303d2c65137f53f7d422f4ca6aa5f83fc8cbd161cea259ad19",
+      "hash": "d0fbd198d57b4da7fc4b0df66e02246c441879df058119580778a3a7f5782fa1",
+      "created_at": "2026-11-10T04:11:47.165Z"
+    },
+    {
+      "id": "bdcf9fed-92d3-4478-a527-440d9b456bc5",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000005",
+      "user_role": "coach",
+      "action": "AUTH_LOGOUT_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "user": "coach.sofia@ksyn.com",
+        "role": "coach"
+      },
+      "prev_hash": "0e70e758dbbe309051ffd47fbcca6b115ddbc6a328ce30ced865c039f27a5d24",
+      "hash": "6e54a55f4378fe303d2c65137f53f7d422f4ca6aa5f83fc8cbd161cea259ad19",
+      "created_at": "2026-11-10T04:11:27.563Z"
+    },
+    {
+      "id": "cdd8b49e-c8c2-40af-8724-81d59c90d3f9",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000005",
+      "user_role": "coach",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_fb65b9746c435783",
+        "email": "coach.sofia@ksyn.com",
+        "role": "coach"
+      },
+      "prev_hash": "c57fc66531ecd3bc8d21aff562f3ea7ef6e5bd4a588d4c15d9e7028834461314",
+      "hash": "0e70e758dbbe309051ffd47fbcca6b115ddbc6a328ce30ced865c039f27a5d24",
+      "created_at": "2026-11-10T04:11:03.432Z"
+    },
+    {
+      "id": "58d40141-d171-4370-9e75-7533250c8924",
+      "branch_id": "b-mkt-01",
+      "user_id": "u1000000-0000-0000-0000-000000000005",
+      "user_role": "coach",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_9a4685c2ffe8a91c",
+        "email": "coach.sofia@ksyn.com",
+        "role": "coach"
+      },
+      "prev_hash": "eab202063df12b1ac48c51a7f1fa92628444bbaf0a191858482fc8985faf08e6",
+      "hash": "c57fc66531ecd3bc8d21aff562f3ea7ef6e5bd4a588d4c15d9e7028834461314",
+      "created_at": "2026-11-10T04:11:03.421Z"
+    },
+    {
+      "id": "6e0dab7f-8565-40b3-846c-3c7d83e27fd8",
+      "branch_id": "b-mkt-01",
+      "user_id": "4a97a653-2efc-44b4-8de5-7a5a81b3fc63",
+      "user_role": "member",
+      "action": "AUTH_LOGOUT_SUCCESS",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "user": "urbanomarquez65@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "c9953accb5e4970f9ecbae543e2825af9d3daa72891f191bc107ca749bfee1cb",
+      "hash": "eab202063df12b1ac48c51a7f1fa92628444bbaf0a191858482fc8985faf08e6",
+      "created_at": "2026-11-10T04:10:57.731Z"
+    },
+    {
+      "id": "017abbe8-7446-45f9-9df6-0228ba6bb2fb",
+      "branch_id": "b-mkt-01",
+      "user_id": "4a97a653-2efc-44b4-8de5-7a5a81b3fc63",
+      "user_role": "member",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_c851bc34d6d32772",
+        "email": "urbanomarquez65@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "790de4addfed630b2600d32e1b07ddb3a8457433c457b4b39296503916c6d09f",
+      "hash": "c9953accb5e4970f9ecbae543e2825af9d3daa72891f191bc107ca749bfee1cb",
+      "created_at": "2026-11-10T04:10:52.925Z"
+    },
+    {
+      "id": "32ba76e4-4fc8-4a66-baab-ac0976526fe0",
+      "branch_id": "b-mkt-01",
+      "user_id": "4a97a653-2efc-44b4-8de5-7a5a81b3fc63",
+      "user_role": "member",
+      "action": "AUTH_GOOGLE_LOGIN",
+      "resource": "auth",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "provider": "google",
+        "google_id": "google_698eddc9c34a43ac",
+        "email": "urbanomarquez65@gmail.com",
+        "role": "member"
+      },
+      "prev_hash": "2c6901117c4ebef57012edf674d3807edb43330cf3868d5440c2c1fe66d8231f",
+      "hash": "790de4addfed630b2600d32e1b07ddb3a8457433c457b4b39296503916c6d09f",
+      "created_at": "2026-11-10T04:10:52.917Z"
+    },
+    {
+      "id": "1c87779c-489f-4fc5-badb-675af678f2e2",
+      "branch_id": null,
+      "user_id": null,
+      "user_role": null,
+      "action": "SEND_REGISTRATION_OTP",
+      "resource": "auth",
+      "ip_address": "::ffff:127.0.0.1",
+      "details": {
+        "email": "kristinajullia4@gmail.com"
+      },
+      "prev_hash": "53c3bb3aa4cfe4bfaf771649ee82615d33443119c67f3f0339b1afe088c161a9",
+      "hash": "2c6901117c4ebef57012edf674d3807edb43330cf3868d5440c2c1fe66d8231f",
+      "created_at": "2026-11-10T04:10:46.965Z"
+    },
+    {
+      "id": "6a0593ed-7cbd-4633-b482-f287dee3021a",
+      "branch_id": "GLOBAL",
+      "user_id": "SYSTEM_CRON",
+      "user_role": "dpo",
+      "action": "DPA_RETENTION_SCHEDULE_PURGE",
+      "resource": "data_lifecycle",
+      "ip_address": "127.0.0.1",
+      "details": {
+        "turnstile_nonces_purged": 0,
+        "guest_parq_anonymized": 0,
+        "financial_tax_records_protected_10y": 0,
+        "statutes": [
+          "RA 10173 Sections 11 & 20",
+          "BIR RR 5-2014 10-Year Books Retention"
+        ]
+      },
+      "prev_hash": "5651ad08a2639bba15260943507f1023ec1afdef8d6f3077e7e9e4057db27377",
+      "hash": "53c3bb3aa4cfe4bfaf771649ee82615d33443119c67f3f0339b1afe088c161a9",
+      "created_at": "2026-11-10T04:10:24.030Z"
+    },
+    {
       "id": "932a71ed-cd19-4ac2-8820-d74ff081389c",
       "branch_id": "GLOBAL",
       "user_id": "SYSTEM_CRON",
@@ -102614,6 +103097,15 @@
   ],
   "otp_verifications": [
     {
+      "id": "5da63ba3-4512-4538-bd3f-655c705aa67b",
+      "email": "kristinajullia4@gmail.com",
+      "otp_hash": "$2a$10$aFBDSNmNmQ3Jh/DNKio5dudgFFjjT6SvVwT5RXDRjgDntRs/zKxvS",
+      "expires_at": "2026-11-10T04:20:33.493Z",
+      "attempts": 0,
+      "verified": false,
+      "created_at": "2026-11-10T04:10:33.493Z"
+    },
+    {
       "id": "ba465901-24a4-459e-a09e-8ff4ec10ddd9",
       "email": "ninarosecabanilla@gmail.com",
       "otp_hash": "$2a$10$ixQkobmZQa7RuuDRA399/.A89po7jhCUxQXURi5uUKd5iuKSCDME2",
@@ -102903,42 +103395,6 @@
       "zip_code": "1234",
       "applied_at": "2026-11-01T06:07:12.970Z",
       "month_year": "2026-11",
-      "status": "pending",
-      "awarded_at": null
-    },
-    {
-      "id": "fpa-001",
-      "branch_id": "b-mkt-01",
-      "full_name": "Christian Bautista",
-      "email": "christian.b@gmail.com",
-      "phone_number": "09171234567",
-      "zip_code": "1226",
-      "applied_at": "2026-09-02T08:30:00.000Z",
-      "month_year": "2026-09",
-      "status": "pending",
-      "awarded_at": null
-    },
-    {
-      "id": "fpa-002",
-      "branch_id": "b-mkt-01",
-      "full_name": "Angela Santos",
-      "email": "angela.santos@yahoo.com",
-      "phone_number": "+63 920 888 1234",
-      "zip_code": "1226",
-      "applied_at": "2026-09-04T11:15:00.000Z",
-      "month_year": "2026-09",
-      "status": "pending",
-      "awarded_at": null
-    },
-    {
-      "id": "fpa-003",
-      "branch_id": "b-kat-02",
-      "full_name": "Paolo Hernandez",
-      "email": "paolo.h@gmail.com",
-      "phone_number": "09189876543",
-      "zip_code": "1108",
-      "applied_at": "2026-09-03T14:20:00.000Z",
-      "month_year": "2026-09",
       "status": "pending",
       "awarded_at": null
     }
@@ -104858,7 +105314,12 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUxMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMiIsInJvbGUiOiJlbXBsb3llZSIsImJyYW5jaF9pZCI6ImItbWt0LTAxIiwiZW1haWwiOiJtYWthdGkuc3RhZmZAa3N5bi5jb20iLCJ1c2VybmFtZSI6Im1ha2F0aS5zdGFmZiIsIm5hbWUiOiJNYXlhIExpbiAoTWFrYXRpIERlc2spIiwiYXV0aF9wcm92aWRlciI6Imdvb2dsZSIsImlhdCI6MTc5MzcxODcwOSwiZXhwIjoxNzk0MzIzNTA5fQ.l1kJRcx5_HXfsEJ7zMIzkFXH_IKRidLlxs9YXvnmiQs",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZhZTI0LTI4OWQtNDYxMy1hN2JkLWJjOWQ1YzBhNjVmNCIsInJvbGUiOiJicmFuY2hfYWRtaW4iLCJicmFuY2hfaWQiOiJiLWZydi0wNSIsImVtYWlsIjoibWljaGFlbGFfZmFpcnZpZXdAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtaWNoYWVsYV9mcnZ3IiwibmFtZSI6Ik1pY2hhZWxhIE1hcnF1ZXoiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjQ1MDcyLCJleHAiOjE3OTQ4NDk4NzJ9.x9vdVq_D3cSJPO7Y89l9Ln1Cc7kOGT7WJhOqC23_1fQ",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZhZTI0LTI4OWQtNDYxMy1hN2JkLWJjOWQ1YzBhNjVmNCIsInJvbGUiOiJicmFuY2hfYWRtaW4iLCJicmFuY2hfaWQiOiJiLWZydi0wNSIsImVtYWlsIjoibWljaGFlbGFfZmFpcnZpZXdAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtaWNoYWVsYV9mcnZ3IiwibmFtZSI6Ik1pY2hhZWxhIE1hcnF1ZXoiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjQ1MDgwLCJleHAiOjE3OTQ4NDk4ODB9.BWu_8PrSVJDL30XOGyxG2zxm5zLZxIXtadu6siKJa44",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI0MDQzMzI2LTlmNTUtNDc2NC1hMWZkLTM0MGM3YjQ0OTQwNSIsInJvbGUiOiJzdGFmZiIsImJyYW5jaF9pZCI6ImItZnJ2LTA1IiwiZW1haWwiOiJzb3BoaWFfZmFpcnZpZXdAZ21haWwuY29tIiwidXNlcm5hbWUiOiJzb3BoaWFfZnJ2d3N0YWZmIiwibmFtZSI6IlNvcGhpYSBNQWUiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjQ1MTM2LCJleHAiOjE3OTQ4NDk5MzZ9.EuJHWMZo0OATXujHkcNbWRXDMYJWXVe_qxf4WrpJJuc"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI0MDQzMzI2LTlmNTUtNDc2NC1hMWZkLTM0MGM3YjQ0OTQwNSIsInJvbGUiOiJzdGFmZiIsImJyYW5jaF9pZCI6ImItZnJ2LTA1IiwiZW1haWwiOiJzb3BoaWFfZmFpcnZpZXdAZ21haWwuY29tIiwidXNlcm5hbWUiOiJzb3BoaWFfZnJ2d3N0YWZmIiwibmFtZSI6IlNvcGhpYSBNQWUiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjQ1MTM2LCJleHAiOjE3OTQ4NDk5MzZ9.EuJHWMZo0OATXujHkcNbWRXDMYJWXVe_qxf4WrpJJuc",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRhOTdhNjUzLTJlZmMtNDRiNC04ZGU1LTdhNWE4MWIzZmM2MyIsInJvbGUiOiJtZW1iZXIiLCJicmFuY2hfaWQiOiJiLW1rdC0wMSIsImVtYWlsIjoidXJiYW5vbWFycXVlejY1QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidXJhYmFub21hcnF1ZXo2NSIsIm5hbWUiOiJ1cmJhbm9tYXJxdWV6IiwiYXV0aF9wcm92aWRlciI6Imdvb2dsZSIsImlhdCI6MTc5NDI4Mzg1MiwiZXhwIjoxNzk0ODg4NjUyfQ.raKwZPD4SbYNn13R3up9JV2zRMjnNfd9ENt56T26W_8",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUxMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwNSIsInJvbGUiOiJjb2FjaCIsImJyYW5jaF9pZCI6ImItbWt0LTAxIiwiZW1haWwiOiJjb2FjaC5zb2ZpYUBrc3luLmNvbSIsInVzZXJuYW1lIjoiY29hY2guc29maWEiLCJuYW1lIjoiQ29hY2ggU29maWEgQ3J1eiAoV2VpZ2h0IExvc3MgTGVhZCkiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjgzODYzLCJleHAiOjE3OTQ4ODg2NjN9.wyqm9cpELr9-KBTvXDB_KEz7x5Iip9W87n8enmoBIKg",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUxMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwOSIsInJvbGUiOiJicmFuY2hfYWRtaW4iLCJicmFuY2hfaWQiOiJiLW1rdC0wMSIsImVtYWlsIjoiYWRtaW4ubWFrYXRpQGtzeW4uY29tIiwidXNlcm5hbWUiOiJhZG1pbi5tYWthdGkiLCJuYW1lIjoiUmFmYWVsIFNpbHZhIChNYWthdGkgRmxhZ3NoaXAgQWRtaW4pIiwiYXV0aF9wcm92aWRlciI6Imdvb2dsZSIsImlhdCI6MTc5NDI4MzkwNywiZXhwIjoxNzk0ODg4NzA3fQ.TZdsXTO-efzilgpDYfU-k0zPm6W989d36XtWcQN3tbA",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUxMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAxMCIsInJvbGUiOiJicmFuY2hfb3duZXIiLCJicmFuY2hfaWQiOiJiLW1rdC0wMSIsImVtYWlsIjoib3duZXIubWFrYXRpQGtzeW4uY29tIiwidXNlcm5hbWUiOiJvd25lci5tYWthdGkiLCJuYW1lIjoiRWxlbmEgUm9zdG92YSAoTWFrYXRpIEZyYW5jaGlzZSBPd25lcikiLCJhdXRoX3Byb3ZpZGVyIjoiZ29vZ2xlIiwiaWF0IjoxNzk0MjgzOTQwLCJleHAiOjE3OTQ4ODg3NDB9.q1C5rFVca_QufMLNp6TBviuQeADGPsr6EQA1tSb1eeo",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InUwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImJyYW5jaF9pZCI6bnVsbCwiZW1haWwiOiJzdXBlcmFkbWluQGtzeW4uY29tIiwidXNlcm5hbWUiOiJzdXBlcmFkbWluIiwibmFtZSI6Ik1hcmN1cyBWYW5jZSAoQ0VPKSIsImF1dGhfcHJvdmlkZXIiOiJnb29nbGUiLCJpYXQiOjE3OTQyODM5OTQsImV4cCI6MTc5NDg4ODc5NH0.cNdI3vLVnRdDu4-9hm32PDt3x4OJbYiLFrh3EnMwrnY"
   ],
   "login_attempts": {
     "admin.katipunan@ksyn.com": {

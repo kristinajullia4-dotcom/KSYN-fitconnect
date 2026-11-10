@@ -1023,7 +1023,7 @@ export function generateDataPrivacyArchivePdf({ user = {}, attendanceLogs = [], 
   doc.setFont('courier', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(15, 23, 42);
-  const sealHash = waiver.sha256_seal || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+  const sealHash = waiver?.sha256_seal || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
   doc.text(`SHA-256 Tamper Seal: ${sealHash}`, 16, y + 14);
 
   y += 26;
@@ -1065,7 +1065,7 @@ export function generateDataPrivacyArchivePdf({ user = {}, attendanceLogs = [], 
   const cert = doc.splitTextToSize('This SAR Archive is provided in accordance with the National Privacy Commission (NPC) Citizen Charter and RA 10173 Section 16 (Right to Access and Data Portability). Certified by KSYN Data Protection Officer.', pageWidth - 24);
   doc.text(cert, 12, y);
 
-  const filename = `KSYN-DataPrivacyArchive-${(user.name || 'Member').replace(/\s+/g, '-')}.pdf`;
+  const filename = `KSYN-DataPrivacyArchive-${(user?.name || 'Member').replace(/\s+/g, '-')}.pdf`;
   doc.save(filename);
 }
 
