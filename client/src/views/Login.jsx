@@ -611,7 +611,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
       fontFamily: 'Inter, system-ui, sans-serif'
     }}>
       {/* Top Header Navigation */}
-      <div style={{ width: '100%', maxWidth: '460px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ width: '100%', maxWidth: '460px', marginBottom: '20px', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
         <Tooltip content="Return to Public Landing Page" position="right">
           <button
             onClick={() => {
@@ -628,14 +628,6 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
             <ChevronLeft size={16} /> Back to Landing
           </button>
         </Tooltip>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: '#6b7280' }}>
-          <span>Dual-Token Security</span>
-          <span>&bull;</span>
-          <span style={{ color: '#658256', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Shield size={12} /> RBAC Guarded
-          </span>
-        </div>
       </div>
 
       <div style={{ width: '100%', maxWidth: '460px' }}>
@@ -655,9 +647,6 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
           <h1 style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: '6px' }}>
             KSYN <span style={{ color: '#e1c256' }}>FITCONNECT</span>
           </h1>
-          <p style={{ color: '#9ca3af', fontSize: '0.8125rem' }}>
-            Enterprise Franchise Management Platform &bull; Secure Authentication
-          </p>
         </div>
 
         {/* 1. Login Card */}
@@ -1547,27 +1536,6 @@ export default function Login({ onLoginSuccess, onNavigateHome, onNavigateRegist
               )}
             </div>
           )}
-
-          {/* Security Features: Replaced all emojis with SVG icons */}
-          <div style={{
-            marginTop: '24px',
-            paddingTop: '16px',
-            borderTop: '1px solid #1f1f1f',
-            fontSize: '0.75rem',
-            color: '#6b7280',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '8px'
-          }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Lock size={14} color="#e1c256" className="shrink-0" /> Bcrypt-Hashed Verification
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Shield size={14} color="#e1c256" className="shrink-0" /> RBAC Guarded Access
-            </span>
-          </div>
         </div>
 
         {/* 2. New Athlete / Franchise Guest Registration Prompt */}
