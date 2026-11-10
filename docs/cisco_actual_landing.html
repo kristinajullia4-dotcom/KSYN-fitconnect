@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KSYN FITNESS — Multi-Branch Commercial Fitness Franchise</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: #0a0a0a;
+    color: #f9fafb;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* NAVIGATION */
+  .navbar {
+    width: 100%;
+    background-color: #0a0a0a;
+    border-bottom: 1px solid #1f1f1f;
+    padding: 14px 28px;
+  }
+  .nav-table { width: 100%; border-collapse: collapse; }
+  .nav-table td { vertical-align: middle; }
+  
+  .brand-badge {
+    width: 38px;
+    height: 38px;
+    background-color: #e1c256;
+    color: #000000;
+    font-weight: 900;
+    font-size: 20px;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .brand-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .brand-title span { color: #e1c256; }
+  .brand-sub {
+    color: #9ca3af;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-top: 2px;
+  }
+
+  .nav-links { text-align: center; }
+  .nav-links a {
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 12px;
+  }
+  .nav-links a:hover { color: #e1c256; }
+
+  .btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn-gold {
+    background-color: #e1c256;
+    color: #000000;
+    border: 1px solid #e1c256;
+  }
+  .btn-outline {
+    background-color: #141414;
+    color: #e1c256;
+    border: 1px solid #e1c256;
+  }
+  .btn-dark {
+    background-color: #181818;
+    color: #ffffff;
+    border: 1px solid #333333;
+  }
+
+  /* HERO SECTION */
+  .hero-container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 60px 20px 40px 20px;
+    text-align: center;
+  }
+  .hero-h1 {
+    font-size: 44px;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .hero-h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #e1c256;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+  }
+  .hero-p {
+    font-size: 15px;
+    color: #9ca3af;
+    max-width: 780px;
+    margin: 0 auto 35px auto;
+    line-height: 1.6;
+  }
+  .hero-cta {
+    margin-bottom: 50px;
+  }
+  .hero-cta a {
+    margin: 0 8px;
+    padding: 12px 26px;
+    font-size: 13px;
+  }
+
+  /* HUD STATS TABLE */
+  .hud-table {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 12px;
+  }
+  .hud-card {
+    background-color: #12141a;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    padding: 16px 20px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .hud-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .hud-val {
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+  .hud-val.gold { color: #e1c256; }
+  .hud-val.green { color: #4ade80; }
+  .hud-sub {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 5px;
+  }
+
+  /* CONTENT SECTIONS */
+  .section-wrap {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 50px 20px;
+  }
+  .sec-header {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  .sec-tag {
+    color: #e1c256;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .sec-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  .sec-sub {
+    font-size: 14px;
+    color: #9ca3af;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* PILLARS TABLE */
+  .pillar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 16px;
+  }
+  .pillar-card {
+    background-color: #121212;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 24px;
+    vertical-align: top;
+    text-align: left;
+  }
+  .pillar-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .pillar-p {
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* BRANCHES TABLE */
+  .branches-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 14px;
+  }
+  .branch-cell {
+    background-color: #131313;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    padding: 18px;
+    vertical-align: top;
+    text-align: left;
+    width: 33.33%;
+  }
+  .branch-badge {
+    background-color: #14532d;
+    color: #4ade80;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .branch-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 3px;
+  }
+  .branch-city {
+    font-size: 12px;
+    color: #e1c256;
+    margin-bottom: 10px;
+  }
+  .branch-info {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+  }
+
+  /* PRICING TABLE */
+  .pricing-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 12px;
+  }
+  .price-cell {
+    background-color: #131313;
+    border: 1px solid #242424;
+    border-radius: 8px;
+    padding: 22px 18px;
+    vertical-align: top;
+    text-align: left;
+    width: 25%;
+  }
+  .price-cell.featured {
+    border: 1px solid #e1c256;
+  }
+  .price-tag {
+    background-color: #e1c256;
+    color: #000000;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .price-name { font-size: 15px; font-weight: bold; color: #ffffff; margin-bottom: 8px; }
+  .price-amt { font-size: 28px; font-weight: 900; color: #e1c256; }
+  .price-period { font-size: 10px; color: #888888; margin-bottom: 14px; }
+  .price-list { list-style: none; font-size: 11px; color: #bbbbbb; line-height: 1.7; margin-bottom: 18px; }
+
+  /* FRANCHISE INQUIRY */
+  .franchise-form-box {
+    background-color: #111111;
+    border: 1px solid #e1c256;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .f-label {
+    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .f-input {
+    width: 100%;
+    background-color: #080808;
+    border: 1px solid #333333;
+    color: #ffffff;
+    padding: 9px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* FOOTER */
+  .footer-wrap {
+    width: 100%;
+    border-top: 1px solid #1f1f1f;
+    padding: 35px 20px;
+    text-align: center;
+    color: #666666;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body bgcolor="#0a0a0a" text="#ffffff" style="background-color: #0a0a0a; color: #ffffff; margin: 0; padding: 0;">
+
+<!-- TOP-LEVEL DARK WRAPPER TABLE ENFORCING #0a0a0a CANVAS -->
+<table width="100%" bgcolor="#0a0a0a" cellpadding="0" cellspacing="0" border="0" style="background-color: #0a0a0a; min-height: 100vh;">
+<tr>
+<td bgcolor="#0a0a0a" align="center" style="background-color: #0a0a0a;">
+
+  <!-- 1. NAVIGATION -->
+  <div class="navbar">
+    <table class="nav-table">
+      <tr>
+        <td width="260" align="left">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="46" valign="middle">
+                <div class="brand-badge">K</div>
+              </td>
+              <td valign="middle" align="left">
+                <div class="brand-title">KSYN <span>FITNESS</span></div>
+                <div class="brand-sub">Multi-Branch Commercial Fitness Franchise</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td class="nav-links">
+          <a href="#franchise">Franchise Opportunities</a>
+          <a href="#memberships">Memberships & Pricing</a>
+          <a href="#locations">Locations</a>
+          <a href="#about">About KSYN</a>
+        </td>
+        <td width="240" align="right">
+          <a href="#franchise" class="btn btn-outline" style="margin-right: 6px;">Claim 1-Day Pass</a>
+          <a href="#login" class="btn btn-dark">Sign In / Portal &rarr;</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 2. HERO SECTION -->
+  <div class="hero-container">
+    <h1 class="hero-h1">BRING KSYN TO YOUR CITY!</h1>
+    <div class="hero-h2">BE THE NEXT KSYN FRANCHISE OWNER!</div>
+    <p class="hero-p">
+      Modern fitness spaces, functional strength training, and flexible multi-club access across Metro Manila, expanding nationwide. Train with us as a member, or partner with our team to open a KSYN branch in your city.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#memberships" class="btn btn-gold">Join Now / Claim Pass</a>
+      <a href="#memberships" class="btn btn-dark">Explore Memberships</a>
+      <a href="#franchise" class="btn btn-dark">Own a Franchise</a>
+    </div>
+
+    <!-- HUD STATS TABLE -->
+    <table class="hud-table" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="hud-card" width="25%">
+          <div class="hud-label">Network</div>
+          <div class="hud-val gold">7 Branches</div>
+          <div class="hud-sub">6 Active Clubs &bull; 1 Opening Soon</div>
+        </td>
+        <td class="hud-card" width="25%">
+          <div class="hud-label">Community</div>
+          <div class="hud-val">8,500+</div>
+          <div class="hud-sub">Active members across Metro Manila</div>
+        </td>
+        <td class="hud-card" width="25%">
+          <div class="hud-label">Operating Hours</div>
+          <div class="hud-val green">6:00 AM – 12:00 AM</div>
+          <div class="hud-sub">Standardized operating hours & QR entry</div>
+        </td>
+        <td class="hud-card" width="25%">
+          <div class="hud-label">Franchise</div>
+          <div class="hud-val gold">Turnkey Franchise</div>
+          <div class="hud-sub">Standardized equipment & operations support</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3. ABOUT KSYN & BRAND PILLARS -->
+  <div id="about" class="section-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">The KSYN Standard</div>
+      <h2 class="sec-title">Engineered for Champions. Built to Scale.</h2>
+      <p class="sec-sub">
+        We created KSYN Fitness to bridge the gap between heavy-duty strength facilities and modern digital gym convenience. Here is why athletes stay and franchisees thrive.
+      </p>
+    </div>
+
+    <table class="pillar-table" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="pillar-card" width="33.33%">
+          <div class="pillar-title">Championship Equipment</div>
+          <p class="pillar-p">
+            Outfitted with custom heavy-duty racks, Eleiko calibrated plates, Hammer Strength plate-loaded equipment, and dumbbells up to 150 lbs. No lightweight compromises.
+          </p>
+        </td>
+        <td class="pillar-card" width="33.33%">
+          <div class="pillar-title">Multi-Branch Digital Access</div>
+          <p class="pillar-p">
+            Single membership keycard gives members access across our entire metropolitan gym network, backed by 60-second rotating optical verification passes.
+          </p>
+        </td>
+        <td class="pillar-card" width="33.33%">
+          <div class="pillar-title">Turnkey Franchise System</div>
+          <p class="pillar-p">
+            Complete architectural blueprints, equipment procurement, staff training curriculum, and cloud software stack to launch a profitable gym facility.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 4. BRANCH LOCATIONS -->
+  <div id="locations" class="section-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Commercial Network</div>
+      <h2 class="sec-title">Official Branch Locations</h2>
+      <p class="sec-sub">Seven flagship facilities operating across prime business districts.</p>
+    </div>
+
+    <table class="branches-table" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN BGC Elite</div>
+          <div class="branch-city">Taguig City</div>
+          <div class="branch-info">📍 Bonifacio High Street, Taguig City</div>
+          <div class="branch-info">⏰ 5:00 AM - 12:00 MN</div>
+          <div class="branch-info">📞 (02) 8888-0001</div>
+        </td>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN Alabang Prime</div>
+          <div class="branch-city">Muntinlupa City</div>
+          <div class="branch-info">📍 Alabang Town Center, Commerce Ave</div>
+          <div class="branch-info">⏰ 6:00 AM - 11:00 PM</div>
+          <div class="branch-info">📞 (02) 8888-0002</div>
+        </td>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN Quezon City Central</div>
+          <div class="branch-city">Quezon City</div>
+          <div class="branch-info">📍 Tomas Morato Ave cor. Timog</div>
+          <div class="branch-info">⏰ 24/7 All-Access</div>
+          <div class="branch-info">📞 (02) 8888-0003</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN Makati CBD Hub</div>
+          <div class="branch-city">Makati City</div>
+          <div class="branch-info">📍 Ayala Avenue cor. Paseo de Roxas</div>
+          <div class="branch-info">⏰ 5:30 AM - 11:30 PM</div>
+          <div class="branch-info">📞 (02) 8888-0004</div>
+        </td>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN Ortigas Center</div>
+          <div class="branch-city">Pasig City</div>
+          <div class="branch-info">📍 F. Ortigas Jr. Road, San Antonio</div>
+          <div class="branch-info">⏰ 6:00 AM - 11:00 PM</div>
+          <div class="branch-info">📞 (02) 8888-0005</div>
+        </td>
+        <td class="branch-cell">
+          <span class="branch-badge">Active & Operational</span>
+          <div class="branch-name">KSYN Cebu City IT Park</div>
+          <div class="branch-city">Cebu City</div>
+          <div class="branch-info">📍 Salinas Drive, Lahug, Cebu City</div>
+          <div class="branch-info">⏰ 24/7 All-Access</div>
+          <div class="branch-info">📞 (032) 412-0006</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 5. MEMBERSHIP PRICING -->
+  <div id="memberships" class="section-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Membership Options</div>
+      <h2 class="sec-title">Memberships & Pricing</h2>
+      <p class="sec-sub">Simple pricing. No hidden cancellation fees. Instant digital QR access.</p>
+    </div>
+
+    <table class="pricing-table" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="price-cell">
+          <span class="price-tag">Flexible</span>
+          <div class="price-name">1-Day Access Pass</div>
+          <div class="price-amt">₱450</div>
+          <div class="price-period">single day</div>
+          <ul class="price-list">
+            <li>✓ Full gym & shower access</li>
+            <li>✓ 60-second optical QR pass</li>
+            <li>✓ Free locker usage</li>
+          </ul>
+          <a href="#franchise" class="btn btn-dark" style="display:block; text-align:center;">Claim Pass</a>
+        </td>
+        <td class="price-cell">
+          <span class="price-tag">Popular</span>
+          <div class="price-name">Single Branch Monthly</div>
+          <div class="price-amt">₱1,800</div>
+          <div class="price-period">per month</div>
+          <ul class="price-list">
+            <li>✓ Unlimited home branch access</li>
+            <li>✓ 1-on-1 Fitness Assessment</li>
+            <li>✓ Mobile web portal access</li>
+          </ul>
+          <a href="#franchise" class="btn btn-dark" style="display:block; text-align:center;">Join Monthly</a>
+        </td>
+        <td class="price-cell featured">
+          <span class="price-tag">Recommended</span>
+          <div class="price-name">Multi-Branch Gold VIP</div>
+          <div class="price-amt">₱2,800</div>
+          <div class="price-period">per month</div>
+          <ul class="price-list">
+            <li>✓ All 7 branches roaming</li>
+            <li>✓ Permanent VIP locker</li>
+            <li>✓ Free workout routine splits</li>
+            <li>✓ 1 Free Guest Pass/month</li>
+          </ul>
+          <a href="#franchise" class="btn btn-gold" style="display:block; text-align:center;">Get Gold VIP</a>
+        </td>
+        <td class="price-cell">
+          <span class="price-tag">Executive</span>
+          <div class="price-name">Black Card Annual</div>
+          <div class="price-amt">₱28,000</div>
+          <div class="price-period">per year</div>
+          <ul class="price-list">
+            <li>✓ Priority 7-branch access</li>
+            <li>✓ Coach periodization programs</li>
+            <li>✓ Exclusive KSYN Athlete Bag</li>
+            <li>✓ 15% Pro Shop discount</li>
+          </ul>
+          <a href="#franchise" class="btn btn-dark" style="display:block; text-align:center;">Join Annual</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 6. FRANCHISE INQUIRY FORM -->
+  <div id="franchise" class="section-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Franchise Opportunities</div>
+      <h2 class="sec-title">Own a KSYN Fitness Franchise</h2>
+      <p class="sec-sub">Partner with the fastest-growing strength training franchise in the country.</p>
+    </div>
+
+    <div class="franchise-form-box">
+      <form onsubmit="event.preventDefault(); alert('Inquiry submitted! Our Franchise Director will contact you.');">
+        <label class="f-label">Full Name *</label>
+        <input class="f-input" type="text" placeholder="e.g. Maria Santos" required>
+
+        <label class="f-label">Email Address *</label>
+        <input class="f-input" type="email" placeholder="e.g. investor@example.com" required>
+
+        <label class="f-label">Contact Phone Number *</label>
+        <input class="f-input" type="tel" placeholder="e.g. +63 917 123 4567" required>
+
+        <label class="f-label">Target City / Commercial Location *</label>
+        <select class="f-input">
+          <option>Makati CBD Hub</option>
+          <option>BGC Elite / Taguig</option>
+          <option>Alabang / Muntinlupa</option>
+          <option>Quezon City Central</option>
+          <option>Ortigas Center / Pasig</option>
+          <option>Cebu City IT Park</option>
+          <option>Davao City Central</option>
+        </select>
+
+        <label class="f-label">Investment Capital Range</label>
+        <select class="f-input">
+          <option>₱4,000,000 – ₱6,000,000 (Standard Commercial Hub)</option>
+          <option>₱6,000,000 – ₱9,000,000 (Flagship Facility)</option>
+          <option>₱10,000,000+ (Multi-Unit Franchisee)</option>
+        </select>
+
+        <button type="submit" class="btn btn-gold" style="width: 100%; padding: 12px; font-size: 13px; margin-top: 10px;">
+          Submit Franchise Inquiry
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. FOOTER -->
+  <div class="footer-wrap">
+    <p>&copy; 2026 KSYN Fitness Platform. All rights reserved.</p>
+    <p style="margin-top: 4px; color: #555555;">
+      Multi-Tenant SaaS with PostgreSQL Row-Level Security &bull; Republic Act 10173 (Data Privacy Act) Compliant
+    </p>
+  </div>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
