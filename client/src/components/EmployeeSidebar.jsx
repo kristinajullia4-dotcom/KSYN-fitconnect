@@ -315,46 +315,6 @@ export default function EmployeeSidebar({
             })}
           </nav>
         </div>
-
-        {/* Footer / Status Indicator */}
-        <div
-          style={{
-            padding: '14px 16px',
-            borderTop: '1px solid #1c201d',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            backgroundColor: '#0a0c0b',
-            height: '48px',
-            boxSizing: 'border-box'
-          }}
-        >
-          <div
-            style={{
-              width: '8px',
-              height: '8px',
-              minWidth: '8px',
-              minHeight: '8px',
-              borderRadius: '50%',
-              backgroundColor: '#10b981',
-              boxShadow: '0 0 8px rgba(16, 185, 129, 0.7)',
-              flexShrink: 0
-            }}
-          />
-          <span
-            style={{
-              fontSize: '11px',
-              color: '#9ca3af',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              opacity: isHovered ? 1 : 0,
-              pointerEvents: isHovered ? 'auto' : 'none',
-              transition: 'opacity 0.2s ease'
-            }}
-          >
-            Secure Data Connection
-          </span>
-        </div>
       </aside>
     </div>
   );
