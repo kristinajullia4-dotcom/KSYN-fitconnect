@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Enterprise Network Architecture & Cloud Topology - KSYN FitConnect</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.5in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 8.5in;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+  h1.chapter-title {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h2.chapter-subtitle {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20pt;
+    text-transform: uppercase;
+    text-indent: 0;
+  }
+  h3.section-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 20pt;
+    margin-bottom: 8pt;
+    text-indent: 0;
+  }
+  h4.subsection-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    text-indent: 0;
+  }
+  .caption {
+    font-size: 11pt;
+    font-style: italic;
+    text-align: center;
+    margin-top: 6pt;
+    margin-bottom: 16pt;
+    text-indent: 0;
+  }
+  table.acad-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14pt;
+    margin-bottom: 18pt;
+    font-size: 11pt;
+  }
+  table.acad-table th {
+    border-top: 1.5pt solid #000;
+    border-bottom: 1.5pt solid #000;
+    padding: 6pt 8pt;
+    text-align: left;
+    font-weight: bold;
+  }
+  table.acad-table td {
+    border-bottom: 0.5pt solid #ccc;
+    padding: 6pt 8pt;
+    vertical-align: top;
+  }
+  table.acad-table tr:last-child td {
+    border-bottom: 1.5pt solid #000;
+  }
+  ol, ul {
+    margin-top: 0;
+    margin-bottom: 12pt;
+    padding-left: 0.5in;
+  }
+  li {
+    text-align: justify;
+    margin-bottom: 6pt;
+  }
+  .topology-box {
+    border: 1.5pt solid #333333;
+    background-color: #f8fafc;
+    padding: 16px;
+    margin: 18pt 0 6pt 0;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .topology-box img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="chapter-title">SECTION 3.3.X</h1>
+<h2 class="chapter-subtitle">ENTERPRISE NETWORK ARCHITECTURE AND CLOUD DEPLOYMENT TOPOLOGY</h2>
+
+<p class="no-indent"><strong>Thesis Reference:</strong> Chapters I, II, and III Integration Documentation<br>
+<strong>Project Title:</strong> DEVELOPMENT OF KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation<br>
+<strong>Researchers:</strong> Bautista, Luis Gabriel; Bozar, Merynelle B.; Marquez, Jullia Krisitina C.<br>
+<strong>Institution:</strong> College of Computing and Information Sciences, University of Makati</p>
+
+<h3 class="section-title">3.3.X Enterprise Network Architecture and Topology Overview</h3>
+
+<p>To support the multi-branch commercial fitness franchise operations detailed in Chapters I and II, KSYN FitConnect implements a centralized, cloud-interconnected network topology. The infrastructure connects corporate headquarters with the franchise branch facilities distributed across metropolitan commercial centers, including the modeled nodes: BGC Flagship (BGC-01), Alphaland Makati (MKT-02), Fairview Pontiac (FRV-03), Kapitolyo Pasig (KAP-04), Del Monte Quezon City (DLM-05), Alabang (ALB-06), and Katipunan Regis Center (KTP-07). The network architecture is structured as a hierarchical Hub-and-Spoke enterprise Wide Area Network (WAN) centered upon an elastic cloud infrastructure backbone.</p>
+
+<div class="topology-box">
+  <img src="https://lh3.googleusercontent.com/d/media_1794342803541_4c54f3e7.png" alt="KSYN FitConnect Enterprise Network Topology" style="width: 100%; max-width: 800px; border: 1px solid #999;">
+</div>
+<div class="caption">Figure 3.X. KSYN FitConnect Enterprise Network Topology (Cisco Packet Tracer Simulation)</div>
+
+<p>As illustrated in Figure 3.X, the system utilizes a high-availability cloud WAN backbone designated as <strong>AWS Cloud</strong>. This central cloud routing core interconnects the primary Corporate Headquarters / Central Server node (top cluster) with three major regional franchise branch routing zones (Zone A, Zone B, and Zone C). This architecture satisfies the primary research objectives of Chapter I by providing high-throughput transactional processing, continuous mobile client connectivity, and multi-tenant data synchronization while strictly maintaining tenant data boundaries.</p>
+
+<h3 class="section-title">3.3.X.1 Central Cloud Backbone and Server Infrastructure</h3>
+
+<p>The core of the enterprise topology is anchored by the <strong>AWS Cloud</strong> backbone. In the production deployment specification of KSYN FitConnect, the application backend and relational data store are hosted within a high-performance cloud container infrastructure environment (compatible with AWS Cloud and container PaaS platforms such as Render.com within the Singapore <code>ap-southeast-1</code> availability zone for minimal latency to Philippine internet service providers). The central cloud server (modeled as <code>Server-PT SERVER</code> behind Cisco 2960-24TT <code>Switch14</code> and gateway router <code>Cisco 2811 R0</code>) executes the following essential platform services:</p>
+
+<ul>
+  <li><strong>Unified Application and API Gateway:</strong> Hosts the production React 18 client single-page application (SPA), Node.js Express RESTful API controllers, and WebSocket real-time communication daemons on a unified container port, eliminating Cross-Origin Resource Sharing (CORS) overhead.</li>
+  <li><strong>Multi-Tenant PostgreSQL Relational Engine:</strong> Manages persistent records across all franchise branches using PostgreSQL Row-Level Security (RLS). Every query execution injects the tenant session variable <code>SET LOCAL app.current_tenant_id = [branch_id]</code>, ensuring mathematical row isolation at the database kernel level.</li>
+  <li><strong>Automated Franchise Financial Engine:</strong> Computes the mandatory 7.5% corporate franchisor royalty cut on gross branch receipts and generates Philippine Bureau of Internal Revenue (BIR) Form 2307 Creditable Withholding Tax schedules.</li>
+  <li><strong>Cryptographic Verification Daemon:</strong> Validates incoming 60-second dynamic HMAC-SHA256 member passes and manages the in-memory anti-replay nonce cache to prevent duplicate entry attempts.</li>
+</ul>
+
+<h3 class="section-title">3.3.X.2 Regional Franchise Branch Clusters and Local Edge Nodes</h3>
+
+<p>The enterprise network partitions the modeled franchise branches into distinct routing and distribution zones, each fronted by dedicated edge routers and switching fabrics:</p>
+
+<h4 class="subsection-title">1. Regional Branch Cluster A (South and Central Metro Sector)</h4>
+<p>Terminated by gateway router <strong>Cisco 2811 R1</strong> and distribution switch <strong>2960-24TT Switch0</strong>, this cluster represents high-density commercial facilities such as BGC Flagship and Alabang Prime. The distribution layer fans out to dedicated access switches (<code>Switch4</code>, <code>Switch3</code>, and <code>Switch2</code>). Connected to these edge switches are front-desk cashier POS terminals (<code>PC-PT</code>), dedicated hardware Cisco 7960 IP Phones for inter-branch and HQ operational voice communication, and high-gain Wireless Access Points (<code>AccessPoint-PT</code>). The access points deliver continuous wireless coverage across the gym floor, enabling athletes to load their digital dynamic passes and coaches to record periodization splits.</p>
+
+<h4 class="subsection-title">2. Regional Branch Cluster B (East and North Metro Sector)</h4>
+<p>Terminated by gateway router <strong>Cisco 2811 Router0</strong> and access switches <strong>Switch16 and Switch17</strong>, this zone represents modeled facilities such as Del Monte Quezon City and Fairview Pontiac. It supports administrative management workstations (<code>PC-PT</code> and <code>Laptop-PT</code>) utilized by Branch Administrators (General Managers) to perform daily cashier shift audits, review locker agreements, and execute the Two-Stage Branch Transfer Clearance Protocol. Hardware Cisco 7960 IP Phones and wireless access points provide dedicated local operational support.</p>
+
+<h4 class="subsection-title">3. Regional Branch Cluster C (Commercial Core and Regional Sector)</h4>
+<p>Terminated by gateway router <strong>Cisco 2811 R2</strong> and distribution switch <strong>Switch1</strong>, this cluster routes traffic across floor switches <strong>Switch10, Switch9, and Switch8</strong>, serving modeled hubs such as Alphaland Makati, Kapitolyo Pasig, and Katipunan Regis Center. Front-desk workstations run optical camera check-in verifiers and cashier checkout interfaces, supported by local wireless APs and voice telephony.</p>
+
+<h3 class="section-title">3.3.X.3 Operational Alignment with Manuscript Chapters I–III</h3>
+
+<p>The depicted network topology directly operationalizes the research parameters specified across Chapters I to III:</p>
+
+<ul>
+  <li><strong>Software-Delimited Access Verification:</strong> Consistent with Chapter I's delimitation of physical turnstile relays and Arduino/ESP32 microcontrollers, entry validation is conducted via web camera optical scanners connected to front-desk workstations (<code>PC-PT</code>). Members connect their mobile devices to the local <code>AccessPoint-PT</code>, generate an ephemeral 60-second dynamic QR code pass signed via HMAC-SHA256, and present it to the optical scanner. The workstation transmits the token across the AWS Cloud backbone to <code>Server-PT SERVER</code> for sub-20-millisecond verification.</li>
+  <li><strong>Tenant Data Isolation over Shared Cloud Infrastructure:</strong> While all regional routers (<code>R1</code>, <code>Router0</code>, <code>R2</code>) route traffic to the same central database server via the cloud backbone, multi-tenant row isolation is enforced at the database level. Queries originating from a workstation at Branch A cannot return records belonging to Branch B, fully neutralizing Broken Object-Level Authorization (BOLA) and Insecure Direct Object References (IDOR).</li>
+  <li><strong>Front-Desk Shift Governance and Blind Drawer Close:</strong> Workstations at the branch access switches operate the Point of Sale (POS) cashiering interface. Cashiers open shifts with an opening float, process walk-in passes and retail items, and submit blind drawer closing counts. The server calculates shortages or overages automatically without exposing expected figures beforehand, ensuring strict cash governance.</li>
+  <li><strong>Data Privacy Act of 2012 (RA 10173) Compliance:</strong> Network transmissions across the AWS Cloud WAN backbone utilize Transport Layer Security (TLS 1.3). Front-desk terminal interfaces feature active Personally Identifiable Information (PII) masking (e.g., <code>+63 917 **** 892</code>) to prevent visual shoulder-surfing in public gym reception areas.</li>
+</ul>
+
+<h3 class="section-title">3.3.X.4 Network Equipment Inventory and Role Mapping</h3>
+
+<table class="acad-table">
+  <thead>
+    <tr>
+      <th width="24%">Device Identifier</th>
+      <th width="26%">Hardware Model</th>
+      <th width="22%">Network Tier</th>
+      <th width="28%">System Functionality</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>AWS Cloud</strong></td>
+      <td>Cloud-PT-Empty (Carrier WAN)</td>
+      <td>Central WAN Backbone</td>
+      <td>Provides high-speed, elastic WAN routing interconnecting corporate headquarters with all franchise branches.</td>
+    </tr>
+    <tr>
+      <td><strong>R0</strong></td>
+      <td>Cisco 2811 Modular Router</td>
+      <td>HQ Cloud Gateway</td>
+      <td>Terminates central cloud connections and routes API traffic to the enterprise host server.</td>
+    </tr>
+    <tr>
+      <td><strong>Server-PT (SERVER)</strong></td>
+      <td>Enterprise Application Server</td>
+      <td>Cloud Host Tier</td>
+      <td>Hosts KSYN FitConnect Node.js/PHP backend, PostgreSQL RLS database, and automated royalty accounting.</td>
+    </tr>
+    <tr>
+      <td><strong>R1, Router0, R2</strong></td>
+      <td>Cisco 2811 Modular Routers</td>
+      <td>Branch Edge Gateways</td>
+      <td>Manages local branch subnet routing, WAN encapsulation, and traffic dispatch to the central cloud.</td>
+    </tr>
+    <tr>
+      <td><strong>Switch0, Switch1, Switch14</strong></td>
+      <td>Cisco 2960-24TT Switch</td>
+      <td>Distribution Layer</td>
+      <td>Aggregates floor-level switch traffic and connects branch distribution fabrics to edge routers.</td>
+    </tr>
+    <tr>
+      <td><strong>Switch2–10, Switch16–17</strong></td>
+      <td>Cisco 2960-24TT Switches</td>
+      <td>Access Layer</td>
+      <td>Provides physical Ethernet switchports for front-desk POS terminals, admin PCs, APs, and IP phones.</td>
+    </tr>
+    <tr>
+      <td><strong>AccessPoint-PT</strong></td>
+      <td>Wireless Access Points</td>
+      <td>Edge Wireless Layer</td>
+      <td>Delivers gym-floor Wi-Fi for athletes and coaches loading dynamic optical passes and workout trackers.</td>
+    </tr>
+    <tr>
+      <td><strong>Cisco 7960 IP Phones</strong></td>
+      <td>Hardware VoIP Telephones</td>
+      <td>Voice Telephony Tier</td>
+      <td>Provides dedicated operational voice communication between branch reception desks, managers, and HQ.</td>
+    </tr>
+    <tr>
+      <td><strong>PC-PT & Laptop-PT</strong></td>
+      <td>Client Workstations</td>
+      <td>Presentation Layer</td>
+      <td>Runs responsive web interfaces, optical camera pass scanners, and POS blind shift drawers.</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
