@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KSYN FitConnect - Oral Thesis Defense Script & Technical API Guide</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.5in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 8.5in;
+  }
+  h1.doc-title {
+    text-align: center;
+    font-size: 15pt;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+  }
+  h2.doc-subtitle {
+    text-align: center;
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 22pt;
+    text-transform: uppercase;
+    color: #333333;
+  }
+  .meta-card {
+    border: 1pt solid #777777;
+    background-color: #f8fafc;
+    padding: 10pt 14pt;
+    margin-bottom: 24pt;
+    font-size: 11pt;
+    border-radius: 4px;
+  }
+  .stage-header {
+    background-color: #0b1f3a;
+    color: #ffffff;
+    padding: 8pt 12pt;
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    text-transform: uppercase;
+    border-radius: 3px;
+  }
+  h3.section-heading {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 16pt;
+    margin-bottom: 6pt;
+    color: #1e3a8a;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 10pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent { text-indent: 0; }
+  ul {
+    margin-top: 4pt;
+    margin-bottom: 12pt;
+    padding-left: 0.5in;
+  }
+  li {
+    text-align: justify;
+    margin-bottom: 6pt;
+  }
+  .action-callout {
+    border-left: 3pt solid #d97706;
+    background-color: #fffbeb;
+    padding: 8pt 12pt;
+    margin: 8pt 0 12pt 0;
+    font-size: 11pt;
+  }
+  .api-block {
+    background-color: #f1f5f9;
+    border: 1pt solid #cbd5e1;
+    padding: 8pt 12pt;
+    margin: 8pt 0 14pt 0;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9.5pt;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  table.api-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14pt;
+    margin-bottom: 18pt;
+    font-size: 10pt;
+  }
+  table.api-table th {
+    background-color: #0b1f3a;
+    color: #ffffff;
+    border: 1pt solid #000;
+    padding: 6pt 6pt;
+    text-align: left;
+    font-weight: bold;
+  }
+  table.api-table td {
+    border: 0.5pt solid #777;
+    padding: 6pt 6pt;
+    vertical-align: top;
+  }
+  table.api-table tr:nth-child(even) td {
+    background-color: #f9fafb;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="doc-title">KSYN FitConnect: Oral Defense Presentation Script & API Catalog</h1>
+<h2 class="doc-subtitle">A Complete Speaking Handbook from Manuscript Chapters I–III to Live Demonstration</h2>
+
+<div class="meta-card">
+  <table width="100%" style="border:none; font-size:11pt;">
+    <tr>
+      <td width="50%"><strong>Project Title:</strong> KSYN FitConnect Enterprise Platform</td>
+      <td width="50%"><strong>Academic Institution:</strong> University of Makati (CCIS)</td>
+    </tr>
+    <tr>
+      <td><strong>Researchers:</strong> Bautista, Bozar, Marquez</td>
+      <td><strong>Manuscript Scope:</strong> Chapters I, II, and III Integration</td>
+    </tr>
+    <tr>
+      <td><strong>Target Audience:</strong> Oral Thesis Examination Panel</td>
+      <td><strong>Format:</strong> Speaker Scripts & Underlying RESTful APIs</td>
+    </tr>
+  </table>
+</div>
+
+<!-- STAGE 1 -->
+<div class="stage-header">STAGE 1: Formal Opening & Chapter I (The Problem and Background)</div>
+
+<h3 class="section-heading">1.1 Introduction of Group & Study Title</h3>
+<ul>
+  <li><em>"Good morning, honorable members of the examination panel, our research adviser, and fellow guests."</em></li>
+  <li><em>"We are honored to present our undergraduate capstone thesis entitled: <strong>'DEVELOPMENT OF KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation.'</strong>"</em></li>
+</ul>
+
+<h3 class="section-heading">1.2 Statement of the Real-World Problem</h3>
+<ul>
+  <li><em>"KSYN Fitness Gym is an expanding commercial fitness franchise in the Philippines with <strong>7 branch facilities</strong> across Metro Manila: BGC Flagship, Alphaland Makati, Fairview, Kapitolyo Pasig, Del Monte Quezon City, Alabang, and Katipunan Regis Center."</em></li>
+  <li><em>"During our initial stakeholder interviews and operational observations, we observed that KSYN branches were relying heavily on disconnected desktop spreadsheets, handwritten visitor logbooks, and paper receipts."</em></li>
+  <li><em>"This fragmented, manual system caused three critical operational headaches:
+    <ol>
+      <li><strong>Inter-Branch Data Leaks:</strong> Shared spreadsheets allowed branch managers and investors to accidentally peek at competitor branches' private sales numbers and client rosters.</li>
+      <li><strong>Front-Desk Cash Skimming:</strong> Walk-in gym-goers were paying cash, but cashiers could easily pocket the money without recording it in the ledger.</li>
+      <li><strong>Pass-Sharing Fraud:</strong> Members were taking screenshots of barcodes and QR codes and texting them to friends, letting multiple people train on a single paid membership.</li>
+    </ol>
+  </em></li>
+  <li><em>"Furthermore, public paper logbooks at front counters exposed member phone numbers and email addresses, directly violating statutory privacy mandates under the <strong>Philippine Data Privacy Act of 2012 (RA 10173)</strong>."</em></li>
+</ul>
+
+<h3 class="section-heading">1.3 Essential System Boundary & Delimitation (Chapter I)</h3>
+<ul>
+  <li><em>"Before we proceed, we wish to emphasize an essential system boundary established in Chapter I: <strong>This system is strictly a software-based web application.</strong>"</em></li>
+  <li><em>"Physical electromechanical turnstiles, solenoid relays, and Arduino or ESP32 microcontrollers are <strong>explicitly delimited</strong> from this build."</em></li>
+  <li><em>"Instead, access verification is executed via <strong>responsive front-desk web camera optical scanners</strong> on counter tablets and laptops, eliminating expensive mechanical hardware breakdowns while delivering bank-grade cryptographic authentication in pure software."</em></li>
+</ul>
+
+<!-- STAGE 2 -->
+<div class="stage-header">STAGE 2: Chapter II (Literature Review & Security Architecture)</div>
+
+<h3 class="section-heading">2.1 Multi-Tenancy & Row-Level Security (RLS)</h3>
+<ul>
+  <li><em>"To eliminate inter-branch data leaks, Chapter II examines multi-tenant cloud software architectures."</em></li>
+  <li><em>"Instead of spending excessive operational costs running 7 separate databases, we implemented a <strong>Shared Database, Shared Schema with PostgreSQL Row-Level Security (RLS)</strong>."</em></li>
+  <li><em>"Think of it like an apartment building: all 7 branches share the same foundation and plumbing, but each branch has its own steel deadbolt lock."</em></li>
+  <li><em>"Every time an Express endpoint connects to the database, our middleware injects the session variable: <code>SET LOCAL app.current_tenant_id = [branch_id]</code>."</em></li>
+  <li><em>"PostgreSQL evaluates every query at the database kernel level. Even if an Alabang cashier tries to alter a URL ID to view a BGC member, PostgreSQL filters out the record and returns <strong>0 rows</strong>."</em></li>
+</ul>
+
+<h3 class="section-heading">2.2 60-Second Dynamic Optical Passes (HMAC-SHA256)</h3>
+<ul>
+  <li><em>"To eliminate pass-sharing fraud, we engineered <strong>HMAC-SHA256 rotating optical tokens</strong>."</em></li>
+  <li><em>"When a member opens their pass, the server signs a payload containing their member ID, current timestamp, and a random cryptographic nonce. The pass expires in <strong>60 seconds</strong>."</em></li>
+  <li><em>"The moment the pass is scanned at the front desk, the server commits the nonce to an in-memory anti-replay cache. If someone screenshots the pass and texts it to a friend outside, the second scan triggers an immediate <strong>HTTP 409 Replay Attack Rejection</strong>."</em></li>
+</ul>
+
+<h3 class="section-heading">2.3 Cash Governance (Blind Drawer Balancing)</h3>
+<ul>
+  <li><em>"To prevent cashier cash skimming, Chapter II establishes <strong>Blind Drawer Balancing</strong>."</em></li>
+  <li><em>"The system conceals the running expected cash total from the cashier throughout their shift."</em></li>
+  <li><em>"When closing the shift, the cashier must count the physical cash in the drawer and type it in blind. Only after it is submitted does the system reveal if there is a shortage or overage, permanently locking any discrepancy in an immutable audit log."</em></li>
+</ul>
+
+<!-- STAGE 3 -->
+<div class="stage-header">STAGE 3: Chapter III (Research Methodology & Network Topology)</div>
+
+<h3 class="section-heading">3.1 Research Design & Security Standards</h3>
+<ul>
+  <li><em>"In Chapter III, our development followed the <strong>Design–Develop–Test–Evaluate (DDTE)</strong> methodology, benchmarked against <strong>ISO/IEC 27001</strong> technological security controls."</em></li>
+</ul>
+
+<h3 class="section-heading">3.2 Enterprise Network Topology Discussion</h3>
+<ul>
+  <li><em>[Point to your Cisco Packet Tracer Topology Diagram]</em></li>
+  <li><em>"Here is our official <strong>Hub-and-Spoke Enterprise Network Topology</strong>:"</em></li>
+  <li><em>"At the center is our <strong>AWS Cloud backbone</strong>, which provides the high-speed cloud infrastructure hosting our centralized backend and multi-tenant PostgreSQL database."</em></li>
+  <li><em>"At the top is our <strong>Corporate Headquarters Gateway (Cisco 2811 R0 and Server-PT)</strong>, handling consolidated franchise financial rollups, automated royalty calculations, and tax audits."</em></li>
+  <li><em>"Radiating from the center are our <strong>Regional Franchise Branch Routers (R1, Router0, and R2)</strong>."</em></li>
+  <li><em>"Inside each branch, our Cisco 2960 switches connect:"
+    <ul>
+      <li><strong>Front-Desk POS Workstations:</strong> Operating cashiering and web camera optical scanners.</li>
+      <li><strong>Wireless Access Points (APs):</strong> Allowing gym members to load their mobile dynamic passes and coaches to access workout trackers.</li>
+      <li><strong>Cisco 7960 IP Phones:</strong> Providing dedicated VoIP communication between the front desk, branch managers, and corporate headquarters.</li>
+    </ul>
+  </em></li>
+</ul>
+
+<!-- STAGE 4 -->
+<div class="stage-header">STAGE 4: Live System Demonstration Script & Underlying APIs</div>
+
+<p class="no-indent"><em>"Now, honorable members of the panel, we will demonstrate KSYN FitConnect across our core user roles."</em></p>
+
+<h3 class="section-heading">Step 1: Public Portal & Commercial Landing Page</h3>
+<div class="action-callout"><strong>[Action on Screen]:</strong> Open browser to landing page (<code>http://gym.com</code> or live portal).</div>
+<ul>
+  <li><em>"Here is our live commercial landing page. It showcases our 7 active franchise branches across Metro Manila, our membership pricing tiers, and our franchise investor portal."</em></li>
+  <li><em>"When an investor submits a franchise inquiry, the form dispatches to our backend API."</em></li>
+</ul>
+<div class="api-block"><strong>[Underlying API]:</strong> POST /api/franchise-inquiry
+<strong>Payload:</strong> {
+  "fullName": "Maria Santos",
+  "email": "investor@example.com",
+  "phone": "+63 917 123 4567",
+  "targetLocation": "Makati CBD Hub",
+  "proposedCapital": "₱4,000,000 – ₱6,000,000"
+}
+<strong>Response Status:</strong> 201 Created &bull; Dispatches official prospectus email</div>
+
+<h3 class="section-heading">Step 2: Member Mobile Experience (60-Second Dynamic Pass)</h3>
+<div class="action-callout"><strong>[Action on Screen]:</strong> Log in as gym member <code>carlos.gomez@ksyn.com</code>, click "Show Pass".</div>
+<ul>
+  <li><em>"We will now log in as our gym member, Carlos Gomez."</em></li>
+  <li><em>"When Carlos taps 'Show Pass', his smartphone requests an ephemeral, cryptographically signed token."</em></li>
+  <li><em>"Notice the live animated countdown timer from 60 seconds."</em></li>
+  <li><em>"If Carlos takes a screenshot and sends it to a friend, it will expire in under one minute, and duplicate scans are blocked by our anti-replay nonce."</em></li>
+</ul>
+<div class="api-block"><strong>[Underlying APIs]:</strong>
+1. POST /api/auth/login &rarr; Returns JWT token encoding user ID, role ("member"), and branch_id ("branch_001")
+2. GET /api/qr/generate-secure-pass
+<strong>Response:</strong> {
+  "qrToken": "eyJtZW1iZXJJZCI6Im1lbV80NDAxIiwiYnJhbmNoSWQiOiJicmFuY2hfMDAxIiwidGltZXN0YW1wIjoxNzk0MzQwMDAwLCJub25jZSI6IjhjN2Q5YjJlIn0.4f8a9e...sig",
+  "expiresIn": 60,
+  "validUntil": 1794340060000
+}</div>
+
+<h3 class="section-heading">Step 3: Front-Desk Cashier (Optical Camera Scanning & POS Cashiering)</h3>
+<div class="action-callout"><strong>[Action on Screen]:</strong> Switch to front-desk cashier session at BGC.</div>
+<ul>
+  <li><em>"Now, we switch to our front-desk cashier workstation at BGC."</em></li>
+  <li><em>"First, observe our <strong>PII Masking Toggle</strong>: customer emails and phone numbers are masked on the screen (<code>j***z@gmail.com</code>) so waiting customers cannot shoulder-surf personal data."</em></li>
+  <li><em>"Next, Carlos holds his phone up to our front-desk web camera scanner."</em></li>
+  <li><em>[Action: Click Verify / Scan]</em></li>
+  <li><em>"In under 20 milliseconds, the server verifies the HMAC signature, confirms the token age is under 60 seconds, commits the nonce, and flashes green: <strong>Access Granted</strong>."</em></li>
+  <li><em>"If Carlos tries to scan in again within 15 minutes, our <strong>Anti-Passback rule</strong> blocks him unless a manager enters supervisor PIN <code>1234</code>."</em></li>
+  <li><em>"Finally, we ring up a walk-in day pass for ₱450. When the shift ends, the cashier types their counted cash blind. The server automatically calculates any shortage or overage."</em></li>
+</ul>
+<div class="api-block"><strong>[Underlying APIs]:</strong>
+1. POST /api/pos/shifts/open &rarr; { "openingFloat": 3000.00 }
+2. POST /api/qr/verify-and-admit &rarr; Payload: { "qrToken": "...", "supervisorPin": "1234" }
+   Response: 200 OK &bull; { "admitted": true, "member": "Carlos Gomez" }
+3. POST /api/pos/checkout &rarr; { "items": [{"sku": "PASS-DAY", "price": 450}], "paymentMethod": "CASH" }
+4. POST /api/pos/shifts/close &rarr; { "actualCashCount": 14250.00 }
+   Response: 200 OK &bull; { "expectedCash": 14250.00, "variance": 0.00, "status": "BALANCED" }</div>
+
+<h3 class="section-heading">Step 4: Branch Admin (Two-Stage Member Transfers & APB Clearance)</h3>
+<div class="action-callout"><strong>[Action on Screen]:</strong> Switch to Branch Admin (General Manager) account.</div>
+<ul>
+  <li><em>"Next is our Branch General Manager."</em></li>
+  <li><em>"If a member moves from BGC to Quezon City, they can request an inter-branch transfer right from their phone."</em></li>
+  <li><em>"The destination Branch Admin reviews the request and clicks <strong>Approve</strong>."</em></li>
+  <li><em>"The member's profile, recurring billing, and locker assignments are migrated atomically in the database without any manual paperwork."</em></li>
+</ul>
+<div class="api-block"><strong>[Underlying APIs]:</strong>
+1. GET /api/branches/transfer-requests &rarr; Fetches incoming transfer queues
+2. POST /api/branches/transfer-review &rarr; Payload: { "requestId": "trf_8812", "action": "approved", "notes": "Capacity verified" }
+3. POST /api/qr/supervisor-override &rarr; Validates bcrypt hash of supervisor PIN 1234</div>
+
+<h3 class="section-heading">Step 5: Corporate Headquarters (Super Admin Global Governance)</h3>
+<div class="action-callout"><strong>[Action on Screen]:</strong> Switch to Super Admin session.</div>
+<ul>
+  <li><em>"Finally, we log in as the <strong>Super Admin at Corporate Headquarters</strong>."</em></li>
+  <li><em>"While Branch Owners are strictly locked to their single branch, HQ has global oversight across all 7 branches."</em></li>
+  <li><em>"Notice our automated financial engine: it computes our <strong>7.5% corporate franchisor royalty cut</strong> across gross revenues, and generates <strong>BIR Form 2307 Creditable Withholding Tax vouchers (5%)</strong> for each franchise investor with one click."</em></li>
+</ul>
+<div class="api-block"><strong>[Underlying APIs]:</strong>
+1. GET /api/finance/consolidated-royalties &rarr; Returns consolidated P&amp;L, 7.5% royalty formula, and BIR 2307 vouchers
+2. GET /api/audit/logs?limit=100 &rarr; Returns immutable audit trail of system events across all branches</div>
+
+<!-- STAGE 5 -->
+<div class="stage-header">STAGE 5: Conclusion & Question Period Handoff</div>
+
+<ul>
+  <li><em>"To summarize:"</em></li>
+  <li><em>"KSYN FitConnect solves branch data leaks through <strong>PostgreSQL Row-Level Security</strong>."</em></li>
+  <li><em>"It stops pass-sharing fraud through <strong>60-second dynamic HMAC-SHA256 optical passes</strong>."</em></li>
+  <li><em>"It eliminates cash theft through <strong>Blind Drawer shift reconciliation</strong>."</em></li>
+  <li><em>"And it guarantees statutory compliance under the <strong>Data Privacy Act (RA 10173)</strong> and <strong>Philippine BIR tax rules</strong>."</em></li>
+  <li><em>"This concludes our formal presentation and live demonstration."</em></li>
+  <li><em>"We are now ready and honored to receive your questions, feedback, and recommendations. Thank you very much!"</em></li>
+</ul>
+
+<!-- API REFERENCE TABLE -->
+<div class="stage-header">TECHNICAL APPENDIX: COMPLETE API ROUTE CATALOG</div>
+
+<table class="api-table">
+  <thead>
+    <tr>
+      <th width="18%">Domain</th>
+      <th width="28%">HTTP Verb &amp; URI</th>
+      <th width="16%">Role</th>
+      <th width="20%">Tenant Resolution</th>
+      <th width="18%">Security Controls</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Auth</strong></td>
+      <td><code>POST /api/auth/login</code></td>
+      <td>Public</td>
+      <td>Resolved from user record</td>
+      <td>Rate-limited (5/min), Bcrypt 10</td>
+    </tr>
+    <tr>
+      <td><strong>Auth</strong></td>
+      <td><code>POST /api/auth/google</code></td>
+      <td>Public (Member)</td>
+      <td>Default home branch</td>
+      <td>Google OAuth 2.0 audience audit</td>
+    </tr>
+    <tr>
+      <td><strong>Franchise</strong></td>
+      <td><code>POST /api/franchise-inquiry</code></td>
+      <td>Public</td>
+      <td>System-wide lead routing</td>
+      <td>Input sanitation, regex checks</td>
+    </tr>
+    <tr>
+      <td><strong>Pass Gen</strong></td>
+      <td><code>GET /api/qr/generate-secure-pass</code></td>
+      <td><code>member</code></td>
+      <td>Locked to member <code>branch_id</code></td>
+      <td>HMAC-SHA256, 60s TTL, Nonce</td>
+    </tr>
+    <tr>
+      <td><strong>Pass Verify</strong></td>
+      <td><code>POST /api/qr/verify-and-admit</code></td>
+      <td><code>employee</code>, Admin</td>
+      <td>Matches cashier <code>branch_id</code></td>
+      <td><code>timingSafeEqual()</code>, Anti-Replay cache</td>
+    </tr>
+    <tr>
+      <td><strong>POS Shift</strong></td>
+      <td><code>POST /api/pos/shifts/open</code></td>
+      <td><code>employee</code>, Admin</td>
+      <td>Locked to active branch</td>
+      <td>One concurrent shift per terminal</td>
+    </tr>
+    <tr>
+      <td><strong>POS Checkout</strong></td>
+      <td><code>POST /api/pos/checkout</code></td>
+      <td><code>employee</code>, Admin</td>
+      <td>Auto-injected <code>branch_id</code></td>
+      <td>Idempotency Key (UUID), cash change</td>
+    </tr>
+    <tr>
+      <td><strong>POS Shift</strong></td>
+      <td><code>POST /api/pos/shifts/close</code></td>
+      <td><code>employee</code>, Admin</td>
+      <td>Active shift ID</td>
+      <td>Blind drawer count, variance log</td>
+    </tr>
+    <tr>
+      <td><strong>Transfers</strong></td>
+      <td><code>POST /api/branches/transfer-request</code></td>
+      <td><code>member</code>, Admin</td>
+      <td>Origin &amp; target branch IDs</td>
+      <td>Atomic SQL transaction migration</td>
+    </tr>
+    <tr>
+      <td><strong>Transfers</strong></td>
+      <td><code>POST /api/branches/transfer-review</code></td>
+      <td><code>branch_admin</code>, HQ</td>
+      <td>Target <code>branch_id</code> required</td>
+      <td>2-Stage clearance, reason logging</td>
+    </tr>
+    <tr>
+      <td><strong>Royalties</strong></td>
+      <td><code>GET /api/finance/consolidated-royalties</code></td>
+      <td><code>super_admin</code></td>
+      <td>Global (All 7 Branches)</td>
+      <td>7.5% royalty cut, BIR 2307 vouchers</td>
+    </tr>
+    <tr>
+      <td><strong>Audit</strong></td>
+      <td><code>GET /api/audit/logs</code></td>
+      <td><code>super_admin</code>, Admin</td>
+      <td>Filtered by RLS <code>tenant_id</code></td>
+      <td>Append-only immutable log store</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
