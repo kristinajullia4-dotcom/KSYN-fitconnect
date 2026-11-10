@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KSYN FitConnect — Multi-Tenant Commercial Fitness Franchise</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: #0a0a0a;
+    color: #f3f4f6;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* NAVIGATION */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #111111;
+    border-bottom: 1px solid #222222;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-logo-badge {
+    width: 36px;
+    height: 36px;
+    background: #e1c256;
+    color: #000;
+    font-weight: 900;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+  .brand-text h1 {
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+  }
+  .brand-text h1 span { color: #e1c256; }
+  .brand-text p {
+    font-size: 9px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .nav-link {
+    font-size: 12px;
+    font-weight: bold;
+    color: #9ca3af;
+  }
+  .nav-link:hover { color: #e1c256; }
+  .nav-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+  }
+  .btn-gold {
+    background: #e1c256;
+    color: #000000;
+  }
+  .btn-outline {
+    background: transparent;
+    color: #e1c256;
+    border: 1px solid #e1c256;
+  }
+  .btn-dark {
+    background: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333333;
+  }
+
+  /* HERO BANNER */
+  .hero {
+    padding: 45px 20px 35px;
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: #17150a;
+    border: 1px solid #e1c256;
+    color: #e1c256;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: 34px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    color: #ffffff;
+  }
+  .hero-title span { color: #e1c256; }
+  .hero-subtitle {
+    font-size: 13px;
+    color: #9ca3af;
+    max-width: 680px;
+    margin: 0 auto 24px;
+  }
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 35px;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .metric-card {
+    background: #141414;
+    border: 1px solid #242424;
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .metric-value {
+    font-size: 22px;
+    font-weight: 900;
+    color: #e1c256;
+  }
+  .metric-label {
+    font-size: 10px;
+    color: #888888;
+    text-transform: uppercase;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 45px 20px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .section-header h2 {
+    font-size: 24px;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+  .section-header p {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  /* BRANCH DIRECTORY */
+  .branches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .branch-card {
+    background: #131313;
+    border: 1px solid #242424;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .branch-badge {
+    background: #14532d;
+    color: #4ade80;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .branch-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+  .branch-city {
+    font-size: 11px;
+    color: #e1c256;
+    margin-bottom: 8px;
+  }
+  .branch-meta {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+  }
+
+  /* MEMBERSHIP PLANS */
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .plan-card {
+    background: #131313;
+    border: 1px solid #242424;
+    border-radius: 8px;
+    padding: 18px;
+    position: relative;
+  }
+  .plan-card.featured {
+    border-color: #e1c256;
+  }
+  .plan-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e1c256;
+    color: #000;
+    font-size: 8px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .plan-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; }
+  .plan-price { font-size: 26px; font-weight: 900; color: #e1c256; }
+  .plan-duration { font-size: 10px; color: #888; margin-bottom: 12px; }
+  .plan-features { list-style: none; margin-bottom: 16px; font-size: 11px; color: #bbb; }
+  .plan-features li { margin-bottom: 5px; }
+
+  /* FRANCHISE BOX */
+  .franchise-box {
+    background: #111111;
+    border: 1px solid #e1c256;
+    border-radius: 8px;
+    padding: 25px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  .form-group label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: #080808;
+    border: 1px solid #333333;
+    color: #ffffff;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-content {
+    background: #141414;
+    border: 1px solid #e1c256;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 360px;
+    width: 90%;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid #1f1f1f;
+    padding: 25px 20px;
+    text-align: center;
+    color: #666666;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<div class="navbar">
+  <div class="brand">
+    <div class="brand-logo-badge">K</div>
+    <div class="brand-text">
+      <h1>KSYN <span>FITCONNECT</span></h1>
+      <p>Multi-Branch Commercial Fitness Franchise</p>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <a href="#franchise" class="nav-link">Franchise</a>
+    <a href="#memberships" class="nav-link">Memberships</a>
+    <a href="#locations" class="nav-link">7 Branches</a>
+    <a href="#security" class="nav-link">Security</a>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn btn-outline" onclick="openModal('freePassModal')">Claim 1-Day Pass</button>
+    <button class="btn btn-gold" onclick="openModal('loginModal')">Account Sign In</button>
+  </div>
+</div>
+
+<!-- MAIN HERO SECTION -->
+<div class="hero">
+  <div class="hero-tag">ENTERPRISE MULTI-TENANT ARCHITECTURE</div>
+  <h1 class="hero-title">
+    High-Performance Fitness &bull; <span>Secure Franchise SaaS</span>
+  </h1>
+  <p class="hero-subtitle">
+    Unifying multi-branch gym operations, cryptographic member access, and automated franchise financials across the Philippines with PostgreSQL Row-Level Security.
+  </p>
+
+  <div class="hero-cta">
+    <a href="#franchise" class="btn btn-gold" style="padding: 10px 20px; font-size: 12px;">Explore Franchise Model</a>
+    <a href="#locations" class="btn btn-dark" style="padding: 10px 20px; font-size: 12px;">Browse 7 Locations</a>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-value">7</div>
+      <div class="metric-label">Active Branches</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">2,840+</div>
+      <div class="metric-label">Enrolled Members</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">60s</div>
+      <div class="metric-label">Dynamic Pass Rotation</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">100%</div>
+      <div class="metric-label">Tenant Isolation</div>
+    </div>
+  </div>
+</div>
+
+<!-- BRANCH LOCATIONS SECTION -->
+<div id="locations" class="section">
+  <div class="section-header">
+    <h2>Commercial Branch Network</h2>
+    <p>Seven strategically located hubs connected to our central enterprise cloud gateway.</p>
+  </div>
+
+  <div class="branches-grid">
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN BGC Elite</div>
+      <div class="branch-city">Taguig City</div>
+      <div class="branch-meta">📍 Bonifacio High Street, Taguig City</div>
+      <div class="branch-meta">⏰ 5:00 AM - 12:00 MN</div>
+      <div class="branch-meta">📞 (02) 8888-0001</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Alabang Prime</div>
+      <div class="branch-city">Muntinlupa City</div>
+      <div class="branch-meta">📍 Alabang Town Center, Commerce Ave</div>
+      <div class="branch-meta">⏰ 6:00 AM - 11:00 PM</div>
+      <div class="branch-meta">📞 (02) 8888-0002</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Quezon City Central</div>
+      <div class="branch-city">Quezon City</div>
+      <div class="branch-meta">📍 Tomas Morato Ave cor. Timog</div>
+      <div class="branch-meta">⏰ 24/7 All-Access</div>
+      <div class="branch-meta">📞 (02) 8888-0003</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Makati CBD Hub</div>
+      <div class="branch-city">Makati City</div>
+      <div class="branch-meta">📍 Ayala Avenue cor. Paseo de Roxas</div>
+      <div class="branch-meta">⏰ 5:30 AM - 11:30 PM</div>
+      <div class="branch-meta">📞 (02) 8888-0004</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Ortigas Center</div>
+      <div class="branch-city">Pasig City</div>
+      <div class="branch-meta">📍 F. Ortigas Jr. Road, San Antonio</div>
+      <div class="branch-meta">⏰ 6:00 AM - 11:00 PM</div>
+      <div class="branch-meta">📞 (02) 8888-0005</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Cebu City IT Park</div>
+      <div class="branch-city">Cebu City</div>
+      <div class="branch-meta">📍 Salinas Drive, Lahug, Cebu City</div>
+      <div class="branch-meta">⏰ 24/7 All-Access</div>
+      <div class="branch-meta">📞 (032) 412-0006</div>
+    </div>
+
+    <div class="branch-card">
+      <span class="branch-badge">Active & Operational</span>
+      <div class="branch-name">KSYN Davao Central</div>
+      <div class="branch-city">Davao City</div>
+      <div class="branch-meta">📍 J.P. Laurel Ave, Bajada, Davao</div>
+      <div class="branch-meta">⏰ 6:00 AM - 10:00 PM</div>
+      <div class="branch-meta">📞 (082) 221-0007</div>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBERSHIP PRICING -->
+<div id="memberships" class="section">
+  <div class="section-header">
+    <h2>Transparent Membership Plans</h2>
+    <p>Select your training frequency. All memberships include cryptographic dynamic pass verification.</p>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card">
+      <span class="plan-badge">Flexible</span>
+      <div class="plan-name">1-Day Access Pass</div>
+      <div class="plan-price">₱450</div>
+      <div class="plan-duration">single day</div>
+      <ul class="plan-features">
+        <li>✓ Full facility & locker access</li>
+        <li>✓ 60s dynamic optical QR pass</li>
+        <li>✓ Cardio, free weights, sauna</li>
+      </ul>
+      <button class="btn btn-dark" style="width: 100%;" onclick="openModal('loginModal')">Select Pass</button>
+    </div>
+
+    <div class="plan-card">
+      <span class="plan-badge">Popular</span>
+      <div class="plan-name">Single Branch Monthly</div>
+      <div class="plan-price">₱1,800</div>
+      <div class="plan-duration">per month</div>
+      <ul class="plan-features">
+        <li>✓ Unlimited home branch access</li>
+        <li>✓ 1-on-1 Fitness Assessment</li>
+        <li>✓ Member mobile portal access</li>
+      </ul>
+      <button class="btn btn-dark" style="width: 100%;" onclick="openModal('loginModal')">Select Pass</button>
+    </div>
+
+    <div class="plan-card featured">
+      <span class="plan-badge">Recommended</span>
+      <div class="plan-name">Multi-Branch Gold VIP</div>
+      <div class="plan-price">₱2,800</div>
+      <div class="plan-duration">per month</div>
+      <ul class="plan-features">
+        <li>✓ Unrestricted 7-branch roaming</li>
+        <li>✓ Permanent VIP locker access</li>
+        <li>✓ Free coach workout split</li>
+      </ul>
+      <button class="btn btn-gold" style="width: 100%;" onclick="openModal('loginModal')">Select Pass</button>
+    </div>
+
+    <div class="plan-card">
+      <span class="plan-badge">Executive</span>
+      <div class="plan-name">Black Card Annual</div>
+      <div class="plan-price">₱28,000</div>
+      <div class="plan-duration">per year</div>
+      <ul class="plan-features">
+        <li>✓ Priority 7-branch national access</li>
+        <li>✓ Dedicated trainer periodization</li>
+        <li>✓ 15% discount on pro shop gear</li>
+      </ul>
+      <button class="btn btn-dark" style="width: 100%;" onclick="openModal('loginModal')">Select Pass</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECURITY & TENANT ISOLATION ARCHITECTURE -->
+<div id="security" class="section">
+  <div class="section-header">
+    <h2>Enterprise Security Architecture</h2>
+    <p>How FitConnect mathematically isolates franchise data and prevents fraud in software.</p>
+  </div>
+
+  <div style="background: #111111; border: 1px solid #222222; border-radius: 8px; padding: 20px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+      <div>
+        <h4 style="color: #e1c256; font-size: 13px; margin-bottom: 4px;">PostgreSQL Row-Level Security</h4>
+        <p style="font-size: 11px; color: #9ca3af;">
+          Every query injects <code>SET LOCAL app.current_tenant_id = [branch_id]</code>. The database kernel enforces tenant isolation.
+        </p>
+      </div>
+      <div>
+        <h4 style="color: #e1c256; font-size: 13px; margin-bottom: 4px;">60s HMAC Optical Passes</h4>
+        <p style="font-size: 11px; color: #9ca3af;">
+          Pass tokens rotate every 60 seconds with cryptographic nonces. Replaying a screenshot triggers an instant <code>409 Conflict</code>.
+        </p>
+      </div>
+      <div>
+        <h4 style="color: #e1c256; font-size: 13px; margin-bottom: 4px;">Blind Cash Drawer Close</h4>
+        <p style="font-size: 11px; color: #9ca3af;">
+          Cashiers input drawer counts blindly. The system hides expected cash to eliminate skimming and unrecorded walk-ins.
+        </p>
+      </div>
+      <div>
+        <h4 style="color: #e1c256; font-size: 13px; margin-bottom: 4px;">RA 10173 PII Protection</h4>
+        <p style="font-size: 11px; color: #9ca3af;">
+          Front-desk terminals feature active PII masking (<code>j***e@gmail.com</code>) to eliminate shoulder-surfing in public lobbies.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FRANCHISE INQUIRY -->
+<div id="franchise" class="section">
+  <div class="section-header">
+    <h2>Franchise Investment Inquiry</h2>
+    <p>Partner with KSYN Fitness. Open a commercial branch in your target city.</p>
+  </div>
+
+  <div class="franchise-box">
+    <form onsubmit="event.preventDefault(); alert('Inquiry recorded! Our Head of Franchise Development will contact you.');">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" placeholder="e.g. Maria Santos" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" placeholder="e.g. investor@example.com" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contact Phone Number *</label>
+          <input type="tel" placeholder="e.g. +63 917 123 4567" required>
+        </div>
+        <div class="form-group">
+          <label>Target Franchise Location *</label>
+          <select>
+            <option>Makati CBD Hub</option>
+            <option>BGC Elite</option>
+            <option>Alabang Prime</option>
+            <option>Quezon City Central</option>
+            <option>Ortigas Center</option>
+            <option>Cebu City IT Park</option>
+            <option>Davao City Central</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Investment Capital Range</label>
+        <select>
+          <option>₱4,000,000 – ₱6,000,000 (Standard Hub)</option>
+          <option>₱6,000,000 – ₱9,000,000 (Flagship Facility)</option>
+          <option>₱10,000,000+ (Multi-Unit Franchisee)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Notes</label>
+        <textarea rows="3" placeholder="Describe your commercial space or franchise goals..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 10px; font-size: 13px;">
+        Submit Official Franchise Inquiry
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>&copy; 2026 KSYN FitConnect Enterprise Platform. All rights reserved.</p>
+  <p style="margin-top: 4px; color: #555555;">
+    Multi-Tenant SaaS with PostgreSQL Row-Level Security &bull; Republic Act 10173 Compliant
+  </p>
+</div>
+
+<!-- MODAL: LOGIN / PORTAL ACCESS -->
+<div id="loginModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    <h3 style="color:#ffffff; font-size:16px; font-weight:bold; margin-bottom:4px;">Account Sign In</h3>
+    <p style="font-size:11px; color:#9ca3af; margin-bottom:14px;">Access your member pass or staff enterprise terminal.</p>
+    
+    <form onsubmit="event.preventDefault(); alert('Redirecting to authenticated portal session...'); closeModal('loginModal');">
+      <div class="form-group">
+        <label>Email Address or Username</label>
+        <input type="text" placeholder="e.g. user@ksyn.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 9px; margin-top: 4px;">Sign In to Portal &rarr;</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: 1-DAY FREE PASS -->
+<div id="freePassModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('freePassModal')">&times;</button>
+    <h3 style="color:#ffffff; font-size:16px; font-weight:bold; margin-bottom:4px;">Claim 1-Day Trial Pass</h3>
+    <p style="font-size:11px; color:#9ca3af; margin-bottom:14px;">Experience world-class commercial gym equipment.</p>
+    
+    <form onsubmit="event.preventDefault(); alert('Free pass generated! Present your dynamic QR code at the front desk.'); closeModal('freePassModal');">
+      <div class="form-group">
+        <label>Your Full Name</label>
+        <input type="text" placeholder="e.g. Juan Dela Cruz" required>
+      </div>
+      <div class="form-group">
+        <label>Email for Digital Pass</label>
+        <input type="email" placeholder="e.g. juan@gmail.com" required>
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 9px; margin-top: 4px;">Generate Free Pass</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    var el = document.getElementById(id);
+    if (el) el.className = 'modal-overlay open';
+  }
+  function closeModal(id) {
+    var el = document.getElementById(id);
+    if (el) el.className = 'modal-overlay';
+  }
+</script>
+</body>
+</html>
