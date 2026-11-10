@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KSYN FitConnect - System Roles, Powers, and Security Defense Guide</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.0in;
+  }
+  body {
+    font-family: "Times New Roman", Times, Georgia, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #111111;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 30px;
+    max-width: 8.5in;
+  }
+  h1 {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: #0b1f3a;
+  }
+  .subtitle {
+    font-size: 13pt;
+    text-align: center;
+    font-style: italic;
+    color: #444444;
+    margin-bottom: 24px;
+  }
+  .doc-metadata {
+    border: 1px solid #c8d3e0;
+    background-color: #f4f7fb;
+    padding: 12px 18px;
+    margin-bottom: 25px;
+    font-size: 10.5pt;
+    border-radius: 4px;
+  }
+  .doc-metadata table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .doc-metadata td {
+    padding: 3px 6px;
+    border: none;
+  }
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #0b1f3a;
+    border-bottom: 2px solid #0b1f3a;
+    padding-bottom: 4px;
+    margin-top: 26px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-size: 12.5pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 10pt;
+    text-align: justify;
+  }
+  .callout-box {
+    border-left: 4px solid #1e3a8a;
+    background-color: #f8fafc;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 11pt;
+  }
+  .scenario-box {
+    border: 1px dashed #d97706;
+    background-color: #fffbeb;
+    padding: 10px 14px;
+    margin: 10px 0 16px 0;
+    font-size: 10.5pt;
+    border-radius: 4px;
+  }
+  .alert-box {
+    border: 1px solid #ef4444;
+    background-color: #fef2f2;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 11pt;
+    border-radius: 4px;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 22px 0;
+    font-size: 10pt;
+  }
+  table.data-table th {
+    background-color: #0b1f3a;
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #000000;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  table.data-table td {
+    border: 1px solid #777777;
+    padding: 6px 6px;
+    vertical-align: top;
+  }
+  table.data-table tr:nth-child(even) td {
+    background-color: #f9fafb;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 9pt;
+    font-weight: bold;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .badge-super { background-color: #ede9fe; color: #5b21b6; border: 1px solid #8b5cf6; }
+  .badge-owner { background-color: #e0f2fe; color: #0369a1; border: 1px solid #38bdf8; }
+  .badge-admin { background-color: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+  .badge-staff { background-color: #dcfce7; color: #166534; border: 1px solid #22c55e; }
+  .badge-coach { background-color: #fae8ff; color: #86198f; border: 1px solid #d946ef; }
+  .badge-member { background-color: #f1f5f9; color: #334155; border: 1px solid #94a3b8; }
+  ul {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  .yes { color: #15803d; font-weight: bold; }
+  .no { color: #b91c1c; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>KSYN FitConnect: System Roles & Powers Guide</h1>
+<div class="subtitle">An Easy-to-Understand Technical and Operational Handbook for Oral Thesis Defense</div>
+
+<div class="doc-metadata">
+  <table>
+    <tr>
+      <td><strong>Capstone Project:</strong> KSYN FitConnect</td>
+      <td><strong>System Classification:</strong> Multi-Tenant Enterprise Web SaaS</td>
+    </tr>
+    <tr>
+      <td><strong>Academic Focus:</strong> Cybersecurity, RBAC & Data Isolation</td>
+      <td><strong>Target Audience:</strong> Examination Panelists & Thesis Defense Group</td>
+    </tr>
+    <tr>
+      <td><strong>Deployment Scope:</strong> 7 Franchise Branches (BGC, Alabang, QC, Makati, Ortigas, Cebu, Davao)</td>
+      <td><strong>Document Status:</strong> Google Docs-Ready / Formatted for Printing</td>
+    </tr>
+  </table>
+</div>
+
+<div class="alert-box">
+  <strong>⚠️ Essential Thesis Delimitation for Panelists:</strong><br>
+  This system is strictly an <strong>enterprise web application</strong>. Physical IoT hardware, microcontrollers (Arduino/ESP32), and physical solenoid turnstiles are <strong>explicitly delimited</strong> from this study. Pass verification is executed via <strong>front-desk web camera optical scanners</strong> running on responsive client terminals, ensuring zero mechanical hardware failure points while delivering bank-grade software cryptography.
+</div>
+
+<h2>1. Executive Summary & The Problem FitConnect Solves</h2>
+<p>
+  In multi-branch fitness franchises, management faces three recurring vulnerabilities:
+</p>
+<ul>
+  <li><strong>Inter-Branch Data Leaks:</strong> Franchisees spying on competitor branch sales and stealing athlete contact info.</li>
+  <li><strong>Front-Desk Cash Skimming:</strong> Cashiers pocketing cash from walk-in gym passes and failing to record the transaction.</li>
+  <li><strong>Membership Pass Fraud:</strong> Gym members screen-recording dynamic QR codes or texting screenshots to let unpaid friends inside.</li>
+</ul>
+<p>
+  FitConnect eliminates these risks by pairing <strong>Role-Based Access Control (RBAC)</strong> with <strong>PostgreSQL Row-Level Security (RLS)</strong>, <strong>Blind Drawer Shift Balancing</strong>, and <strong>60-Second Rotating HMAC-SHA256 Cryptographic Passes</strong>.
+</p>
+
+<h2>2. The Six System Roles & Granular Powers</h2>
+
+<!-- ROLE 1 -->
+<h3>Role 1: Super Admin (Headquarters / Franchisor) <span class="badge badge-super">Global Scope</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The franchise founder, CEO, or Head of Platform Operations at HQ.<br>
+  <strong>Data Scope:</strong> Cross-tenant visibility across all 7 franchise branches.
+</p>
+<ul>
+  <li><strong>Franchise Branch Provisioning:</strong> Create, configure, suspend, or reactivate franchise branches; bind new Franchise Investors to locations.</li>
+  <li><strong>Automated Royalty Engine (7.5%):</strong> Automatically computes and deducts the franchisor's 7.5% royalty cut from each branch's monthly gross revenues.</li>
+  <li><strong>BIR 2307 Withholding Tax Compliance:</strong> Generates and verifies 5% Creditable Withholding Tax certificates for Philippine Bureau of Internal Revenue (BIR) audits.</li>
+  <li><strong>Platform Master Audit Trail:</strong> Unrestricted access to chronological event logs across all branches (logins, voids, price overrides).</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> On the 1st of each month, the Super Admin logs into HQ, reviews comparative branch performance across all 7 locations, and exports the BIR 2307 voucher rollup totaling ₱420,000 in royalty remittances.
+</div>
+
+<!-- ROLE 2 -->
+<h3>Role 2: Branch Owner (Franchise Investor) <span class="badge badge-owner">Single Branch Locked</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The business investor who financed and owns a specific franchise branch (e.g., KSYN Alabang).<br>
+  <strong>Data Scope:</strong> Locked strictly to their owned branch.
+</p>
+<ul>
+  <li><strong>Executive Financial Dashboard:</strong> Real-time graphs for daily gross sales, net margins, and operational expense rollups.</li>
+  <li><strong>Royalty & Tax Credit Ledger:</strong> Download monthly royalty statements and BIR 2307 tax deduction certificates.</li>
+  <li><strong>Growth & Retention Metrics:</strong> Track total active athletes, membership tier breakdown, churn rate, and peak foot-traffic hours.</li>
+  <li><strong>Strict Read-Only Protection:</strong> Cannot edit member accounts, alter cashier totals, or modify system code.</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> The Alabang Branch Owner opens their dashboard on an iPad. They can see today's gross revenue is ₱38,500 across 142 visits, but PostgreSQL Row-Level Security prevents them from ever seeing BGC's revenue.
+</div>
+
+<!-- ROLE 3 -->
+<h3>Role 3: Branch Admin (General Manager / Supervisor) <span class="badge badge-admin">Single Branch Operations</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The on-site manager responsible for daily gym operations and staff oversight.<br>
+  <strong>Data Scope:</strong> Full administrative authority within their assigned facility.
+</p>
+<ul>
+  <li><strong>Staff & Coach Management:</strong> Hire front-desk receptionists, assign work shifts, configure coach profiles, and manage credentials.</li>
+  <li><strong>Two-Stage Inter-Branch Transfer Clearance:</strong> Review incoming transfer requests from members relocating from another branch; formally approve or decline with a documented reason.</li>
+  <li><strong>Shift Variance Auditing:</strong> Inspect cashiers' blind drawer closing reconciliations; investigate and sign off on shortages or overages.</li>
+  <li><strong>Supervisor Anti-Passback Override (PIN <code>1234</code>):</strong> Authorize manual entry if an athlete triggers an Anti-Passback cooldown (e.g., stepped out to retrieve gym bag).</li>
+  <li><strong>Facility & Locker VIP Management:</strong> Assign permanent lockers to VIP members and log equipment repair maintenance tickets.</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> A member relocating from BGC to Quezon City requests a transfer. The QC Branch Admin inspects facility locker capacity, clicks "Approve", and the member's profile is atomically migrated.
+</div>
+
+<!-- ROLE 4 -->
+<h3>Role 4: Front-Desk Staff / Cashier (<code>employee</code>) <span class="badge badge-staff">Shift & Counter Locked</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The counter receptionist greeting members, selling retail products, and admitting visitors.<br>
+  <strong>Data Scope:</strong> Restricted strictly to front-desk POS registers and optical check-in scanners.
+</p>
+<ul>
+  <li><strong>Point of Sale (POS) Cashiering:</strong> Ring up day passes (₱450), retail supplements, sports drinks, and gym merchandise.</li>
+  <li><strong>Multi-Channel Payment Processing:</strong> Accept Cash (with auto-calculated change), GCash, Maya (reference code entry), and Cards.</li>
+  <li><strong>Opening Float & Cash Drops:</strong> Enter starting change float at 6:00 AM; record mid-shift cash drops into the locked safe.</li>
+  <li><strong>Blind Drawer Closing Count:</strong> At shift end, physically count the cash and submit the count without the system revealing its expected total beforehand.</li>
+  <li><strong>Optical Web Camera Scanner:</strong> Run the optical scanner to read members' 60-second mobile QR passes.</li>
+  <li><strong>PII Masking Toggle:</strong> Activate one-click masking to hide member phone numbers and emails on the front-desk screen from waiting patrons.</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> At 2:00 PM, Cashier Maria closes her drawer. She counts ₱14,250 and submits it blind. The backend calculates a ₱50 shortage against the expected ₱14,300 and flags it for the manager's review.
+</div>
+
+<!-- ROLE 5 -->
+<h3>Role 5: Fitness Coach / Personal Trainer (<code>coach</code>) <span class="badge badge-coach">Assigned Clients Locked</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The certified gym trainer programming workouts and coaching athletes.<br>
+  <strong>Data Scope:</strong> Locked to their assigned athlete clients and personal session ledger.
+</p>
+<ul>
+  <li><strong>Workout Programming:</strong> Prescribe multi-week periodization routines (sets, reps, target weights, RPE intensity).</li>
+  <li><strong>Athlete Biometrics:</strong> Track client body weight history, body fat percentage, and personal record (PR) lift milestones.</li>
+  <li><strong>1-on-1 Athlete Chat:</strong> Provide guidance on form, schedule changes, and nutrition plans.</li>
+  <li><strong>Session Verification:</strong> Mark training sessions as completed to deduct credits from client packages.</li>
+  <li><strong>15% Commission Ledger:</strong> View real-time personal earnings from completed client training sessions.</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> Coach Alex completes an intense 1-hour session with Juan. He taps "Complete Session" on his phone; Juan's package deducts 1 session, and Alex's commission ledger credits ₱300.
+</div>
+
+<!-- ROLE 6 -->
+<h3>Role 6: Gym Member / Athlete (<code>member</code>) <span class="badge badge-member">Self-Account Locked</span></h3>
+<p>
+  <strong>Real-World Persona:</strong> The registered gym-goer working out at the facility.<br>
+  <strong>Data Scope:</strong> Locked strictly to their own personal account.
+</p>
+<ul>
+  <li><strong>60-Second Dynamic Optical Pass:</strong> Generate an animated QR pass on their phone with a real-time countdown timer for entry.</li>
+  <li><strong>Workout Log Viewer:</strong> View coach-prescribed routines, record completed sets, and log personal bests.</li>
+  <li><strong>Self-Service Plan Renewal:</strong> Pay monthly membership dues online via integrated payment gateways.</li>
+  <li><strong>Inter-Branch Transfer Requests:</strong> Initiate a transfer request to another franchise branch and monitor approval status in real time.</li>
+</ul>
+<div class="scenario-box">
+  <strong>💡 Real-World Scenario:</strong> Carlos walks into KSYN BGC, taps "Show Pass" on his phone, and holds the 60-second dynamic QR code up to the counter camera. The screen beeps and flashes green: "Access Granted".
+</div>
+
+<h2>3. Comprehensive Role Power Comparison Matrix</h2>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>System Feature / Operational Power</th>
+      <th>Super Admin</th>
+      <th>Branch Owner</th>
+      <th>Branch Admin</th>
+      <th>Front-Desk Staff</th>
+      <th>Coach / Trainer</th>
+      <th>Member / Athlete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Data Isolation Scope</strong></td>
+      <td>All 7 Branches</td>
+      <td>Own Branch Only</td>
+      <td>Own Branch Only</td>
+      <td>Own Shift / Branch</td>
+      <td>Assigned Clients</td>
+      <td>Own Profile Only</td>
+    </tr>
+    <tr>
+      <td><strong>Financial Ledger Access</strong></td>
+      <td>Consolidated P&L</td>
+      <td>Branch Sales Rollup</td>
+      <td>Shift Audits / Petty Cash</td>
+      <td>Drawer Register Only</td>
+      <td>15% Commission Cut</td>
+      <td>Personal Invoices</td>
+    </tr>
+    <tr>
+      <td><strong>Franchise Branch Provisioning</strong></td>
+      <td class="yes">✅ Full Access</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Manage Staff Logins & Hires</strong></td>
+      <td class="yes">✅ Global</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Branch Hires</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Operate POS Cash Register</strong></td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Supervisor Mode</td>
+      <td class="yes">✅ Full POS</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Blind Drawer Shift Close</strong></td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Variance Audit</td>
+      <td class="yes">✅ Counts Cash</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Inter-Branch Transfer Control</strong></td>
+      <td class="yes">✅ Arbitration</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Approve/Decline</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Request Only</td>
+    </tr>
+    <tr>
+      <td><strong>Front-Desk Optical Scanner</strong></td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Yes</td>
+      <td class="yes">✅ Full Scanner</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Generate 60s Dynamic Pass</strong></td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Mobile Pass</td>
+    </tr>
+    <tr>
+      <td><strong>Supervisor PIN Override (<code>1234</code>)</strong></td>
+      <td class="yes">✅ Yes</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Yes</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+    </tr>
+    <tr>
+      <td><strong>Workout Programming / Splits</strong></td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="no">❌ Blocked</td>
+      <td class="yes">✅ Full Access</td>
+      <td class="no">❌ View Only</td>
+    </tr>
+    <tr>
+      <td><strong>PII Shoulder-Surfing Mask</strong></td>
+      <td class="no">❌ N/A</td>
+      <td class="no">❌ N/A</td>
+      <td class="yes">✅ Available</td>
+      <td class="yes">✅ Active Counter</td>
+      <td class="no">❌ N/A</td>
+      <td class="no">❌ N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. Simple Analogies to Explain the Security to Panelists</h2>
+
+<div class="callout-box">
+  <strong>1. Multi-Tenancy & Row-Level Security (RLS) → "The Apartment Building Analogy"</strong><br>
+  All 7 gym branches share the same foundation, plumbing, and structural frame (the shared PostgreSQL database). However, each branch has its own steel deadbolt lock. When a user logs in, the server injects <code>SET LOCAL app.current_tenant_id = 'branch_001'</code>. PostgreSQL itself evaluates every row; if the row doesn't match the key, the database returns 0 rows. Even if a user changes the URL ID, the database blocks them.
+</div>
+
+<div class="callout-box">
+  <strong>2. 60-Second Dynamic Pass & Anti-Replay Nonce → "The Banking OTP Analogy"</strong><br>
+  Like a banking One-Time Password, the member's QR pass is stamped with a microsecond timestamp and an HMAC-SHA256 signature that expires in 60 seconds. The server records the random token nonce in memory the instant it is scanned. If someone screenshots the QR and texts it to a friend, the second scan triggers an immediate <code>409 Conflict: REPLAY ATTACK DETECTED</code>.
+</div>
+
+<div class="callout-box">
+  <strong>3. Blind Drawer Balancing → "The Sealed Drop Envelope Analogy"</strong><br>
+  Cashiers count their cash blindly at the end of the shift. The system conceals what it expects. The cashier enters ₱14,250, and only upon permanent submission does the system reveal if there is a shortage or overage. This prevents cashiers from skimming cash and adjusting figures to match.
+</div>
+
+<div class="callout-box">
+  <strong>4. Philippine Data Privacy Act (RA 10173) → "The Lobby Masking Shield"</strong><br>
+  To prevent patrons waiting in line at the counter from reading the customer's phone number or email address off the monitor, the front-desk interface features an active PII masking toggle that masks sensitive data into <code>+63 917 **** 892</code> and <code>c****s@gmail.com</code>.
+</div>
+
+<h2>5. Top 5 Panel Defense Questions & Winning Model Answers</h2>
+
+<p><strong>Panelist Question 1: "Why did you build a software optical scanner instead of wiring up an ESP32 microcontroller with a real turnstile?"</strong></p>
+<p>
+  <em>Model Answer:</em> "Physical IoT microcontrollers, solenoids, and turnstiles were explicitly delimited in Chapter 1 of our thesis manuscript. Our research focus is Enterprise Software Architecture, Multi-Tenant Database Security, and Cryptographic Pass Verification. Optical web camera scanning eliminates expensive hardware failure points, reduces deployment costs for gym franchisees, and guarantees cryptographic non-repudiation in pure software."
+</p>
+
+<p><strong>Panelist Question 2: "What stops a member from recording their dynamic pass and texting the video to a friend?"</strong></p>
+<p>
+  <em>Model Answer:</em> "First, the pass expires in 60 seconds. Second, the moment the pass is scanned at the front desk, its unique nonce is permanently consumed in server memory. If the friend tries to scan the recorded video 5 seconds later, the server immediately denies entry with an HTTP 409 Replay Attack error. Third, our 15-minute Anti-Passback rule prevents the same member account from checking in twice in rapid succession."
+</p>
+
+<p><strong>Panelist Question 3: "Why not use separate databases for each of the 7 branches?"</strong></p>
+<p>
+  <em>Model Answer:</em> "Separate databases increase cloud hosting costs by 700%, create complex multi-database schema migration pipelines, and prevent headquarters from generating real-time consolidated financial reports. PostgreSQL Row-Level Security provides the exact same mathematical data isolation guarantees within a single shared database."
+</p>
+
+<p><strong>Panelist Question 4: "What happens if a cashier accepts cash from a walk-in visitor and lets them in without ringing it up?"</strong></p>
+<p>
+  <em>Model Answer:</em> "In FitConnect, pass verification is strictly coupled with POS transactions. A walk-in visitor cannot obtain a valid optical pass unless a transaction record exists in the system. If a cashier waves someone in off-the-books, that is a physical facility breach caught by CCTV and shift audit reconciliation, not a software flaw."
+</p>
+
+<p><strong>Panelist Question 5: "How does the backend prevent an Alabang cashier from accessing BGC member records?"</strong></p>
+<p>
+  <em>Model Answer:</em> "Every API request carries an authenticated JWT token encoding the user's branch ID. Our database middleware executes <code>SET LOCAL app.current_tenant_id = $1</code> on the active transaction. PostgreSQL RLS policies evaluate every row against this parameter at the database engine level. If the member belongs to BGC, the database returns zero rows (HTTP 404), completely preventing Broken Object-Level Authorization (BOLA/IDOR)."
+</p>
+
+</body>
+</html>
