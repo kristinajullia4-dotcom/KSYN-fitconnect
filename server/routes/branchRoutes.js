@@ -33,6 +33,8 @@ router.post('/transfer', branchController.transferUserBranch);
 router.get('/transfers/pending', rbacGuard('branch_admin', 'branch_owner', 'super_admin'), branchController.getPendingTransferRequests);
 router.post('/transfers/:requestId/approve', rbacGuard('branch_admin', 'branch_owner', 'super_admin'), branchController.approveTransferRequest);
 router.post('/transfers/:requestId/reject', rbacGuard('branch_admin', 'branch_owner', 'super_admin'), branchController.rejectTransferRequest);
+router.post('/transfers/:requestId/cancel', rbacGuard('branch_admin', 'branch_owner', 'super_admin', 'member'), branchController.cancelTransferRequest);
+router.post('/transfers/:requestId/dismiss', rbacGuard('branch_admin', 'branch_owner', 'super_admin', 'member'), branchController.dismissTransferRequest);
 router.post('/transfers/:requestId/contact', rbacGuard('branch_admin', 'branch_owner', 'super_admin'), branchController.contactTransferAdmin);
 router.get('/transfers/my-status', branchController.getMyTransferStatus);
 

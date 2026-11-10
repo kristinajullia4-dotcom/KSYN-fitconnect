@@ -583,6 +583,7 @@ function MemberPortalContent({
   const [targetTransferBranchId, setTargetTransferBranchId] = useState('b-kat-02');
   const [transferReason, setTransferReason] = useState('Relocation / Closer to Home');
   const [transferLoading, setTransferLoading] = useState(false);
+  const [myTransferStatus, setMyTransferStatus] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [showPromoCollapse, setShowPromoCollapse] = useState(false);
   const [showBiometricLedger, setShowBiometricLedger] = useState(false);
@@ -1475,6 +1476,12 @@ function MemberPortalContent({
         .then(d => { if (d?.notifications) setNotifications(d.notifications); })
         .catch(() => null);
 
+      // Fetch member's current branch transfer status
+      authFetch('/api/branch/transfers/my-status')
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d?.success) setMyTransferStatus(d); })
+        .catch(() => null);
+
       generatePass();
     } catch (err) {
       console.warn('Non-fatal loadMemberData error:', err);
@@ -1489,6 +1496,36 @@ function MemberPortalContent({
     try {
       await authFetch(`/api/notifications/${notifId}/read`, { method: 'PATCH' });
       setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, read: true } : n));
+    } catch (e) {}
+  };
+
+  // Member: Cancel Pending Branch Transfer
+  const handleCancelMyTransfer = async (requestId) => {
+    if (!window.confirm('Cancel your branch transfer request? You will remain actively stationed at your current home branch.')) return;
+    try {
+      setTransferLoading(true);
+      const res = await authFetch(`/api/branch/transfers/${requestId}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Cancelled by member' })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Cancel failed');
+      toast.info('Branch transfer request cancelled.', 'Cancelled');
+      setMyTransferStatus(null);
+      await loadMemberData();
+    } catch (err) {
+      toast.error(err.message, 'Cancel Error');
+    } finally {
+      setTransferLoading(false);
+    }
+  };
+
+  // Member: Dismiss Declined Branch Transfer Notice
+  const handleDismissMyTransfer = async (requestId) => {
+    try {
+      await authFetch(`/api/branch/transfers/${requestId}/dismiss`, { method: 'POST' });
+      setMyTransferStatus(null);
     } catch (e) {}
   };
 
@@ -6341,6 +6378,105 @@ function MemberPortalContent({
                   <ArrowRight size={14} /> Transfer Branch Facility
                 </button>
               </div>
+
+              {/* Transfer in progress status banner */}
+              {myTransferStatus?.hasPending && myTransferStatus?.request && (
+                <div style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  border: '1px solid rgba(59, 130, 246, 0.35)',
+                  borderRadius: '10px',
+                  padding: '12px 16px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '10px'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#93c5fd', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <ArrowRightLeft size={14} /> Transfer in Progress &rarr; {myTransferStatus.request.to_branch_name}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '3px' }}>
+                      {myTransferStatus.request.status === 'PENDING_ORIGIN_CLEARANCE'
+                        ? `Awaiting Stage 1 clearance approval by your home facility (${myTransferStatus.request.from_branch_name}).`
+                        : `Cleared by ${myTransferStatus.request.from_branch_name}. Awaiting final enrollment acceptance by ${myTransferStatus.request.to_branch_name}.`}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleCancelMyTransfer(myTransferStatus.request.id)}
+                    style={{
+                      padding: '5px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      background: 'rgba(239, 68, 68, 0.15)',
+                      color: '#f87171',
+                      border: '1px solid rgba(239, 68, 68, 0.35)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Cancel Request
+                  </button>
+                </div>
+              )}
+
+              {/* Transfer declined status banner */}
+              {myTransferStatus?.isDeclined && myTransferStatus?.request && (
+                <div style={{
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  border: '1px solid rgba(239, 68, 68, 0.35)',
+                  borderRadius: '10px',
+                  padding: '12px 16px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '10px'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#fca5a5', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <AlertTriangle size={14} /> Transfer to {myTransferStatus.request.to_branch_name} was Declined
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '3px' }}>
+                      Reason: {myTransferStatus.request.rejection_reason || 'Facility capacity limit or administrative constraints'}. Your membership records and continuing plan remain safely active at {myTransferStatus.request.from_branch_name}.
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setShowBranchTransferModal(true)}
+                      style={{
+                        padding: '5px 12px',
+                        borderRadius: '6px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        background: 'rgba(225, 194, 86, 0.18)',
+                        color: '#e1c256',
+                        border: '1px solid rgba(225, 194, 86, 0.4)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Try Another Branch
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDismissMyTransfer(myTransferStatus.request.id)}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: '6px',
+                        fontSize: '0.75rem',
+                        color: '#9ca3af',
+                        background: 'transparent',
+                        border: '1px solid #334155',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Personal Details Row */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>

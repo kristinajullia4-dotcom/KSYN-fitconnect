@@ -552,17 +552,34 @@ async function transferUserBranch(req, res) {
   }
 }
 
-// 6. Get Pending Branch Transfer Requests (2-Stage Approval Routing)
+// 6. Get Pending & Historical Branch Transfer Requests (2-Stage Approval Routing)
 async function getPendingTransferRequests(req, res) {
   try {
     const caller = req.user;
     if (!memoryStore.branch_transfer_requests) memoryStore.branch_transfer_requests = [];
-    const activeStatuses = ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'];
-    let requests = memoryStore.branch_transfer_requests.filter(r => activeStatuses.includes(r.status));
     
+    let allBranchRequests = memoryStore.branch_transfer_requests;
     if (caller.role !== 'super_admin') {
       const branchId = caller.branch_id || 'b-mkt-01';
-      requests = requests.filter(r => r.from_branch_id === branchId || r.to_branch_id === branchId);
+      allBranchRequests = allBranchRequests.filter(r => r.from_branch_id === branchId || r.to_branch_id === branchId);
+    }
+
+    const activeStatuses = ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'];
+    const activeCount = allBranchRequests.filter(r => activeStatuses.includes(r.status)).length;
+    const declinedCount = allBranchRequests.filter(r => ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(r.status) && !r.dismissed).length;
+    const completedCount = allBranchRequests.filter(r => r.status === 'APPROVED').length;
+
+    const filter = (req.query.filter || 'all').toLowerCase();
+    let requests = allBranchRequests;
+    if (filter === 'active' || filter === 'pending') {
+      requests = allBranchRequests.filter(r => activeStatuses.includes(r.status));
+    } else if (filter === 'declined') {
+      requests = allBranchRequests.filter(r => ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(r.status) && !r.dismissed);
+    } else if (filter === 'approved' || filter === 'completed') {
+      requests = allBranchRequests.filter(r => r.status === 'APPROVED');
+    } else {
+      // 'all': return active requests plus non-dismissed declined and completed
+      requests = allBranchRequests.filter(r => !r.dismissed || activeStatuses.includes(r.status));
     }
 
     const enriched = requests.map(r => {
@@ -570,6 +587,9 @@ async function getPendingTransferRequests(req, res) {
       const isDestination = caller.role === 'super_admin' || r.to_branch_id === caller.branch_id;
       const isStage1 = r.status === 'PENDING_ORIGIN_CLEARANCE' || r.status === 'PENDING_APPROVAL';
       const isStage2 = r.status === 'PENDING_DESTINATION_ACCEPTANCE';
+      const isDeclined = r.status === 'DECLINED_BY_DESTINATION' || r.status === 'DECLINED_BY_ORIGIN';
+      const isApproved = r.status === 'APPROVED';
+      const isCancelled = r.status === 'CANCELLED';
 
       // Look up target and origin branch admins from store
       const toAdmin = (memoryStore.users || []).find(u => u.branch_id === r.to_branch_id && (u.role === 'branch_admin' || u.role === 'branch_owner'));
@@ -582,7 +602,8 @@ async function getPendingTransferRequests(req, res) {
 
       // Home branch has action required in Stage 1
       // Destination branch has action required in Stage 2
-      const canApprove = caller.role === 'super_admin' || (isOrigin && isStage1) || (isDestination && isStage2);
+      const canApprove = (caller.role === 'super_admin' || (isOrigin && isStage1) || (isDestination && isStage2)) && !isDeclined && !isApproved && !isCancelled;
+      const canCancel = (caller.role === 'super_admin' || isOrigin || caller.id === r.user_id) && !isApproved && !isDeclined && !isCancelled;
 
       let actionLabel = 'Review';
       let stageDescription = '';
@@ -592,6 +613,18 @@ async function getPendingTransferRequests(req, res) {
       } else if (isStage2) {
         actionLabel = isDestination ? 'Accept & Finalize Transfer' : 'Awaiting Target Branch Acceptance';
         stageDescription = `Stage 2/2: Destination Facility (${r.to_branch_name}) acceptance required`;
+      } else if (r.status === 'DECLINED_BY_DESTINATION') {
+        actionLabel = 'Declined by Target Facility';
+        stageDescription = `Declined by ${r.to_branch_name}: ${r.rejection_reason || 'Facility capacity or administrative constraints'}`;
+      } else if (r.status === 'DECLINED_BY_ORIGIN') {
+        actionLabel = 'Declined by Home Facility';
+        stageDescription = `Declined by ${r.from_branch_name}: ${r.rejection_reason || 'Home clearance withheld'}`;
+      } else if (isApproved) {
+        actionLabel = 'Transfer Completed';
+        stageDescription = `Completed & Activated at ${r.to_branch_name}`;
+      } else if (isCancelled) {
+        actionLabel = 'Transfer Cancelled';
+        stageDescription = `Cancelled: ${r.cancel_reason || 'Withdrawn by requester'}`;
       }
 
       return {
@@ -604,13 +637,24 @@ async function getPendingTransferRequests(req, res) {
         is_destination_branch: r.to_branch_id === caller.branch_id,
         is_stage_1: isStage1,
         is_stage_2: isStage2,
+        is_declined: isDeclined,
+        is_approved: isApproved,
+        is_cancelled: isCancelled,
         can_approve: canApprove,
+        can_cancel: canCancel,
         action_label: actionLabel,
         stage_description: stageDescription
       };
     });
 
-    return res.json({ success: true, count: enriched.length, requests: enriched });
+    return res.json({
+      success: true,
+      count: enriched.length,
+      activeCount,
+      declinedCount,
+      completedCount,
+      requests: enriched
+    });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message, requests: [] });
   }
@@ -944,13 +988,116 @@ async function contactTransferAdmin(req, res) {
   }
 }
 
-// 10. Member / Staff Status Check for Pending Transfer
+// 9. Cancel / Withdraw Transfer Request
+async function cancelTransferRequest(req, res) {
+  try {
+    const { requestId } = req.params;
+    const { reason = 'Cancelled by administration' } = req.body;
+    const caller = req.user;
+    if (!memoryStore.branch_transfer_requests) memoryStore.branch_transfer_requests = [];
+    const request = memoryStore.branch_transfer_requests.find(r => r.id === requestId);
+    if (!request) {
+      return res.status(404).json({ success: false, message: 'Transfer request not found.' });
+    }
+
+    const isOrigin = caller.role === 'super_admin' || request.from_branch_id === caller.branch_id;
+    const isSelf = caller.id === request.user_id;
+    if (!isOrigin && !isSelf) {
+      return res.status(403).json({ success: false, message: 'Only the originating branch or user can cancel this transfer.' });
+    }
+
+    if (['APPROVED', 'CANCELLED'].includes(request.status)) {
+      return res.status(400).json({ success: false, message: `Cannot cancel a transfer that is already ${request.status}.` });
+    }
+
+    request.status = 'CANCELLED';
+    request.cancelled_at = new Date().toISOString();
+    request.cancelled_by = caller.name || caller.id;
+    request.cancel_reason = reason;
+
+    if (!memoryStore.notifications) memoryStore.notifications = [];
+    // Notify member if admin cancelled
+    if (!isSelf) {
+      memoryStore.notifications.unshift({
+        id: 'notif-' + crypto.randomUUID(),
+        target_user_id: request.user_id,
+        title: 'Branch Transfer Request Cancelled',
+        message: `Your transfer request to ${request.to_branch_name} has been cancelled. Your membership records remain stationed at ${request.from_branch_name}.`,
+        category: 'BRANCH_TRANSFER_CANCELLED',
+        branch_id: request.from_branch_id,
+        created_at: new Date(),
+        read: false
+      });
+    }
+
+    const { saveStore } = require('../config/db');
+    if (typeof saveStore === 'function') {
+      saveStore();
+    }
+
+    return res.json({
+      success: true,
+      message: `Transfer request for ${request.user_name} has been cancelled. Member records remain active at ${request.from_branch_name}.`,
+      request
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+}
+
+// 10. Dismiss / Archive Declined Transfer Request
+async function dismissTransferRequest(req, res) {
+  try {
+    const { requestId } = req.params;
+    const caller = req.user;
+    if (!memoryStore.branch_transfer_requests) memoryStore.branch_transfer_requests = [];
+    const request = memoryStore.branch_transfer_requests.find(r => r.id === requestId);
+    if (!request) {
+      return res.status(404).json({ success: false, message: 'Transfer request not found.' });
+    }
+
+    request.dismissed = true;
+    request.dismissed_at = new Date().toISOString();
+    request.dismissed_by = caller.name || caller.id;
+
+    const { saveStore } = require('../config/db');
+    if (typeof saveStore === 'function') {
+      saveStore();
+    }
+
+    return res.json({ success: true, message: 'Transfer request dismissed from view.', request });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+}
+
+// 11. Member / Staff Status Check for Pending / Recent Transfer
 async function getMyTransferStatus(req, res) {
   try {
     const userId = req.user.id;
     if (!memoryStore.branch_transfer_requests) memoryStore.branch_transfer_requests = [];
-    const pending = memoryStore.branch_transfer_requests.find(r => r.user_id === userId && r.status === 'PENDING_APPROVAL');
-    return res.json({ success: true, hasPending: Boolean(pending), request: pending || null });
+    
+    // Find most recent transfer request for this user
+    const userRequests = memoryStore.branch_transfer_requests
+      .filter(r => r.user_id === userId)
+      .sort((a, b) => new Date(b.requested_at) - new Date(a.requested_at));
+
+    const latest = userRequests[0] || null;
+    if (!latest) {
+      return res.json({ success: true, hasPending: false, isDeclined: false, isApproved: false, request: null });
+    }
+
+    const isPending = ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'].includes(latest.status);
+    const isDeclined = ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(latest.status) && !latest.dismissed;
+    const isApproved = latest.status === 'APPROVED';
+
+    return res.json({
+      success: true,
+      hasPending: isPending,
+      isDeclined: isDeclined,
+      isApproved: isApproved,
+      request: latest
+    });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -965,6 +1112,8 @@ module.exports = {
   getPendingTransferRequests,
   approveTransferRequest,
   rejectTransferRequest,
+  cancelTransferRequest,
+  dismissTransferRequest,
   contactTransferAdmin,
   getMyTransferStatus
 };

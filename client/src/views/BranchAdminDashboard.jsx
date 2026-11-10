@@ -23,6 +23,8 @@ import {
   Clock,
   Check,
   X,
+  XCircle,
+  RotateCcw,
   UserCheck,
   ShieldCheck,
   Lock,
@@ -283,6 +285,7 @@ export default function BranchAdminDashboard({
   const [transferReason, setTransferReason] = useState('Administrative Relocation');
   const [transferSubmitting, setTransferSubmitting] = useState(false);
   const [pendingTransfers, setPendingTransfers] = useState([]);
+  const [transferFilter, setTransferFilter] = useState('all'); // 'all' | 'active' | 'declined' | 'completed'
   const [processingTransferId, setProcessingTransferId] = useState(null);
   const [transferEmailModal, setTransferEmailModal] = useState(null); // transfer request object
   const [transferEmailRecipient, setTransferEmailRecipient] = useState('');
@@ -541,6 +544,43 @@ export default function BranchAdminDashboard({
     }
   };
 
+  // Branch Admin: Cancel Pending Transfer Request
+  const handleCancelTransfer = async (requestId) => {
+    if (!window.confirm('Cancel this pending transfer request? The member will remain stationed at the home branch.')) return;
+    try {
+      setProcessingTransferId(requestId);
+      const res = await authFetch(`/api/branch/transfers/${requestId}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Cancelled by home branch administration' })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Cancel failed');
+      toast.info(data.message || 'Transfer request cancelled.', 'Transfer Cancelled');
+      await loadBranchData();
+    } catch (err) {
+      toast.error(err.message, 'Cancel Error');
+    } finally {
+      setProcessingTransferId(null);
+    }
+  };
+
+  // Branch Admin: Dismiss / Clear Declined Transfer Request from Active View
+  const handleDismissTransfer = async (requestId) => {
+    try {
+      setProcessingTransferId(requestId);
+      const res = await authFetch(`/api/branch/transfers/${requestId}/dismiss`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Dismiss failed');
+      toast.info('Transfer record dismissed from view.', 'Dismissed');
+      await loadBranchData();
+    } catch (err) {
+      toast.error(err.message, 'Dismiss Error');
+    } finally {
+      setProcessingTransferId(null);
+    }
+  };
+
   // Open Inter-Branch Transfer Coordination Email Modal
   const handleOpenTransferEmailModal = (req) => {
     // The recipient is the transferred-to-be branch admin (target facility admin)
@@ -575,10 +615,9 @@ export default function BranchAdminDashboard({
         const dispatchedId = transferEmailModal.id;
         toast.success(`Coordination email dispatched to ${transferEmailRecipient}! Re-queued directly for destination admin.`, 'Dispatched');
         setDispatchedTransferIds(prev => new Set([...prev, dispatchedId]));
+        setPendingTransfers(prev => prev.map(r => r.id === dispatchedId ? { ...r, email_dispatched: true } : r));
         setTransferEmailModal(null);
-        setTimeout(() => {
-          setPendingTransfers(prev => prev.filter(r => r.id !== dispatchedId));
-        }, 1200);
+        await loadBranchData();
       } else {
         toast.error(data.message || 'Failed to dispatch email.', 'Error');
       }
@@ -2638,18 +2677,39 @@ export default function BranchAdminDashboard({
             >
               <ArrowRightLeft size={16} />
               Branch Transfers &amp; Relocations ({pendingTransfers.length})
-              {pendingTransfers.length > 0 && (
-                <span style={{
-                  fontSize: '0.6875rem',
-                  fontWeight: 900,
-                  background: memberSubTab === 'transfers' ? '#ffffff' : '#e1c256',
-                  color: '#000000',
-                  padding: '2px 7px',
-                  borderRadius: '10px'
-                }}>
-                  {pendingTransfers.length} Active
-                </span>
-              )}
+              {(() => {
+                const activeCount = pendingTransfers.filter(r => ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'].includes(r.status)).length;
+                const declinedCount = pendingTransfers.filter(r => ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(r.status)).length;
+                if (activeCount > 0) {
+                  return (
+                    <span style={{
+                      fontSize: '0.6875rem',
+                      fontWeight: 900,
+                      background: memberSubTab === 'transfers' ? '#ffffff' : '#e1c256',
+                      color: '#000000',
+                      padding: '2px 7px',
+                      borderRadius: '10px'
+                    }}>
+                      {activeCount} Active
+                    </span>
+                  );
+                }
+                if (declinedCount > 0) {
+                  return (
+                    <span style={{
+                      fontSize: '0.6875rem',
+                      fontWeight: 900,
+                      background: '#ef4444',
+                      color: '#ffffff',
+                      padding: '2px 7px',
+                      borderRadius: '10px'
+                    }}>
+                      {declinedCount} Declined
+                    </span>
+                  );
+                }
+                return null;
+              })()}
             </button>
           </div>
 
@@ -2676,12 +2736,56 @@ export default function BranchAdminDashboard({
                     </p>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#e1c256', background: 'rgba(225, 194, 86, 0.12)', border: '1px solid rgba(225, 194, 86, 0.3)', padding: '4px 10px', borderRadius: '6px' }}>
-                    {pendingTransfers.length} Active Relocation{pendingTransfers.length === 1 ? '' : 's'}
-                  </span>
+
+                {/* Filter Pills */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                  {[
+                    { id: 'all', label: `All (${pendingTransfers.length})` },
+                    { id: 'active', label: `Pending Action (${pendingTransfers.filter(r => ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'].includes(r.status)).length})` },
+                    { id: 'declined', label: `Declined (${pendingTransfers.filter(r => ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(r.status)).length})` },
+                    { id: 'completed', label: `Completed (${pendingTransfers.filter(r => r.status === 'APPROVED').length})` }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setTransferFilter(tab.id)}
+                      style={{
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        border: transferFilter === tab.id ? '1px solid #e1c256' : '1px solid #334155',
+                        background: transferFilter === tab.id ? 'rgba(225, 194, 86, 0.2)' : 'rgba(15, 23, 42, 0.6)',
+                        color: transferFilter === tab.id ? '#e1c256' : '#94a3b8',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
                 </div>
               </div>
+
+              {/* Status Note explaining declined vs pending */}
+              {pendingTransfers.some(r => ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(r.status)) && (
+                <div style={{
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  marginBottom: '12px',
+                  fontSize: '0.75rem',
+                  color: '#fca5a5',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <AlertTriangle size={14} className="shrink-0 text-red-400" />
+                  <span>
+                    When a target branch declines a transfer, the member is <strong>not</strong> transferred. The member remains safely active and stationed at their home branch. You can review the decline reason below, re-transfer to an alternate branch, or dismiss the record.
+                  </span>
+                </div>
+              )}
 
               <div style={{ overflowX: 'auto' }}>
                 <table className="ksyn-table" style={{ width: '100%', fontSize: '0.8125rem' }}>
@@ -2696,18 +2800,35 @@ export default function BranchAdminDashboard({
                     </tr>
                   </thead>
                   <tbody>
-                    {pendingTransfers.length === 0 ? (
-                      <tr>
-                        <td colSpan="6" style={{ textAlign: 'center', padding: '24px', color: '#94a3b8' }}>
-                          No pending transfer requests. All member and staff rosters are active and stationary.
-                        </td>
-                      </tr>
-                    ) : (
-                      pendingTransfers.map((req) => {
+                    {(() => {
+                      const list = pendingTransfers.filter(req => {
+                        if (transferFilter === 'active') return ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'].includes(req.status);
+                        if (transferFilter === 'declined') return ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(req.status);
+                        if (transferFilter === 'completed') return req.status === 'APPROVED';
+                        return true;
+                      });
+
+                      if (list.length === 0) {
+                        return (
+                          <tr>
+                            <td colSpan="6" style={{ textAlign: 'center', padding: '24px', color: '#94a3b8' }}>
+                              {transferFilter === 'declined' ? 'No declined transfer records.' :
+                               transferFilter === 'completed' ? 'No completed transfer records.' :
+                               transferFilter === 'active' ? 'No pending transfer requests requiring action.' :
+                               'No transfer records found.'}
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      return list.map((req) => {
                         const currentBranchId = branch?.id || user?.branch_id || 'b-mkt-01';
-                        const isStage1Action = (req.is_stage_1 || req.status === 'PENDING_APPROVAL' || req.status === 'PENDING_ORIGIN_CLEARANCE') && (req.from_branch_id === currentBranchId || req.can_approve);
-                        const isStage2Action = (req.is_stage_2 || req.status === 'PENDING_DESTINATION_ACCEPTANCE') && (req.to_branch_id === currentBranchId || req.can_approve);
-                        const isAwaitingOther = !isStage1Action && !isStage2Action;
+                        const isDeclined = req.status === 'DECLINED_BY_DESTINATION' || req.status === 'DECLINED_BY_ORIGIN';
+                        const isApproved = req.status === 'APPROVED';
+                        const isCancelled = req.status === 'CANCELLED';
+                        const isStage1Action = !isDeclined && !isApproved && !isCancelled && (req.is_stage_1 || req.status === 'PENDING_APPROVAL' || req.status === 'PENDING_ORIGIN_CLEARANCE') && (req.from_branch_id === currentBranchId || req.can_approve);
+                        const isStage2Action = !isDeclined && !isApproved && !isCancelled && (req.is_stage_2 || req.status === 'PENDING_DESTINATION_ACCEPTANCE') && (req.to_branch_id === currentBranchId || req.can_approve);
+                        const isAwaitingOther = !isDeclined && !isApproved && !isCancelled && !isStage1Action && !isStage2Action;
 
                         return (
                           <tr key={req.id} style={{ borderBottom: '1px solid #1a2030' }}>
@@ -2750,7 +2871,43 @@ export default function BranchAdminDashboard({
                             </td>
 
                             <td style={{ padding: '12px' }}>
-                              {isStage1Action ? (
+                              {isDeclined ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                  <span style={{
+                                    fontSize: '0.72rem',
+                                    fontWeight: 800,
+                                    color: '#ef4444',
+                                    background: 'rgba(239, 68, 68, 0.15)',
+                                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                                    padding: '3px 8px',
+                                    borderRadius: '4px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    width: 'fit-content'
+                                  }}>
+                                    <XCircle size={12} /> {req.status === 'DECLINED_BY_DESTINATION' ? `Declined by ${req.to_branch_name}` : `Declined by Home Branch`}
+                                  </span>
+                                  {req.rejection_reason && (
+                                    <div style={{ fontSize: '0.6875rem', color: '#fca5a5', maxWidth: '240px' }}>
+                                      <strong>Reason:</strong> {req.rejection_reason}
+                                    </div>
+                                  )}
+                                  {req.rejected_by && (
+                                    <div style={{ fontSize: '0.625rem', color: '#9ca3af' }}>
+                                      By {req.rejected_by} {req.rejected_at ? `(${new Date(req.rejected_at).toLocaleDateString()})` : ''}
+                                    </div>
+                                  )}
+                                </div>
+                              ) : isApproved ? (
+                                <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#10b981', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '3px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                  <CheckCircle2 size={12} /> Transferred &amp; Activated at {req.to_branch_name}
+                                </span>
+                              ) : isCancelled ? (
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', background: 'rgba(148, 163, 184, 0.1)', border: '1px solid #475569', padding: '3px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                                  Cancelled ({req.cancel_reason || 'Withdrawn'})
+                                </span>
+                              ) : isStage1Action ? (
                                 <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#e1c256', background: 'rgba(225, 194, 86, 0.15)', border: '1px solid rgba(225, 194, 86, 0.35)', padding: '3px 8px', borderRadius: '4px', display: 'inline-block' }}>
                                   Stage 1/2: Home Clearance Required
                                 </span>
@@ -2760,13 +2917,42 @@ export default function BranchAdminDashboard({
                                 </span>
                               ) : (
                                 <span style={{ fontSize: '0.72rem', color: '#94a3b8', background: 'rgba(148, 163, 184, 0.1)', border: '1px solid #334155', padding: '3px 8px', borderRadius: '4px', display: 'inline-block' }}>
-                                  {req.is_stage_2 ? 'Stage 2/2: Cleared &bull; Awaiting Target' : 'Stage 1/2: Awaiting Home Clearance'}
+                                  {req.is_stage_2 ? `Stage 2/2: Cleared &bull; Awaiting ${req.to_branch_name}` : `Stage 1/2: Awaiting ${req.from_branch_name}`}
                                 </span>
                               )}
                             </td>
 
                             <td style={{ textAlign: 'right', padding: '12px', whiteSpace: 'nowrap' }}>
-                              {isStage1Action && (
+                              {isDeclined ? (
+                                <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const foundMember = (members || []).find(m => m.id === req.user_id) || { id: req.user_id, name: req.user_name, email: req.user_email, role: req.user_role };
+                                      setTransferTargetUser(foundMember);
+                                      const currentBid = branch?.id || user?.branch_id || 'b-mkt-01';
+                                      const altBranch = ['b-mkt-01', 'b-kat-02', 'b-alb-03', 'b-kap-04', 'b-frv-05'].find(b => b !== currentBid && b !== req.to_branch_id) || 'b-kat-02';
+                                      setTransferTargetBranchId(altBranch);
+                                      setTransferReason(`Re-transfer: Previous request to ${req.to_branch_name} was declined (${req.rejection_reason || 'capacity'})`);
+                                    }}
+                                    className="ksyn-btn ksyn-btn-gold"
+                                    style={{ padding: '6px 12px', fontSize: '0.75rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                    title="Initiate transfer to another facility"
+                                  >
+                                    <RotateCcw size={12} /> Re-Transfer
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={processingTransferId === req.id}
+                                    onClick={() => handleDismissTransfer(req.id)}
+                                    className="ksyn-btn"
+                                    style={{ padding: '6px 8px', fontSize: '0.72rem', color: '#9ca3af', border: '1px solid #334155', background: 'transparent' }}
+                                    title="Dismiss this record"
+                                  >
+                                    Dismiss
+                                  </button>
+                                </div>
+                              ) : isStage1Action ? (
                                 <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
                                   <button
                                     type="button"
@@ -2787,9 +2973,7 @@ export default function BranchAdminDashboard({
                                     <X size={13} /> Decline
                                   </button>
                                 </div>
-                              )}
-
-                              {isStage2Action && (
+                              ) : isStage2Action ? (
                                 <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
                                   <button
                                     type="button"
@@ -2810,63 +2994,81 @@ export default function BranchAdminDashboard({
                                     <X size={13} /> Decline
                                   </button>
                                 </div>
-                              )}
-
-                              {isAwaitingOther && (
+                              ) : isAwaitingOther ? (
                                 <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-                                  {dispatchedTransferIds.has(req.id) || req.email_dispatched ? (
+                                  <div style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
+                                    {dispatchedTransferIds.has(req.id) || req.email_dispatched ? (
+                                      <span
+                                        style={{
+                                          padding: '5px 10px',
+                                          fontSize: '0.72rem',
+                                          fontWeight: 700,
+                                          background: 'rgba(101, 130, 86, 0.2)',
+                                          color: '#658256',
+                                          border: '1px solid #658256',
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          borderRadius: '6px'
+                                        }}
+                                      >
+                                        <Check size={12} /> Email Dispatched
+                                      </span>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        onClick={() => handleOpenTransferEmailModal(req)}
+                                        className="ksyn-btn"
+                                        style={{
+                                          padding: '5px 10px',
+                                          fontSize: '0.72rem',
+                                          fontWeight: 800,
+                                          background: 'rgba(225, 194, 86, 0.12)',
+                                          color: '#e1c256',
+                                          border: '1px solid #e1c256',
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          borderRadius: '6px'
+                                        }}
+                                        title="Send coordination email to transferred-to-be branch admin"
+                                      >
+                                        <Mail size={12} /> Email Destination Admin
+                                      </button>
+                                    )}
                                     <button
-                                      disabled
                                       type="button"
+                                      disabled={processingTransferId === req.id}
+                                      onClick={() => handleCancelTransfer(req.id)}
                                       className="ksyn-btn"
                                       style={{
-                                        padding: '6px 14px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 800,
-                                        background: 'rgba(101, 130, 86, 0.2)',
-                                        color: '#658256',
-                                        border: '1px solid #658256',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '5px',
+                                        padding: '5px 8px',
+                                        fontSize: '0.72rem',
+                                        fontWeight: 700,
+                                        color: '#f87171',
+                                        background: 'rgba(239, 68, 68, 0.1)',
+                                        border: '1px solid rgba(239, 68, 68, 0.3)',
                                         borderRadius: '6px'
                                       }}
+                                      title="Cancel this pending transfer request"
                                     >
-                                      <Check size={13} /> Dispatched
+                                      Cancel
                                     </button>
-                                  ) : (
-                                    <button
-                                      type="button"
-                                      onClick={() => handleOpenTransferEmailModal(req)}
-                                      className="ksyn-btn"
-                                      style={{
-                                        padding: '6px 12px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 800,
-                                        background: 'rgba(225, 194, 86, 0.12)',
-                                        color: '#e1c256',
-                                        border: '1px solid #e1c256',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '5px',
-                                        cursor: 'pointer',
-                                        borderRadius: '6px'
-                                      }}
-                                      title="Send coordination email to transferred-to-be branch admin"
-                                    >
-                                      <Mail size={13} /> Email Destination Admin
-                                    </button>
-                                  )}
+                                  </div>
                                   <span style={{ fontSize: '0.68rem', color: (dispatchedTransferIds.has(req.id) || req.email_dispatched) ? '#658256' : '#94a3b8', fontStyle: 'italic', fontWeight: 600 }}>
-                                    {(dispatchedTransferIds.has(req.id) || req.email_dispatched) ? 'Queued for Destination Admin' : 'Awaiting Home Clearance'}
+                                    Awaiting {req.to_branch_name} Acceptance
                                   </span>
                                 </div>
+                              ) : (
+                                <span style={{ fontSize: '0.72rem', color: '#6b7280', fontStyle: 'italic' }}>
+                                  Archived
+                                </span>
                               )}
                             </td>
                           </tr>
                         );
-                      })
-                    )}
+                      });
+                    })()}
                   </tbody>
                 </table>
               </div>
@@ -2991,6 +3193,51 @@ export default function BranchAdminDashboard({
                             <div className="mono inline-flex items-center gap-1" style={{ fontSize: '0.6875rem', color: '#f7ffc4' }}>
                               <CreditCard size={11} /> {m.rfid_card_uid || 'RFID: KS-8829-4102'}
                             </div>
+                            {(() => {
+                              const activeXfer = pendingTransfers.find(t => t.user_id === m.id && ['PENDING_APPROVAL', 'PENDING_ORIGIN_CLEARANCE', 'PENDING_DESTINATION_ACCEPTANCE'].includes(t.status));
+                              const declinedXfer = pendingTransfers.find(t => t.user_id === m.id && ['DECLINED_BY_DESTINATION', 'DECLINED_BY_ORIGIN'].includes(t.status));
+                              if (activeXfer) {
+                                return (
+                                  <div style={{ marginTop: '3px' }}>
+                                    <span style={{
+                                      fontSize: '0.625rem',
+                                      fontWeight: 800,
+                                      background: 'rgba(59, 130, 246, 0.15)',
+                                      color: '#60a5fa',
+                                      border: '1px solid rgba(59, 130, 246, 0.4)',
+                                      padding: '1px 5px',
+                                      borderRadius: '4px',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '3px'
+                                    }}>
+                                      <ArrowRightLeft size={10} /> Pending &rarr; {activeXfer.to_branch_name}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                              if (declinedXfer) {
+                                return (
+                                  <div style={{ marginTop: '3px' }}>
+                                    <span style={{
+                                      fontSize: '0.625rem',
+                                      fontWeight: 800,
+                                      background: 'rgba(239, 68, 68, 0.15)',
+                                      color: '#f87171',
+                                      border: '1px solid rgba(239, 68, 68, 0.4)',
+                                      padding: '1px 5px',
+                                      borderRadius: '4px',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '3px'
+                                    }}>
+                                      <XCircle size={10} /> Transfer Declined ({declinedXfer.to_branch_name})
+                                    </span>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })()}
                           </td>
                           <td>
                             <div style={{ maxWidth: '170px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={m.email}>{maskEmail(m.email)}</div>
