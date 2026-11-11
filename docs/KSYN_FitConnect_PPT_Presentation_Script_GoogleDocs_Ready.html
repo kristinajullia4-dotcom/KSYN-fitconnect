@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KSYN FitConnect - Oral Thesis Defense Presentation Script & Slide Audit</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 1.0in 1.0in 1.0in 1.25in;
+    @top-right {
+      content: counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 30px;
+    max-width: 8.5in;
+  }
+  h1.doc-title {
+    text-align: center;
+    font-size: 15pt;
+    font-weight: bold;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    text-transform: uppercase;
+  }
+  h2.doc-subtitle {
+    text-align: center;
+    font-size: 12.5pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 18pt;
+    text-transform: uppercase;
+    color: #1e293b;
+  }
+  .meta-card {
+    border: 1pt solid #94a3b8;
+    background-color: #f8fafc;
+    padding: 10pt 14pt;
+    margin-bottom: 22pt;
+    font-size: 11pt;
+    border-radius: 4px;
+  }
+  .stage-header {
+    background-color: #0f172a;
+    color: #ffffff;
+    padding: 8pt 12pt;
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    text-transform: uppercase;
+    border-radius: 3px;
+  }
+  h3.section-heading {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 16pt;
+    margin-bottom: 6pt;
+    color: #1e3a8a;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 8pt;
+    text-align: justify;
+    text-indent: 0.5in;
+  }
+  p.no-indent { text-indent: 0; }
+  ul {
+    margin-top: 4pt;
+    margin-bottom: 10pt;
+    padding-left: 0.5in;
+  }
+  li {
+    text-align: justify;
+    margin-bottom: 4pt;
+  }
+  .slide-box {
+    background-color: #f1f5f9;
+    border: 1pt solid #cbd5e1;
+    border-left: 5pt solid #0284c7;
+    padding: 8pt 12pt;
+    margin: 14pt 0 8pt 0;
+    font-size: 11pt;
+  }
+  .speaker-tag {
+    font-weight: bold;
+    color: #0f172a;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 4pt;
+  }
+  .spoken-script {
+    background-color: #ffffff;
+    border: 1pt solid #e2e8f0;
+    border-left: 4pt solid #10b981;
+    padding: 10pt 14pt;
+    margin: 6pt 0 14pt 0;
+    font-style: italic;
+    font-size: 11.5pt;
+    line-height: 1.6;
+    color: #0f172a;
+  }
+  .spoken-script p {
+    text-indent: 0;
+    margin-bottom: 6pt;
+  }
+  .action-callout {
+    border-left: 4pt solid #d97706;
+    background-color: #fffbeb;
+    padding: 8pt 12pt;
+    margin: 8pt 0 10pt 0;
+    font-size: 11pt;
+  }
+  .warning-callout {
+    border-left: 4pt solid #dc2626;
+    background-color: #fef2f2;
+    padding: 8pt 12pt;
+    margin: 8pt 0 10pt 0;
+    font-size: 11pt;
+  }
+  .api-block {
+    background-color: #f8fafc;
+    border: 1pt solid #cbd5e1;
+    padding: 6pt 10pt;
+    margin: 6pt 0 10pt 0;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9.5pt;
+    border-radius: 4px;
+    white-space: pre-wrap;
+  }
+  table.academic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12pt 0 18pt 0;
+    font-size: 10pt;
+  }
+  table.academic-table th {
+    background-color: #0f172a;
+    color: #ffffff;
+    border: 1pt solid #334155;
+    padding: 7pt 9pt;
+    text-align: left;
+    font-weight: bold;
+  }
+  table.academic-table td {
+    border: 1pt solid #cbd5e1;
+    padding: 6pt 8pt;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  table.academic-table tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="doc-title">KSYN FitConnect: Oral Thesis Defense Presentation Script &amp; Slide Audit</h1>
+<h2 class="doc-subtitle">A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation</h2>
+
+<div class="meta-card">
+  <strong>Institution:</strong> University of Makati — College of Computing and Information Sciences<br>
+  <strong>Degree Program:</strong> Bachelor of Science in Computer Science / Information Technology<br>
+  <strong>Researchers:</strong> Luis Gabriel Bautista &bull; Merynelle B. Bozar &bull; Jullia Krisitina C. Marquez<br>
+  <strong>Subject Matter:</strong> Undergraduate Thesis Defense Presentation Script (Chapters I–III &amp; Live System Demonstration)<br>
+  <strong>Standard Formatting:</strong> Fully formatted for direct copy-paste into Google Docs (Times New Roman, 12pt, 1.6 Line Spacing)
+</div>
+
+<p class="no-indent">
+  This document provides the complete, word-for-word presentation script and slide accuracy audit for the oral defense of <strong>KSYN FitConnect</strong>. It is structured into four cohesive sections: (1) PowerPoint Slide Audit &amp; Alteration Matrix, (2) Slide-by-Slide Spoken Script (Chapters I–III), (3) Live System Demonstration Script (Scenarios 1–7), and (4) Panel Defense Trap Anticipation &amp; Technical Responses.
+</p>
+
+<!-- SECTION 1 -->
+<div class="stage-header">Section 1: PowerPoint Slide Audit &amp; Mandatory Alterations</div>
+
+<p class="no-indent">
+  Review the side-by-side audit table below before presenting. Pay careful attention to <strong>Slide 5</strong> to neutralize the hardware panel trap, and insert the two recommended bridge slides (<strong>Slide 13B</strong> for Network Architecture and <strong>Slide 16</strong> for Live Demo Roadmap).
+</p>
+
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 18%;">Slide # &amp; Title</th>
+      <th style="width: 25%;">Current PPT Content</th>
+      <th style="width: 27%;">Identified Risk / Discrepancy</th>
+      <th style="width: 30%;">Mandatory Slide Alteration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Slide 1: Title Slide</strong></td>
+      <td>KSYN FitConnect title, authors (Bautista, Bozar, Marquez), UMak CCIS.</td>
+      <td>None. Fully accurate and professional.</td>
+      <td><strong>Retain as is.</strong> Ensure title text is at least 32pt for clear projection.</td>
+    </tr>
+    <tr>
+      <td><strong>Slide 2: Chapter I Agenda</strong></td>
+      <td>Introduction, Background, Objectives, Scope, Significance, Terms.</td>
+      <td>None. Standard academic thesis structure.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 3: Intro &amp; Background</strong></td>
+      <td>Franchise expansion problems, spreadsheets, paper receipts, data leakage.</td>
+      <td>None. Reflects Chapter I problem formulation accurately.</td>
+      <td><strong>Retain as is.</strong> Emphasize manual royalty computation and data isolation risks.</td>
+    </tr>
+    <tr>
+      <td><strong>Slide 4: Objectives</strong></td>
+      <td>General &amp; Specific Objectives (Design, Develop, Test, Evaluate).</td>
+      <td>Minor phrasing: Specific Objective 2 says "...and QR."</td>
+      <td><strong>Refine bullet 2 to:</strong> <em>"Develop server-side RBAC, database Row-Level Security, secure authentication, and dynamic time-expiring optical QR verification."</em></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 5: Scope &amp; Limitations</strong></td>
+      <td><span style="color: #dc2626; font-weight: bold;">CRITICAL WARNING:</span> Slide states: <em>"Includes RBAC, tenant data isolation, dynamic time-expiring QR codes, and a supporting RFID terminal."</em></td>
+      <td><strong>Severe Panel Trap:</strong> Claiming a "supporting RFID terminal" invites examiners to demand physical hardware/ESP32 wiring, contradicting your 100% software delimitation.</td>
+      <td><strong>REPLACE TEXT WITH:</strong><br>
+        <strong>Scope:</strong><br>
+        &bull; User &amp; role management, branches, members, subscriptions, attendance, coaching, inventory, sales, royalties, reporting.<br>
+        &bull; Server-side RBAC, tenant data isolation, dynamic 60-second HMAC optical QR verification via web camera scanner.<br>
+        &bull; Corporate headquarters and seven modeled branch nodes.<br>
+        <strong>Limitations:</strong><br>
+        &bull; Academic prototype; excludes production deployment, biometrics, physical turnstiles/microcontrollers, live bank APIs, and native mobile apps.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Slide 6: Chapter II Agenda</strong></td>
+      <td>Multi-Tenancy, Access Control, Verification, Privacy, Standards.</td>
+      <td>None. Clean theoretical agenda.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 7: Multi-Tenancy &amp; Isolation</strong></td>
+      <td>Shared application, branch tenants, BOLA/IDOR mitigation, PostgreSQL RLS.</td>
+      <td>None. Outstanding technical depth and alignment.</td>
+      <td><strong>Retain as is.</strong> Highlight PostgreSQL RLS as the kernel-level barrier.</td>
+    </tr>
+    <tr>
+      <td><strong>Slide 8: Access Control &amp; Dev</strong></td>
+      <td>RBAC, least privilege, Argon2id, HTTPS, secure cookies, CSRF, JWTs.</td>
+      <td>None. Accurately represents application-layer security.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 9: Verification &amp; Privacy</strong></td>
+      <td>Short-lived QR tokens, atomic checks, RA 10173 privacy, ISO 25010/27001.</td>
+      <td>None. Solid alignment with Philippine privacy law and standards.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 10: Synthesis &amp; IPO Model</strong></td>
+      <td>Literature synthesis, research gap, IPO conceptual framework.</td>
+      <td>None. Standard thesis conceptual model.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 11: Chapter III Agenda</strong></td>
+      <td>Methodology, Requirements, System Design, Testing, Evaluation, Data.</td>
+      <td>None. Standard methodology roadmap.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 12: Research Design</strong></td>
+      <td>Developmental research design, Design-Develop-Test-Evaluate, interviews.</td>
+      <td>None. Clean methodology explanation.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 13: System Design &amp; Stack</strong></td>
+      <td>React.js, Node.js/Express.js, PostgreSQL RLS, Argon2id, Acceptance Criteria.</td>
+      <td>Accurate. Ready to support live demo.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>NEW SLIDE 13B (Recommended): Network Architecture</strong></td>
+      <td><em>Currently missing from slides.</em></td>
+      <td>Your Cisco Packet Tracer network topology (Image 1) is in Chapter III but missing from your deck.</td>
+      <td><strong>INSERT SLIDE 13B:</strong><br>
+        <strong>Title: Enterprise Network Architecture &amp; Deployment Topology</strong><br>
+        &bull; <strong>Central AWS Cloud Backbone:</strong> Central Node.js API, WebSocket server, and PostgreSQL database with RLS.<br>
+        &bull; <strong>Corporate HQ Gateway (R0):</strong> Connects franchisor server (Server-PT) for 7.5% royalty consolidation.<br>
+        &bull; <strong>Regional Branch Gateways (R1, Router0, R2):</strong> Interconnects 7 franchise branches.<br>
+        &bull; <strong>Branch Endpoints:</strong> Cisco 2960 switches, Cashier POS terminals with optical web scanners, wireless APs, and Cisco 7960 IP phones.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Slide 14: Development &amp; Testing</strong></td>
+      <td>7 development phases, testing procedures, 20 evaluators (5 IT, 15 ops).</td>
+      <td>None. Strong evaluation methodology.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Slide 15: Treatment of Data</strong></td>
+      <td>Likert scale (1.00–5.00), weighted mean formula, percentage formula.</td>
+      <td>None. Academically sound descriptive statistics.</td>
+      <td><strong>Retain as is.</strong></td>
+    </tr>
+    <tr>
+      <td><strong>NEW SLIDE 16 (Recommended): Live Demo Roadmap</strong></td>
+      <td><em>Currently missing (jumps to Thank You).</em></td>
+      <td>No transition slide connecting Chapter III methodology to the live prototype demo.</td>
+      <td><strong>INSERT SLIDE 16:</strong><br>
+        <strong>Title: Live System Demonstration &amp; Verification Scenarios</strong><br>
+        1. Public Franchise Onboarding Ingestion<br>
+        2. Role-Based Login &amp; Branch Dashboard Isolation<br>
+        3. 60-Second Dynamic HMAC Optical QR Generation<br>
+        4. Front-Desk Web Camera Optical Check-In &amp; Anti-Passback<br>
+        5. POS Shift Opening, OTC Sales &amp; Blind Cash Drop<br>
+        6. Live Cross-Tenant BOLA Penetration Test<br>
+        7. Corporate Consolidated Royalties &amp; BIR Form 2307 Withholding
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Slide 17: Closing Slide</strong></td>
+      <td>"Thank You" with author names and institutional credits.</td>
+      <td>None. Formal closing.</td>
+      <td><strong>Retain as concluding slide.</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 2 -->
+<div class="stage-header">Section 2: Slide-by-Slide Spoken Script (Chapters I–III)</div>
+
+<div class="slide-box">
+  <strong>SLIDE 1: Title Slide</strong><br>
+  <em>Visual: Title slide displaying project title, researchers, department, and university seal.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"Good morning, honorable chair and distinguished members of the defense panel, our respected thesis adviser, and guests.</p>
+  <p>"I am Luis Gabriel Bautista, together with my co-researchers Merynelle Bozar and Jullia Krisitina Marquez. We are candidates for graduation from the College of Computing and Information Sciences at the University of Makati.</p>
+  <p>"Today, we present our undergraduate capstone thesis titled: <strong>'KSYN FitConnect: A Secure Multi-Tenant Franchise Management System with Role-Based Access Control and Tenant Data Isolation.'</strong></p>
+  <p>"Allow us to walk you through the theoretical and architectural foundations of Chapters One through Three, culminating in a live demonstration of our working prototype."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 2: Chapter I Agenda</strong><br>
+  <em>Visual: Bulleted agenda for Chapter I.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"Chapter One establishes the operational reality of fitness franchise networks, the core problems driving this study, our research objectives, and the defined boundaries of our software architecture."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 3: Chapter I — Introduction, Background &amp; Proposed Solution</strong><br>
+  <em>Visual: Fragmented workflow vs. KSYN FitConnect centralized platform diagram.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"KSYN Fitness Gym is expanding from a single-facility gym into a distributed franchise network across Metro Manila. However, rapid commercial growth has exposed critical operational bottlenecks.</p>
+  <p>"Currently, corporate leadership and independent franchise branch operators rely on disconnected spreadsheets, physical paper receipts, and unencrypted messaging applications.</p>
+  <p>"This creates three acute operational risks: First, attendance bottlenecks and static pass sharing. Second, manual, error-prone royalty calculations where branch managers must physically compile sales for corporate remittances. And third, the multi-tenant security hazard: in an improperly architected system, one branch operator could accidentally or maliciously access confidential revenue and member data belonging to another franchisee.</p>
+  <p>"To solve this, we engineered <strong>KSYN FitConnect</strong>—a multi-tenant web application featuring strict server-side Role-Based Access Control and database-level tenant isolation, empowering corporate oversight while preserving branch confidentiality."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 4: Chapter I — Objectives of the Study</strong><br>
+  <em>Visual: General objective and four specific objectives mapped to Design, Develop, Test, Evaluate.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 2: Merynelle B. Bozar]</span>
+  <p>"Our General Objective is to design, develop, test, and evaluate KSYN FitConnect as a secure multi-tenant franchise management system with Role-Based Access Control and tenant data isolation.</p>
+  <p>"To achieve this, four Specific Objectives guided our engineering: First, to design a multi-tenant relational architecture supporting user management, branch scopes, dynamic membership passes, POS shifts, and consolidated royalties. Second, to develop server-side RBAC, database Row-Level Security, secure authentication, and dynamic time-expiring optical QR verification. Third, to test the system against negative authorization scenarios including Broken Object-Level Authorization (BOLA), session tampering, and QR replay attacks. And fourth, to evaluate the system against ISO/IEC 25010 software quality characteristics and Republic Act 10173 data privacy principles."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 5: Chapter I — Scope, Delimitations &amp; Key Terms</strong><br>
+  <em>Visual: Scope matrix, delimitation callout, and key terms table.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 2: Merynelle B. Bozar]</span>
+  <p>"The scope of KSYN FitConnect covers corporate headquarters and seven modeled franchise branches across six distinct user roles.</p>
+  <p>"<strong>We wish to highlight our system boundary early:</strong> KSYN FitConnect is strictly an enterprise web application. Physical electromechanical turnstiles, solenoid relays, and microcontroller hardware such as Arduino or ESP32 are <strong>explicitly delimited</strong> from this study.</p>
+  <p>"Instead, physical check-in verification is executed entirely in software through <strong>responsive front-desk web camera optical scanners</strong> on counter tablets and laptops. This eliminates expensive mechanical maintenance failures while delivering bank-grade cryptographic authentication.</p>
+  <p>"Key terms include: RBAC, which enforces permissions strictly based on validated organizational roles; Tenant Data Isolation, which logically walls off each franchise branch; PostgreSQL Row-Level Security, which enforces row queries at the database kernel; and the Franchisor Royalty, set to 7.5% of branch gross sales."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 6: Chapter II Agenda</strong><br>
+  <em>Visual: Theoretical literature roadmap.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 2: Merynelle B. Bozar]</span>
+  <p>"Chapter Two outlines the theoretical literature, international standards, and cryptographic models that form the backbone of our secure multi-tenant architecture."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 7: Chapter II — Multi-Tenant Systems &amp; Tenant Data Isolation</strong><br>
+  <em>Visual: Shared Database / Shared Schema architectural diagram with PostgreSQL RLS filtering.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 2: Merynelle B. Bozar]</span>
+  <p>"In enterprise literature, multi-tenancy is realized through three patterns: separate databases, shared database with separate schemas, or shared database with shared schema.</p>
+  <p>"KSYN FitConnect adopts the <strong>Shared Database, Shared Schema with Row-Level Security</strong> paradigm. This maximizes hardware resource utilization while eliminating database management overhead.</p>
+  <p>"To eliminate Broken Object-Level Authorization (BOLA) and IDOR vulnerabilities, we do not rely solely on application-layer 'WHERE branch_id' clauses. Instead, we mandate <strong>PostgreSQL Row-Level Security (RLS)</strong>. Before any query executes, the application establishes a local transactional session variable: 'SET LOCAL app.current_tenant_id = [branch_id]'. The database kernel itself enforces row filtering, guaranteeing that even a compromised API endpoint cannot retrieve records from another franchise branch."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 8: Chapter II — Access Control &amp; Secure Development</strong><br>
+  <em>Visual: RBAC role hierarchy, Argon2id hashing flow, and JWT claim structure.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 3: Jullia Krisitina C. Marquez]</span>
+  <p>"Access control in KSYN FitConnect enforces the principle of least privilege across six distinct roles: Corporate Admin, Branch General Manager, Front-Desk Cashier, Coach, Member, and Franchise Inquirer.</p>
+  <p>"For credential security, passwords are encrypted using <strong>Argon2id</strong>—the winner of the Password Hashing Competition—offering proven resistance against GPU-accelerated brute force and side-channel attacks.</p>
+  <p>"Authenticated sessions are secured using cryptographically signed JSON Web Tokens (JWTs) containing signed tenant identifiers and role claims, complemented by HTTPS transmission and CSRF protection."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 9: Chapter II — Dynamic Pass Verification, Privacy &amp; Standards</strong><br>
+  <em>Visual: 60-second HMAC-SHA256 rotating QR pass timeline and ISO/IEC 25010 radar chart.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 3: Jullia Krisitina C. Marquez]</span>
+  <p>"To address attendance fraud and screenshot sharing, we engineered <strong>dynamic time-expiring optical QR passes</strong>.</p>
+  <p>"The member's mobile device generates an HMAC-SHA256 signature containing a single-use cryptographic nonce and a Unix timestamp valid for exactly <strong>60 seconds</strong>.</p>
+  <p>"When scanned at the counter, the server validates the signature, performs an <strong>atomic database consumption check</strong> to prevent replay attacks, and enforces a <strong>15-minute Anti-Passback lockout</strong> to prevent members from passing their phone back to an unpaid guest outside.</p>
+  <p>"Furthermore, under Republic Act 10173 (Data Privacy Act of 2012), personal health and billing records are strictly compartmentalized: personal trainers can only access their assigned clients, while corporate administrators only view anonymized branch health metrics.</p>
+  <p>"Our evaluation framework adheres directly to the <strong>ISO/IEC 25010</strong> software product quality model and OWASP ASVS guidelines."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 10: Chapter II — Synthesis &amp; Conceptual Framework (IPO Model)</strong><br>
+  <em>Visual: Input-Process-Output-Feedback conceptual diagram.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 3: Jullia Krisitina C. Marquez]</span>
+  <p>"Our review reveals a clear research gap: no existing open study evaluates a unified platform combining corporate franchise oversight, strict branch tenant data isolation, cryptographic mobile verification, and statutory Philippine royalty accounting.</p>
+  <p>"Our Conceptual Framework follows the standard <strong>Input-Process-Output (IPO) model</strong>: Inputs include organizational workflows and security criteria; Process consists of our iterative Design–Develop–Test–Evaluate lifecycle; Output is the verified KSYN FitConnect prototype; and the Feedback loop drives successive architectural refinements."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 11 &amp; 12: Chapter III — Methodology &amp; Requirements Gathering</strong><br>
+  <em>Visual: Developmental research methodology diagram and stakeholder interview breakdown.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"Turning to Chapter Three, this study adopts a <strong>Developmental Research Design</strong> coupled with descriptive evaluation methods.</p>
+  <p>"Requirements were gathered through structured consultations, workflow observations, and semi-structured interviews with KSYN corporate executives, branch managers, front-desk staff, coaches, and members. These inputs yielded our formal System Requirements Specification, Data Dictionary, and Risk Register."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 13 &amp; 13B: Chapter III — Technology Stack &amp; Network Architecture</strong><br>
+  <em>Visual: Architecture stack diagram and Cisco Packet Tracer network topology.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"Our technology stack comprises a responsive <strong>React.js</strong> web interface, a high-throughput <strong>Node.js with Express.js</strong> REST API engine, and a relational <strong>PostgreSQL</strong> database enforcing Row-Level Security.</p>
+  <p>"Our enterprise deployment topology, modeled in Cisco Packet Tracer, features: A central <strong>AWS Cloud Backbone</strong> hosting the centralized application API, WebSocket real-time attendance server, and PostgreSQL database; A <strong>Corporate Headquarters Node</strong> connected via router 'R0' and server 'Server-PT' for consolidated financial auditing; and three regional branch router clusters—'R1', 'Router0', and 'R2'—interconnecting our seven franchise branches via Cisco 2960 switches, Cashier POS terminals running optical web scanners, wireless APs, and Cisco 7960 IP phones."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 14 &amp; 15: Chapter III — Testing Procedures, Evaluation &amp; Data Treatment</strong><br>
+  <em>Visual: Testing workflow (Supertest, Playwright, OWASP ZAP) and Likert evaluation formula.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 2: Merynelle B. Bozar]</span>
+  <p>"Our development followed a seven-phase agile roadmap. Quality assurance included unit testing, automated API integration via Supertest, browser automation via Playwright, and penetration testing via OWASP ZAP.</p>
+  <p>"For system evaluation, we established a purposive sample of <strong>20 evaluators</strong>: 5 IT and Cybersecurity Professionals and 15 Operational Stakeholders. Data treatment utilizes frequency-weighted mean computations across a 5-point Likert scale benchmarked against ISO/IEC 25010 characteristics.</p>
+  <p>"With our theoretical and architectural foundation established, we now invite you to observe the actual execution of these security controls during our <strong>Live System Demonstration</strong>."</p>
+</div>
+
+<!-- SECTION 3 -->
+<div class="stage-header">Section 3: Live System Demonstration Script (Step-by-Step)</div>
+
+<p class="no-indent">
+  Follow these seven chronological verification scenarios during your live demonstration. Each scenario maps directly to a thesis objective and demonstrates real-time architectural enforcement.
+</p>
+
+<!-- SCENARIO 1 -->
+<div class="action-callout">
+  <strong>SCENARIO 1: Public Franchise Application Ingestion</strong><br>
+  <strong>Action:</strong> Open public landing page &rarr; Navigate to "Franchise Application" &rarr; Submit inquiry for <em>Alabang West</em>.
+</div>
+<div class="api-block">POST /api/franchise-inquiry
+Payload: { "applicantName": "Carlos Mendoza", "proposedLocation": "Alabang West", "investmentTier": "STANDARD" }
+Response: 201 Created | { "inquiryId": "INQ-2026-0042", "status": "PENDING_REVIEW" }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"We begin at the public franchise portal. A prospective franchise investor fills out the franchise application form. When submitted, the application executes a 'POST /api/franchise-inquiry' request. The corporate franchise engine ingests the payload, assigning an audit tracking token and placing the inquiry into the pending corporate pipeline without exposing internal administrative endpoints."</p>
+</div>
+
+<!-- SCENARIO 2 -->
+<div class="action-callout">
+  <strong>SCENARIO 2: Role-Based Authentication &amp; Tenant Dashboard Isolation</strong><br>
+  <strong>Action:</strong> Log in as Makati General Manager (<code>manager.makati@ksynfitconnect.com</code>).
+</div>
+<div class="api-block">POST /api/auth/login
+Payload: { "email": "manager.makati@ksynfitconnect.com", "password": "[REDACTED]" }
+Response: 200 OK | JWT Claims: { "role": "BRANCH_MANAGER", "tenantId": "branch_makati_01" }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"Next, we observe authentication and tenant boundary establishment. We log in as the <strong>Makati Branch General Manager</strong>. Behind the scenes, the server validates the Argon2id hash and issues a signed JWT containing claims for 'role: BRANCH_MANAGER' and 'tenantId: branch_makati_01'.</p>
+  <p>"Notice the branch dashboard: the GM sees real-time revenue, active memberships, and staff schedules strictly for the Makati branch. There is zero visibility into BGC, Fairview, or other regional branches, proving our tenant boundary is active."</p>
+</div>
+
+<!-- SCENARIO 3 -->
+<div class="action-callout">
+  <strong>SCENARIO 3: Member Dynamic 60-Second Optical QR Pass Generation</strong><br>
+  <strong>Action:</strong> Log in as member Juan (<code>member.juan@gmail.com</code>) on mobile view &rarr; Open "My Digital Pass".
+</div>
+<div class="api-block">POST /api/qr/generate-secure-pass
+Response: 200 OK | { "passToken": "eyJhbGciOiJIUzI1NiJ9...", "expiresIn": 60, "nonce": "e4f8b9..." }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"Now, let us examine the member attendance experience. On mobile, member Juan opens his digital gym pass. The frontend calls 'POST /api/qr/generate-secure-pass'.</p>
+  <p>"Notice the animated 60-second countdown indicator. Every minute, the HMAC-SHA256 signature dynamically regenerates with a new cryptographic nonce. If Juan screenshots this QR code and sends it via Telegram to an unpaid friend waiting outside, the pass will expire before it can be scanned. This completely eliminates static QR code sharing fraud."</p>
+</div>
+
+<!-- SCENARIO 4 -->
+<div class="action-callout">
+  <strong>SCENARIO 4: Front-Desk Web Camera Optical Check-In &amp; Anti-Passback</strong><br>
+  <strong>Action:</strong> Open Front-Desk Cashier tab (<code>cashier.makati@ksynfitconnect.com</code>) &rarr; Launch Web Camera Scanner &rarr; Scan Juan's QR pass &rarr; Re-scan immediately.
+</div>
+<div class="api-block">POST /api/qr/verify-and-admit
+Payload: { "passToken": "[TOKEN_STRING]", "terminalId": "TERM_MKT_01" }
+First Scan Response: 200 OK | { "admitted": true, "member": "Juan Dela Cruz", "apbExpires": "11:51 AM" }
+Second Scan Response: 403 Forbidden | { "error": "ANTI_PASSBACK_VIOLATION", "message": "Pass cooldown active." }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"At the front desk, the cashier operates our responsive web camera optical scanner—running entirely in software without mechanical turnstiles. We present Juan's dynamic QR pass to the camera. The system executes 'POST /api/qr/verify-and-admit'. Instant green verification! The admission feed pulses across the WebSocket gateway, the nonce is consumed, and Juan is admitted.</p>
+  <p>"Now, watch what happens if Juan attempts to scan the exact same pass again immediately: <strong>Access Denied: Anti-Passback Lockout Active.</strong> The system enforces a 15-minute anti-passback rule, preventing tailgating and pass-backs."</p>
+</div>
+
+<!-- SCENARIO 5 -->
+<div class="action-callout">
+  <strong>SCENARIO 5: POS Shift Float &amp; Blind Cash Drop Governance</strong><br>
+  <strong>Action:</strong> Enter opening float of &#8369;2,000 &rarr; Ring up protein shake sale &rarr; Execute "Close Shift" with Blind Cash Drop.
+</div>
+<div class="api-block">POST /api/pos/shifts/close
+Payload: { "shiftId": "SH-2026-104", "actualCashCount": 2350.00 }
+Response: 200 OK | { "expectedCash": 2350.00, "variance": 0.00, "status": "CLOSED_RECONCILED" }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"Next, we demonstrate Point-of-Sale shift governance. At shift opening, the cashier declares an opening float of 2,000 pesos. During the shift, over-the-counter retail sales are executed.</p>
+  <p>"At closing, the cashier performs a <strong>Blind Cash Drop</strong>. The system deliberately hides the expected cash total. The cashier must physically count and enter the currency in their drawer. When submitted via 'POST /api/pos/shifts/close', the backend performs atomic reconciliation. If there is a discrepancy, the system flags the variance for manager PIN authorization, eliminating cashier skimming."</p>
+</div>
+
+<!-- SCENARIO 6 -->
+<div class="action-callout">
+  <strong>SCENARIO 6: Penetration Test: Defeating Cross-Tenant Data Leaks (BOLA)</strong><br>
+  <strong>Action:</strong> Open browser developer tools network tab while logged in as Makati GM &rarr; Edit API request parameter to target <code>branch_bgc_02</code> &rarr; Execute.
+</div>
+<div class="api-block">GET /api/branches/branch_bgc_02/financial-summary
+Request Headers: { "Authorization": "Bearer [MAKATI_GM_JWT]" }
+Database Policy: SET LOCAL app.current_tenant_id = 'branch_makati_01';
+Response: 403 Forbidden | { "error": "TENANT_ACCESS_DENIED", "policy": "rls_branch_isolation" }</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"To prove our third specific objective, we now execute a real-time penetration test against Broken Object-Level Authorization (BOLA). While logged in as the Makati GM, we tamper with the URL parameter to fetch financial records belonging to the <strong>BGC Branch</strong>.</p>
+  <p>"The request fires. The server returns: <strong>HTTP 403 Forbidden: Cross-Tenant Access Prohibited.</strong> Even if a user alters client-side parameters, PostgreSQL Row-Level Security evaluates the active session token, confirms the token scope does not match the requested tenant, and drops the query at the database kernel."</p>
+</div>
+
+<!-- SCENARIO 7 -->
+<div class="action-callout">
+  <strong>SCENARIO 7: Corporate Multi-Branch Consolidation &amp; BIR Tax Compliance</strong><br>
+  <strong>Action:</strong> Log in as Corporate Franchisor Executive (<code>corporate.admin@ksynfitconnect.com</code>) &rarr; Open Financial Settlement page.
+</div>
+<div class="api-block">GET /api/finance/consolidated-royalties
+Response: 200 OK |
+{
+  "period": "OCTOBER 2026",
+  "systemGrossRevenue": 1450000.00,
+  "franchisorRoyaltyFeeRate": "7.5%",
+  "grossRoyaltyPayable": 108750.00,
+  "birWithholdingTax_5Percent": 5437.50,
+  "netRoyaltyRemittance": 103312.50
+}</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Live Demonstration Narration]</span>
+  <p>"Finally, we log in as the <strong>Corporate Franchisor Executive</strong>. Notice how the dashboard immediately shifts to consolidated brand-wide intelligence across all seven franchise branches.</p>
+  <p>"The royalty engine calls 'GET /api/finance/consolidated-royalties'. It automatically calculates the <strong>7.5% franchisor royalty</strong> on gross sales and computes the Philippine statutory <strong>BIR Form 2307 5% Withholding Tax deduction</strong>. Corporate executives can audit shift discrepancy flags, monitor franchisee health, and generate brand-wide financial reports in real time, with zero manual spreadsheet compilation."</p>
+</div>
+
+<div class="slide-box">
+  <strong>SLIDE 17: Closing Slide &amp; Panel Defense Transition</strong><br>
+  <em>Visual: Final slide with researcher contact details and institutional credits.</em>
+</div>
+<div class="spoken-script">
+  <span class="speaker-tag">[Speaker 1: Luis Gabriel Bautista]</span>
+  <p>"In conclusion, KSYN FitConnect demonstrates that a centralized multi-tenant architecture can deliver robust corporate franchise governance while rigorously enforcing branch confidentiality, cryptographic attendance integrity, and statutory tax compliance.</p>
+  <p>"We express our sincere gratitude to our thesis adviser, our professors, and the distinguished panel of examiners. We are now ready and honored to address your questions. Thank you very much."</p>
+</div>
+
+<!-- SECTION 4 -->
+<div class="stage-header">Section 4: Panel Defense Trap Anticipation &amp; Technical Responses</div>
+
+<table class="academic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Panelist Trap Question</th>
+      <th style="width: 32%;">❌ Dangerous / Failing Answer</th>
+      <th style="width: 43%;"> Winning Technical Defense</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>"Where is your physical RFID reader or ESP32 turnstile?"</strong></td>
+      <td><em>"We ran out of budget/time to purchase the wires and sensors."</em></td>
+      <td><em>"Physical electromechanical turnstiles and microcontrollers were <strong>explicitly delimited</strong> in Chapter I. Our research focuses on Enterprise Software Architecture, PostgreSQL Row-Level Security, and Cryptographic Authentication. Front-desk optical camera scanning provides a scalable, zero-hardware failure solution accessible on standard cashier laptops."</em></td>
+    </tr>
+    <tr>
+      <td><strong>"How do you know an attacker cannot bypass branch isolation with SQL injection?"</strong></td>
+      <td><em>"We put 'WHERE branch_id = ...' in all our backend queries."</em></td>
+      <td><em>"We employ defense-in-depth: all queries use parameterized statements to prevent SQL injection, and data isolation is enforced at the database kernel level through <strong>PostgreSQL Row-Level Security (RLS)</strong> via 'SET LOCAL app.current_tenant_id = [branch_id]'. Even if an attacker injects a rogue query, the database engine will not return records outside the authorized tenant."</em></td>
+    </tr>
+    <tr>
+      <td><strong>"Why is the franchisor royalty set to exactly 7.5%?"</strong></td>
+      <td><em>"We just picked 7.5% as an example number."</em></td>
+      <td><em>"The 7.5% royalty rate is based directly on actual fitness franchise industry benchmarks gathered during our Chapter III stakeholder requirements analysis with KSYN leadership, combined with standard Philippine BIR Form 2307 (5% Expanded Withholding Tax) deduction rules."</em></td>
+    </tr>
+    <tr>
+      <td><strong>"What stops a member from taking a screenshot of their QR code and sending it to a friend?"</strong></td>
+      <td><em>"We tell our cashiers to look at the member's face."</em></td>
+      <td><em>"Our passes are <strong>dynamic and cryptographic</strong>. Using HMAC-SHA256, each QR pass is valid for only <strong>60 seconds</strong> and contains a single-use nonce. A screenshot sent to a friend outside will expire before it reaches the counter. Furthermore, once scanned, our 15-minute Anti-Passback rule locks out that member ID from immediate re-use."</em></td>
+    </tr>
+    <tr>
+      <td><strong>"Why did you use React and Node.js instead of PHP or standard HTML?"</strong></td>
+      <td><em>"It is just the stack we are most comfortable using."</em></td>
+      <td><em>"React.js provides a responsive Single-Page Application (SPA) architecture required for continuous optical video feed processing at the counter. Node.js with Express and WebSockets handles asynchronous, non-blocking I/O, allowing instant live attendance broadcast from cashier scanners to management dashboards."</em></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
